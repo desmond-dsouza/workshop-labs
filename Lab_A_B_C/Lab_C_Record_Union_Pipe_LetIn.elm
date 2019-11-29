@@ -4,20 +4,26 @@ import GraphicSVG exposing (..)
 import GraphicSVG.App exposing (graphicsApp)
 
 
-
-{- 👉 TODO: Bunch of type definitions and aliases -}
-
-
 type alias Snake =
-    { head : Head
-    , body : Body
-    , direction : Direction
-    , state : SnakeState
-    }
+    {- 👉 TODO: Define record type to fix several type errors,
+       and to distinguish between different states of the snake.
+
+        💡 HINT: look for uses of `snake` variable with `snake.fieldName`
+    -}
+    ()
+
+
+type alias Position =
+    ( Int, Int )
 
 
 type alias Food =
-    Position
+    {- 👉 TODO: Define suitable type alias
+       to fix some type errors
+
+       💡 HINT: reuse an existing type name if appropriate
+    -}
+    ()
 
 
 type alias Head =
@@ -33,25 +39,22 @@ type alias Segment =
 
 
 type Direction
-    = Up
-    | Down
-    | Left
-    | Right
+    = Down
 
 
-type SnakeState
+type
+    SnakeState
+    {- 👉 TODO: Edit type defintion as needed
+       for visual distinctions
+
+       💡 HINT: look for places where this might be used
+    -}
     = Normal
-    | Eating
-    | HitSelf
-    | HitWall
-
-
-type alias Position =
-    ( Int, Int )
 
 
 type alias Walls =
-    { left : Int, right : Int, top : Int, bottom : Int }
+    {- 👉 TODO: Define record type guided by some type errors -}
+    ()
 
 
 cellSize =
@@ -78,25 +81,16 @@ viewSnakeHead snake =
             HitSelf: red
             HitWall: purple
 
-           💡 HINT: case var of
+           💡 HINT: case expr of
                         A -> valueA
                         B -> valueB
         -}
         head =
-            rect cellSize cellSize
+            roundedRect cellSize cellSize (0.25 * cellSize)
                 |> filled
                     (case snake.state of
                         Normal ->
                             brown
-
-                        Eating ->
-                            pink
-
-                        HitSelf ->
-                            red
-
-                        HitWall ->
-                            purple
                     )
                 |> move ( headX0, headY0 )
     in
@@ -105,7 +99,8 @@ viewSnakeHead snake =
 
 viewSnakeSegment : ( Int, Int ) -> Shape msg
 viewSnakeSegment ( posX, posY ) =
-    roundedRect cellSize cellSize 5
+    {- 👉 TODO: Change to single input `pos`, then use `let-in` to split posX and posY -}
+    circle (0.5 * cellSize)
         |> filled black
         |> move ( cellSize * toFloat posX, cellSize * toFloat posY )
 
@@ -113,29 +108,22 @@ viewSnakeSegment ( posX, posY ) =
 stepHead : Head -> Direction -> Head
 stepHead ( i, j ) direction =
     case direction of
-        Up ->
-            ( i, j + 1 )
-
-        Right ->
-            ( i + 1, j )
-
+        {- 👉 TODO: Handle Up, Down, Left, Right -}
         Down ->
             ( i, j - 1 )
-
-        Left ->
-            ( i - 1, j )
 
 
 stepBody : Head -> Bool -> Body -> Body
 stepBody currHead gotFoodNext currBody =
     currHead
-        :: (case gotFoodNext of
-                True ->
-                    currBody
+        {- 👉 TODO: New body should include where head was.
+           However, new body length should be same as old
+           if snake did not get food,
+           otherwise length should be 1 more
 
-                False ->
-                    removeLast currBody
-           )
+            💡 HINT: replace currBody with a conditional expression
+        -}
+        :: currBody
 
 
 gotFood : Head -> Food -> Bool
@@ -153,15 +141,15 @@ hitWall ( i, j ) walls =
     i < walls.left || i > walls.right || j < walls.bottom || j > walls.top
 
 
-
-{- 👉 TODO: Add stepSnake to earlier lab REPL_Play?
-   Include walls in this lab??
--}
-
-
 turn : Direction -> Snake -> Snake
 turn dir snake =
-    { snake | direction = dir }
+    {- 👉 TODO: Change what this return:
+        New snake should have changed direction
+
+       💡 HINT: use record update syntax, it looks like this:
+                { model | foo = bar }
+    -}
+    snake
 
 
 stepSnake : Food -> Walls -> Snake -> Snake
@@ -177,17 +165,14 @@ stepSnake food walls snake =
             stepBody snake.head nextGotFood snake.body
 
         nextState =
-            if hitSelf nextHead nextBody then
-                HitSelf
+            {- 👉 TODO: nextState should depend on whether
+               the snake will hit itself, hit the wall, or get food
 
-            else if hitWall nextHead walls then
-                HitWall
-
-            else if nextGotFood then
-                Eating
-
-            else
-                Normal
+                💡 HINT: replace `Normal` below with a nested if-else expression.
+                    NOTE: `case-of` is not convenient here as there are multiple conditions
+                        to check in sequence
+            -}
+            Normal
     in
     { snake | head = nextHead, body = nextBody, state = nextState }
 
@@ -205,25 +190,35 @@ removeLast list =
     List.take (List.length list - 1) list
 
 
+viewGrid : List (Shape msg)
+viewGrid =
+    [ graphPaperCustom cellSize 0.5 lightGrey
+    , circle (0.05 * cellSize) |> filled black
+    ]
+
+
 main =
     let
+        initialSnake : Snake
         initialSnake =
             { head = ( 4, 2 )
             , body =
                 [ ( 4, 3 )
                 , ( 4, 4 )
                 ]
-            , direction = Right
+            , direction = Down
             , state = Normal
             }
 
         {- 👉 TODO: View snake as initialSnake.
-           Also view after steps, turns, various foods & walls.
-           Use |> to transform initialSnake
+           Also view after steps, turns, various foods & walls,
+                using |> to transform initialSnake.
            Option: use REPL to import this file & test functions
         -}
         snake =
             initialSnake
+
+        -- |> step... |> turn...
     in
     graphicsApp
         { view = collage 280 280 (viewSnake snake) }

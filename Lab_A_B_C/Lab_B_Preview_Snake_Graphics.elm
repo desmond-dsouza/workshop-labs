@@ -1,14 +1,10 @@
 module Lab_B_Preview_Snake_Graphics exposing (..)
 
-{- Make simple changes to this file:
-   - Make snake longer / shorter by 1 or 2
-   - Change snake head color
-   - Change snake body color
-   - Give snake body a bend
--}
+-- 👉 NOTE: Also imported previous lab so all its functions are available here
 
 import GraphicSVG exposing (..)
 import GraphicSVG.App as App
+import Lab_A_REPL_Play exposing (..)
 
 
 type alias Snake =
@@ -38,7 +34,7 @@ viewSnakeHead ( ( i, j ), tail ) =
 
 viewSnakeSegment : ( Int, Int ) -> Shape msg
 viewSnakeSegment ( posX, posY ) =
-    circle (0.5 * cellSize)
+    roundedRect cellSize cellSize (0.25 * cellSize)
         |> filled black
         |> move ( cellSize * toFloat posX, cellSize * toFloat posY )
 
@@ -55,10 +51,26 @@ viewGrid =
     ]
 
 
+initialHead =
+    ( 5, 0 )
+
+
+initialBody =
+    [ ( 4, 0 ), ( 3, 0 ), ( 2, 0 ), ( 2, 1 ) ]
+
+
 initialSnake =
-    ( ( 5, 0 )
-    , [ ( 4, 0 ), ( 3, 0 ), ( 2, 0 ), ( 2, 1 ) ]
-    )
+    ( initialHead, initialBody )
+
+
+
+{- 👉 TODO:
+   * Change the snake head color, Save, view result
+   * Change the snake body rounded rectangles to circles, Save, view result
+   * Add an extra bend to `initialSnake` tail with 2 new segments, Save, view result
+   * Change main to view the snake after stepping `initialHead` and `initialBody`
+        (try Direction = down, Grow = True or False), view result.
+-}
 
 
 main =
@@ -66,5 +78,7 @@ main =
         { view =
             collage 280
                 280
-                (viewGrid ++ viewSnake initialSnake)
+                (viewGrid
+                    ++ viewSnake initialSnake
+                )
         }
