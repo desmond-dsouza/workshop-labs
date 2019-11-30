@@ -9,11 +9,13 @@ import Types exposing (Body, Direction(..), Food, Head, Position, Segment, Snake
 view : Snake -> List (Shape msg)
 view snake =
     {- 👉 TODO: Make a shape list including both head and body.
-       Body first, then head, so head will never be covered up.
-       You have a `viewSnakeSegment` helper below.
-       How can you use it for the body?
+       In the list put body first, then head, so head will never be covered up.
+       You already have `viewSnakeHead` helper below (it needs some fixes).
+       You also have a `viewSnakeSegment` helper below. How can you use it for the body?
 
         💡 HINT: See `List.map`
+            See `::` for adding a single item in front of a list.
+            See `++` for appending two lists together.
     -}
     []
 
@@ -96,8 +98,8 @@ nextDirection oldDir newDir =
     newDir
 
 
-changeDirection : Direction -> Snake -> Snake
-changeDirection newDirection snake =
+turn : Direction -> Snake -> Snake
+turn newDirection snake =
     { snake | direction = nextDirection snake.direction newDirection }
 
 

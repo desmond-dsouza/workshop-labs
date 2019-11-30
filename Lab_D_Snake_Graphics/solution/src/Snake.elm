@@ -94,8 +94,8 @@ nextDirection oldDir newDir =
         newDir
 
 
-changeDirection : Direction -> Snake -> Snake
-changeDirection newDirection snake =
+turn : Direction -> Snake -> Snake
+turn newDirection snake =
     { snake | direction = nextDirection snake.direction newDirection }
 
 

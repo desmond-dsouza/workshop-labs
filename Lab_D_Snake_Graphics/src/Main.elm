@@ -43,20 +43,16 @@ initialModel =
 
 view : Model -> List (Shape msg)
 view model =
-    Grid.view
-        ++ Food.view model.food
-        ++ Snake.view model.snake
-        ++ (if isGameOver model then
-                viewGameOver
-
-            else
-                []
-           )
+    {- 👉 TODO: Show the grid, food, snake, and optionally a "Game Over" message
+       These should be based on the input `model`
+    -}
+    []
 
 
 isGameOver : Model -> Bool
 isGameOver g =
-    g.snake.state == Types.HitSelf || g.snake.state == Types.HitWall
+    {- 👉 TODO: Fill in the 2 conditions under which the game is "Over" -}
+    False
 
 
 viewGameOver : List (Shape msg)
