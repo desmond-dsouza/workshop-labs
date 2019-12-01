@@ -24,12 +24,11 @@ apple size =
 
        At first just a single darkRed circle will do. Get it to display.
 
-       Then add a small green stem, sized and positioned relative to `size`.
-       However, you have to return a single `Shape`, not a list.
-
-       If you complete the lab early, go for a fancier apple e.g. two `oval`s
-
+       If you complete the rest of this lab early:
+          - Add a small green stem, sized and positioned relative to `size`.
+              However, you have to return a single `Shape`, not a list. 
           💡 HINT: see `group` function
+          - Make the apple body fancier e.g. use two overlapping `oval`s
     -}
     []
 

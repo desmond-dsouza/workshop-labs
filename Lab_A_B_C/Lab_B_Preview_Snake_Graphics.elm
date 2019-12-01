@@ -4,7 +4,7 @@ module Lab_B_Preview_Snake_Graphics exposing (..)
 
 import GraphicSVG exposing (..)
 import GraphicSVG.App as App
-import Lab_A_REPL_Play exposing (..)
+import Lab_A_Soln_REPL_Play exposing (..)
 
 
 type alias Snake =

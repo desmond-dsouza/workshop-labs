@@ -182,12 +182,6 @@ hitWall ( i, j ) walls =
     i < walls.left || i > walls.right || j < walls.bottom || j > walls.top
 
 
-
-{- 👉 TODO: Add stepSnake to earlier lab REPL_Play?
-   Include walls in this lab??
--}
-
-
 turn : Direction -> Snake -> Snake
 turn dir snake =
     {- 👉 TODO: Change what this return:

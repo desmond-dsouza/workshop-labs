@@ -8,7 +8,7 @@ type alias Snake =
     {- 👉 TODO: Define record type to fix several type errors,
        and to distinguish between different states of the snake.
 
-        💡 HINT: look for uses of `snake` variable with `snake.fieldName`
+        💡 HINT: look for uses of `snake` variables with `snake.fieldName`
     -}
     ()
 
@@ -211,7 +211,7 @@ main =
             }
 
         {- 👉 TODO: View snake as initialSnake.
-           Also view after steps, turns, various foods & walls,
+           Also view after steps, turns (with various foods & walls)
                 using |> to transform initialSnake.
            Option: use REPL to import this file & test functions
         -}

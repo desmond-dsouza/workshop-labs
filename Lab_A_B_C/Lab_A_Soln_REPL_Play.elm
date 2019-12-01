@@ -1,4 +1,4 @@
-module Lab_A_REPL_Play exposing (..)
+module Lab_A_Soln_REPL_Play exposing (..)
 
 
 isAnagram :
