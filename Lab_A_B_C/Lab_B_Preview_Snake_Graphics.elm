@@ -1,9 +1,9 @@
 module Lab_B_Preview_Snake_Graphics exposing (..)
 
--- 👉 NOTE: Also imported previous lab so all its functions are available here
 
 import GraphicSVG exposing (..)
 import GraphicSVG.App as App
+-- 👉 NOTE: Also imported previous lab so all its functions are available here
 import Lab_A_Soln_REPL_Play exposing (..)
 
 
