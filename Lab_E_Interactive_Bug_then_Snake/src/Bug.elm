@@ -21,7 +21,7 @@ module Main exposing (..)
             - GetKeyState = (Keys -> KeyState), _, _) (we only need the 1st item in triple)
        - Define update to handle just Left and Right arrow keys
        - Add helpers
-            - userRequest: (Keys -> KeyState) to UserRequests
+            - userRequest: (Keys -> KeyState) -> UserRequests
             - step, jump, go Left|Right to change the model
        - Extend update to step and/or jump the bug
        - Understand how Elm checks for pattern completeness
