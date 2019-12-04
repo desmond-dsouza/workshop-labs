@@ -1,4 +1,4 @@
-module Lab_C_Record_Union_Pipe_LetIn exposing (..)
+module Lab_C_2_Soln_Record_Union_Pipe_LetIn exposing (..)
 
 import GraphicSVG exposing (..)
 import GraphicSVG.App exposing (graphicsApp)
@@ -6,24 +6,20 @@ import GraphicSVG.App exposing (graphicsApp)
 
 type alias Snake =
     {- 👉 TODO: Define record type to fix several type errors,
-       and to distinguish between different states of the snake.
-
-        💡 HINT: look for uses of `snake` variables with `snake.fieldName`
+       and to distinguish between different states of the snake
     -}
-    ()
-
-
-type alias Position =
-    ( Int, Int )
+    { head : Head
+    , body : Body
+    , direction : Direction
+    , state : SnakeState
+    }
 
 
 type alias Food =
     {- 👉 TODO: Define suitable type alias
        to fix some type errors
-
-       💡 HINT: reuse an existing type name if appropriate
     -}
-    ()
+    Position
 
 
 type alias Head =
@@ -39,22 +35,30 @@ type alias Segment =
 
 
 type Direction
-    = Down
+    = Up
+    | Down
+    | Left
+    | Right
 
 
 type
     SnakeState
     {- 👉 TODO: Edit type defintion as needed
        for visual distinctions
-
-       💡 HINT: look for places where this might be used
     -}
     = Normal
+    | Eating
+    | HitSelf
+    | HitWall
+
+
+type alias Position =
+    ( Int, Int )
 
 
 type alias Walls =
     {- 👉 TODO: Define record type guided by some type errors -}
-    ()
+    { left : Int, right : Int, top : Int, bottom : Int }
 
 
 cellSize =
@@ -81,7 +85,7 @@ viewSnakeHead snake =
             HitSelf: red
             HitWall: purple
 
-           💡 HINT: case expr of
+           💡 HINT: case var of
                         A -> valueA
                         B -> valueB
         -}
@@ -91,6 +95,15 @@ viewSnakeHead snake =
                     (case snake.state of
                         Normal ->
                             brown
+
+                        Eating ->
+                            pink
+
+                        HitSelf ->
+                            red
+
+                        HitWall ->
+                            purple
                     )
                 |> move ( headX0, headY0 )
     in
@@ -109,12 +122,34 @@ stepHead : Head -> Direction -> Head
 stepHead ( i, j ) direction =
     case direction of
         {- 👉 TODO: Handle Up, Down, Left, Right -}
+        Up ->
+            ( i, j + 1 )
+
+        Right ->
+            ( i + 1, j )
+
         Down ->
             ( i, j - 1 )
+
+        Left ->
+            ( i - 1, j )
 
 
 stepBody : Head -> Bool -> Body -> Body
 stepBody currHead gotFoodNext currBody =
+    let
+        removeLast : List a -> List a
+        removeLast list =
+            {- 👉 TODO: Make this a local helper function in stepBody
+
+               💡 HINT: let
+                            localVar = ...
+                            localFunc x y = ...
+                        in
+                        resultExpression
+            -}
+            List.take (List.length list - 1) list
+    in
     currHead
         {- 👉 TODO: New body should include where head was.
            However, new body length should be same as old
@@ -123,7 +158,13 @@ stepBody currHead gotFoodNext currBody =
 
             💡 HINT: replace currBody with a conditional expression
         -}
-        :: currBody
+        :: (case gotFoodNext of
+                True ->
+                    currBody
+
+                False ->
+                    removeLast currBody
+           )
 
 
 gotFood : Head -> Food -> Bool
@@ -149,7 +190,7 @@ turn dir snake =
        💡 HINT: use record update syntax, it looks like this:
                 { model | foo = bar }
     -}
-    snake
+    { snake | direction = dir }
 
 
 stepSnake : Food -> Walls -> Snake -> Snake
@@ -172,22 +213,19 @@ stepSnake food walls snake =
                     NOTE: `case-of` is not convenient here as there are multiple conditions
                         to check in sequence
             -}
-            Normal
+            if hitSelf nextHead nextBody then
+                HitSelf
+
+            else if hitWall nextHead walls then
+                HitWall
+
+            else if nextGotFood then
+                Eating
+
+            else
+                Normal
     in
     { snake | head = nextHead, body = nextBody, state = nextState }
-
-
-removeLast : List a -> List a
-removeLast list =
-    {- 👉 TODO: Make this a local helper function in stepBody
-
-       💡 HINT: let
-                    localVar = ...
-                    localFunc x y = ...
-                in
-                resultExpression
-    -}
-    List.take (List.length list - 1) list
 
 
 viewGrid : List (Shape msg)
@@ -197,9 +235,13 @@ viewGrid =
     ]
 
 
+gridWalls : Walls
+gridWalls =
+    { left = -7, right = 7, top = 7, bottom = -7 }
+
+
 main =
     let
-        initialSnake : Snake
         initialSnake =
             { head = ( 4, 2 )
             , body =
@@ -211,14 +253,23 @@ main =
             }
 
         {- 👉 TODO: View snake as initialSnake.
-           Also view after steps, turns (with various foods & walls)
-                using |> to transform initialSnake.
+           Also view after steps, turns, various foods & walls.
+           Use |> to transform initialSnake
            Option: use REPL to import this file & test functions
         -}
         snake =
             initialSnake
 
-        -- |> step... |> turn...
+        -- 👉 TODO: uncomment each line below to see effect
+        -- |> stepSnake ( 0, 0 ) gridWalls
+        -- |> turn Left
+        -- |> stepSnake ( 3, 1 ) gridWalls
     in
     graphicsApp
-        { view = collage 280 280 (viewSnake snake) }
+        { view =
+            collage 280
+                280
+                (viewGrid
+                    ++ viewSnake snake
+                )
+        }

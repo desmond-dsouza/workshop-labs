@@ -3,7 +3,7 @@ module BugSoln exposing (..)
 -- 👉 TODO: Make proper Elm module
 
 import GraphicSVG exposing (..)
-import Lib.WkApp as App exposing (KeyState(..), Keys(..))
+import GraphicSVG.App exposing (graphicsApp)
 
 
 
@@ -11,13 +11,17 @@ import Lib.WkApp as App exposing (KeyState(..), Keys(..))
 
 
 type alias Model =
-    -- 👉 TODO: Fill this out
+    -- 👉 TODO: Fill this out: what to track? how is this used in the code below?
     ()
 
 
 type alias Direction =
     -- 👉 TODO: Fill this out
     ()
+
+
+
+-- 👉 TODO: Add explicit types as needed everywhere below
 
 
 initialModel =
@@ -55,20 +59,18 @@ view model =
 
 
 step model =
-    case model.direction of
-        Left ->
-            { model | x = model.x - 0.2 }
-
-        Right ->
-            { model | x = model.x + 0.2 }
+    -- 👉 TODO: move the bug left or right by 0.2, use record-update syntax
+    model
 
 
 jump model =
-    { model | y = model.y + 0.2 }
+    -- 👉 TODO: move the bug up by 0.2, use record-update syntax
+    model
 
 
 go dir model =
-    { model | direction = dir }
+    -- 👉 TODO: change bug direction, use record-update syntax
+    model
 
 
 main =

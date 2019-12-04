@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Lab_C_Soln_Record_Union_Pipe_LetIn</title>
+  <title>Lab_C_2_Soln_Record_Union_Pipe_LetIn</title>
   <style>body { padding: 0; margin: 0; }</style>
 </head>
 
@@ -4404,8 +4404,8 @@ var $elm$core$Set$toList = function (_v0) {
 var $elm$core$Basics$EQ = {$: 'EQ'};
 var $elm$core$Basics$GT = {$: 'GT'};
 var $elm$core$Basics$LT = {$: 'LT'};
-var $author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$Down = {$: 'Down'};
-var $author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$Normal = {$: 'Normal'};
+var $author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$Down = {$: 'Down'};
+var $author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$Normal = {$: 'Normal'};
 var $elm$core$Basics$append = _Utils_append;
 var $MacCASOutreach$graphicsvg$GraphicSVG$Collage = F3(
 	function (a, b, c) {
@@ -7842,7 +7842,7 @@ var $MacCASOutreach$graphicsvg$GraphicSVG$App$graphicsApp = function (userApp) {
 			}
 		});
 };
-var $author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$cellSize = 20.0;
+var $author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$cellSize = 20.0;
 var $MacCASOutreach$graphicsvg$GraphicSVG$Circle = function (a) {
 	return {$: 'Circle', a: a};
 };
@@ -7854,13 +7854,13 @@ var $MacCASOutreach$graphicsvg$GraphicSVG$graphPaperCustom = F3(
 		return A3($MacCASOutreach$graphicsvg$GraphicSVG$GraphPaper, s, th, c);
 	});
 var $MacCASOutreach$graphicsvg$GraphicSVG$lightGrey = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 238, 238, 236, 1);
-var $author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$viewGrid = _List_fromArray(
+var $author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$viewGrid = _List_fromArray(
 	[
-		A3($MacCASOutreach$graphicsvg$GraphicSVG$graphPaperCustom, $author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$cellSize, 0.5, $MacCASOutreach$graphicsvg$GraphicSVG$lightGrey),
+		A3($MacCASOutreach$graphicsvg$GraphicSVG$graphPaperCustom, $author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$cellSize, 0.5, $MacCASOutreach$graphicsvg$GraphicSVG$lightGrey),
 		A2(
 		$MacCASOutreach$graphicsvg$GraphicSVG$filled,
 		$MacCASOutreach$graphicsvg$GraphicSVG$black,
-		$MacCASOutreach$graphicsvg$GraphicSVG$circle(0.05 * $author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$cellSize))
+		$MacCASOutreach$graphicsvg$GraphicSVG$circle(0.05 * $author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$cellSize))
 	]);
 var $MacCASOutreach$graphicsvg$GraphicSVG$brown = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 193, 125, 17, 1);
 var $MacCASOutreach$graphicsvg$GraphicSVG$pink = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 255, 105, 180, 1);
@@ -7874,11 +7874,11 @@ var $MacCASOutreach$graphicsvg$GraphicSVG$roundedRect = F3(
 	function (w, h, r) {
 		return A3($MacCASOutreach$graphicsvg$GraphicSVG$RoundRect, w, h, r);
 	});
-var $author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$viewSnakeHead = function (snake) {
+var $author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$viewSnakeHead = function (snake) {
 	var _v0 = snake.head;
 	var i = _v0.a;
 	var j = _v0.b;
-	var _v1 = _Utils_Tuple2($author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$cellSize * i, $author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$cellSize * j);
+	var _v1 = _Utils_Tuple2($author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$cellSize * i, $author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$cellSize * j);
 	var headX0 = _v1.a;
 	var headY0 = _v1.b;
 	var head = A2(
@@ -7899,36 +7899,36 @@ var $author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$viewSnakeHead = function 
 						return $MacCASOutreach$graphicsvg$GraphicSVG$purple;
 				}
 			}(),
-			A3($MacCASOutreach$graphicsvg$GraphicSVG$roundedRect, $author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$cellSize, $author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$cellSize, 0.25 * $author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$cellSize)));
+			A3($MacCASOutreach$graphicsvg$GraphicSVG$roundedRect, $author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$cellSize, $author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$cellSize, 0.25 * $author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$cellSize)));
 	return _List_fromArray(
 		[head]);
 };
-var $author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$viewSnakeSegment = function (_v0) {
+var $author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$viewSnakeSegment = function (_v0) {
 	var posX = _v0.a;
 	var posY = _v0.b;
 	return A2(
 		$MacCASOutreach$graphicsvg$GraphicSVG$move,
-		_Utils_Tuple2($author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$cellSize * posX, $author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$cellSize * posY),
+		_Utils_Tuple2($author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$cellSize * posX, $author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$cellSize * posY),
 		A2(
 			$MacCASOutreach$graphicsvg$GraphicSVG$filled,
 			$MacCASOutreach$graphicsvg$GraphicSVG$black,
-			$MacCASOutreach$graphicsvg$GraphicSVG$circle(0.5 * $author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$cellSize)));
+			$MacCASOutreach$graphicsvg$GraphicSVG$circle(0.5 * $author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$cellSize)));
 };
-var $author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$viewSnake = function (snake) {
+var $author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$viewSnake = function (snake) {
 	return _Utils_ap(
-		A2($elm$core$List$map, $author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$viewSnakeSegment, snake.body),
-		$author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$viewSnakeHead(snake));
+		A2($elm$core$List$map, $author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$viewSnakeSegment, snake.body),
+		$author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$viewSnakeHead(snake));
 };
-var $author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$main = function () {
+var $author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$main = function () {
 	var initialSnake = {
 		body: _List_fromArray(
 			[
 				_Utils_Tuple2(4, 3),
 				_Utils_Tuple2(4, 4)
 			]),
-		direction: $author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$Down,
+		direction: $author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$Down,
 		head: _Utils_Tuple2(4, 2),
-		state: $author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$Normal
+		state: $author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$Normal
 	};
 	var snake = initialSnake;
 	return $MacCASOutreach$graphicsvg$GraphicSVG$App$graphicsApp(
@@ -7938,14 +7938,14 @@ var $author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$main = function () {
 				280,
 				280,
 				_Utils_ap(
-					$author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$viewGrid,
-					$author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$viewSnake(snake)))
+					$author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$viewGrid,
+					$author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$viewSnake(snake)))
 		});
 }();
-_Platform_export({'Lab_C_Soln_Record_Union_Pipe_LetIn':{'init':$author$project$Lab_C_Soln_Record_Union_Pipe_LetIn$main(
+_Platform_export({'Lab_C_2_Soln_Record_Union_Pipe_LetIn':{'init':$author$project$Lab_C_2_Soln_Record_Union_Pipe_LetIn$main(
 	$elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));
 
-  var app = Elm.Lab_C_Soln_Record_Union_Pipe_LetIn.init({ node: document.getElementById("elm") });
+  var app = Elm.Lab_C_2_Soln_Record_Union_Pipe_LetIn.init({ node: document.getElementById("elm") });
 }
 catch (e)
 {
