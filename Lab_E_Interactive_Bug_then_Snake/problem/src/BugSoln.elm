@@ -4,6 +4,10 @@ import GraphicSVG exposing (..)
 import Lib.WkApp as App exposing (KeyState(..), Keys(..))
 
 
+
+------- MODEL -------
+
+
 type alias Model =
     { x : Float, y : Float, direction : Direction }
 
@@ -17,43 +21,83 @@ initialModel =
     { x = 0, y = -4, direction = Right }
 
 
-view model =
+
+------- VIEW -------
+
+
+viewBug ( x, y ) direction =
     let
         body =
             roundedRect 1 0.5 0.2
                 |> filled green
-                |> move ( model.x, model.y )
+                |> move ( x, y )
 
         eye =
             circle 0.05
                 |> filled black
                 |> move
-                    ( model.x
-                        + (case model.direction of
+                    ( x
+                        + (case direction of
                             Right ->
                                 0.35
 
                             Left ->
                                 -0.35
                           )
-                    , model.y + 0.1
+                    , y + 0.1
                     )
+    in
+    group [ body, eye ]
+
+
+view model =
+    let
+        tapSurface =
+            rect 10 8
+                |> filled (rgba 0 0 0 0)
+                |> addOutline (dashed 0.05) lightBlue
+                |> move ( 0, -1 )
+                |> notifyTapAt TapAt
 
         resetButton =
-            circle 0.5 |> filled purple |> notifyTap Reset |> move ( 0, 4 )
+            circle 0.5 |> filled purple |> notifyTap ResetBtnTap |> move ( 0, 4 )
+
+        jumpButton =
+            circle 0.5 |> filled orange |> notifyTap JumpBtnTap |> move ( 2, 4 )
+
+        bug =
+            viewBug ( model.x, model.y ) model.direction
     in
-    collage 10 10 [ graphPaperCustom 1 0.05 lightGrey, body, eye, resetButton ]
+    collage 10
+        10
+        [ graphPaperCustom 1 0.05 lightGrey
+        , bug
+        , resetButton
+        , jumpButton
+        , tapSurface
+        ]
+
+
+
+------- INTERACTION -------
+
+
+type UserRequest
+    = Jump
+    | Go Direction
+    | Reset
+    | None
 
 
 type Msg
     = Tick Float App.GetKeyState
-    | Reset
+    | TapAt ( Float, Float )
+    | ResetBtnTap
+    | JumpBtnTap
 
 
-type UserRequest
-    = Go Direction
-    | Jump
-    | None
+
+------- DECODE keys, mouse, etc. to UserRequest ------
 
 
 decodeKeys : (Keys -> KeyState) -> UserRequest
@@ -61,14 +105,25 @@ decodeKeys keyF =
     if keyF Space == JustDown then
         Jump
 
-    else if keyF LeftArrow == JustDown then
-        Go Left
-
-    else if keyF RightArrow == JustDown then
-        Go Right
-
     else
         None
+
+
+decodeTap : ( Float, Float ) -> Model -> UserRequest
+decodeTap ( tapX, tapY ) model =
+    case ( model.direction, tapX <= model.x ) of
+        ( Right, True ) ->
+            Go Left
+
+        ( Left, False ) ->
+            Go Right
+
+        _ ->
+            None
+
+
+
+------- ACTIONS ON MODEL -------
 
 
 step model =
@@ -88,6 +143,14 @@ go dir model =
     { model | direction = dir }
 
 
+reset model =
+    initialModel
+
+
+
+------- UPDATE -------
+
+
 update msg model =
     let
         { x, y, direction } =
@@ -99,17 +162,25 @@ update msg model =
                 ( Jump, _ ) ->
                     jump model |> step
 
-                ( Go Left, Right ) ->
-                    go Left model
-
-                ( Go Right, Left ) ->
-                    go Right model
-
                 ( _, _ ) ->
                     model |> step
 
-        Reset ->
-            initialModel
+        ResetBtnTap ->
+            reset model
+
+        JumpBtnTap ->
+            jump model |> step
+
+        TapAt ( tapX, tapY ) ->
+            case ( model.direction, tapX <= model.x ) of
+                ( Right, True ) ->
+                    { model | direction = Left }
+
+                ( Left, False ) ->
+                    { model | direction = Right }
+
+                _ ->
+                    model
 
 
 main =
