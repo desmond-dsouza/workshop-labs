@@ -1,7 +1,7 @@
 module Main exposing (..)
 
 import Food
-import GraphicSVG exposing (Shape, blue, centered, collage, filled, move, red, size, text)
+import GraphicSVG exposing (Collage, Shape, blue, centered, collage, filled, move, red, size, text)
 import Grid
 import Lib.WkApp as App exposing (KeyState(..), Keys(..))
 import Snake
@@ -14,10 +14,10 @@ import Types exposing (..)
 
 main =
     App.simpleGameApp
-        (App.Every 400)
+        (App.Every 100)
         Tick
         { init = initialModel
-        , view = \model -> Grid.viewport (view model)
+        , view = view
         , update = update
         , title = "Snake"
         }
@@ -43,13 +43,25 @@ initialModel =
 nextFoodLocation oldLoc =
     let
         loc1 =
-            ( Grid.grid.numColumns // 2 - 1, 0 )
+            ( 6, 0 )
 
         loc2 =
-            ( -(Grid.grid.numColumns // 2 - 1), 0 )
+            ( -6, 0 )
+
+        loc3 =
+            ( 0, 6 )
+
+        loc4 =
+            ( 0, -6 )
     in
     if oldLoc == loc1 then
         loc2
+
+    else if oldLoc == loc2 then
+        loc3
+
+    else if oldLoc == loc3 then
+        loc4
 
     else
         loc1
@@ -59,17 +71,19 @@ nextFoodLocation oldLoc =
 -- VIEW ----------------
 
 
-view : Model -> List (Shape Msg)
+view : Model -> Collage Msg
 view model =
-    Grid.view
-        ++ Food.view model.food
-        ++ Snake.view model.snake
-        ++ (if isGameOver model then
-                viewGameOver
+    Grid.viewport
+        (Grid.view
+            ++ Food.view model.food
+            ++ Snake.view model.snake
+            ++ (if isGameOver model then
+                    viewGameOver
 
-            else
-                []
-           )
+                else
+                    []
+               )
+        )
 
 
 isGameOver : Model -> Bool
@@ -86,8 +100,14 @@ viewGameOver =
 -- UPDATE ----------------
 
 
-userRequest : (Keys -> KeyState) -> UserRequest
-userRequest keyF =
+type UserRequest
+    = NewGame
+    | Turn Direction
+    | None
+
+
+decodeKeys : (Keys -> KeyState) -> UserRequest
+decodeKeys keyF =
     if keyF Space == JustDown then
         NewGame
 
@@ -111,7 +131,7 @@ update : Msg -> Model -> Model
 update msg model =
     case msg of
         Tick time ( keyFunc, sumOfArrows1, sumOfArrows2 ) ->
-            case ( model.snake.state, userRequest keyFunc ) of
+            case ( model.snake.state, decodeKeys keyFunc ) of
                 ( HitSelf, NewGame ) ->
                     initialModel
 

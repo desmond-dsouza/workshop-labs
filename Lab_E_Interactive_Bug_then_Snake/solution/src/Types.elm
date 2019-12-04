@@ -48,12 +48,6 @@ type SnakeState
     | HitWall
 
 
-type UserRequest
-    = NewGame
-    | Turn Direction
-    | None
-
-
 type alias Position =
     ( Int, Int )
 

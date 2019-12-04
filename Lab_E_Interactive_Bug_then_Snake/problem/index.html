@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Main</title>
+  <title>BugSoln</title>
   <style>body { padding: 0; margin: 0; }</style>
 </head>
 
@@ -92,6 +92,87 @@ function A9(fun, a, b, c, d, e, f, g, h, i) {
 }
 
 console.warn('Compiled in DEV mode. Follow the advice at https://elm-lang.org/0.19.1/optimize for better performance and smaller assets.');
+
+
+var _List_Nil_UNUSED = { $: 0 };
+var _List_Nil = { $: '[]' };
+
+function _List_Cons_UNUSED(hd, tl) { return { $: 1, a: hd, b: tl }; }
+function _List_Cons(hd, tl) { return { $: '::', a: hd, b: tl }; }
+
+
+var _List_cons = F2(_List_Cons);
+
+function _List_fromArray(arr)
+{
+	var out = _List_Nil;
+	for (var i = arr.length; i--; )
+	{
+		out = _List_Cons(arr[i], out);
+	}
+	return out;
+}
+
+function _List_toArray(xs)
+{
+	for (var out = []; xs.b; xs = xs.b) // WHILE_CONS
+	{
+		out.push(xs.a);
+	}
+	return out;
+}
+
+var _List_map2 = F3(function(f, xs, ys)
+{
+	for (var arr = []; xs.b && ys.b; xs = xs.b, ys = ys.b) // WHILE_CONSES
+	{
+		arr.push(A2(f, xs.a, ys.a));
+	}
+	return _List_fromArray(arr);
+});
+
+var _List_map3 = F4(function(f, xs, ys, zs)
+{
+	for (var arr = []; xs.b && ys.b && zs.b; xs = xs.b, ys = ys.b, zs = zs.b) // WHILE_CONSES
+	{
+		arr.push(A3(f, xs.a, ys.a, zs.a));
+	}
+	return _List_fromArray(arr);
+});
+
+var _List_map4 = F5(function(f, ws, xs, ys, zs)
+{
+	for (var arr = []; ws.b && xs.b && ys.b && zs.b; ws = ws.b, xs = xs.b, ys = ys.b, zs = zs.b) // WHILE_CONSES
+	{
+		arr.push(A4(f, ws.a, xs.a, ys.a, zs.a));
+	}
+	return _List_fromArray(arr);
+});
+
+var _List_map5 = F6(function(f, vs, ws, xs, ys, zs)
+{
+	for (var arr = []; vs.b && ws.b && xs.b && ys.b && zs.b; vs = vs.b, ws = ws.b, xs = xs.b, ys = ys.b, zs = zs.b) // WHILE_CONSES
+	{
+		arr.push(A5(f, vs.a, ws.a, xs.a, ys.a, zs.a));
+	}
+	return _List_fromArray(arr);
+});
+
+var _List_sortBy = F2(function(f, xs)
+{
+	return _List_fromArray(_List_toArray(xs).sort(function(a, b) {
+		return _Utils_cmp(f(a), f(b));
+	}));
+});
+
+var _List_sortWith = F2(function(f, xs)
+{
+	return _List_fromArray(_List_toArray(xs).sort(function(a, b) {
+		var ord = A2(f, a, b);
+		return ord === $elm$core$Basics$EQ ? 0 : ord === $elm$core$Basics$LT ? -1 : 1;
+	}));
+});
+
 
 
 var _JsArray_empty = [];
@@ -723,87 +804,6 @@ function _Utils_ap(xs, ys)
 	}
 	return root;
 }
-
-
-
-var _List_Nil_UNUSED = { $: 0 };
-var _List_Nil = { $: '[]' };
-
-function _List_Cons_UNUSED(hd, tl) { return { $: 1, a: hd, b: tl }; }
-function _List_Cons(hd, tl) { return { $: '::', a: hd, b: tl }; }
-
-
-var _List_cons = F2(_List_Cons);
-
-function _List_fromArray(arr)
-{
-	var out = _List_Nil;
-	for (var i = arr.length; i--; )
-	{
-		out = _List_Cons(arr[i], out);
-	}
-	return out;
-}
-
-function _List_toArray(xs)
-{
-	for (var out = []; xs.b; xs = xs.b) // WHILE_CONS
-	{
-		out.push(xs.a);
-	}
-	return out;
-}
-
-var _List_map2 = F3(function(f, xs, ys)
-{
-	for (var arr = []; xs.b && ys.b; xs = xs.b, ys = ys.b) // WHILE_CONSES
-	{
-		arr.push(A2(f, xs.a, ys.a));
-	}
-	return _List_fromArray(arr);
-});
-
-var _List_map3 = F4(function(f, xs, ys, zs)
-{
-	for (var arr = []; xs.b && ys.b && zs.b; xs = xs.b, ys = ys.b, zs = zs.b) // WHILE_CONSES
-	{
-		arr.push(A3(f, xs.a, ys.a, zs.a));
-	}
-	return _List_fromArray(arr);
-});
-
-var _List_map4 = F5(function(f, ws, xs, ys, zs)
-{
-	for (var arr = []; ws.b && xs.b && ys.b && zs.b; ws = ws.b, xs = xs.b, ys = ys.b, zs = zs.b) // WHILE_CONSES
-	{
-		arr.push(A4(f, ws.a, xs.a, ys.a, zs.a));
-	}
-	return _List_fromArray(arr);
-});
-
-var _List_map5 = F6(function(f, vs, ws, xs, ys, zs)
-{
-	for (var arr = []; vs.b && ws.b && xs.b && ys.b && zs.b; vs = vs.b, ws = ws.b, xs = xs.b, ys = ys.b, zs = zs.b) // WHILE_CONSES
-	{
-		arr.push(A5(f, vs.a, ws.a, xs.a, ys.a, zs.a));
-	}
-	return _List_fromArray(arr);
-});
-
-var _List_sortBy = F2(function(f, xs)
-{
-	return _List_fromArray(_List_toArray(xs).sort(function(a, b) {
-		return _Utils_cmp(f(a), f(b));
-	}));
-});
-
-var _List_sortWith = F2(function(f, xs)
-{
-	return _List_fromArray(_List_toArray(xs).sort(function(a, b) {
-		var ord = A2(f, a, b);
-		return ord === $elm$core$Basics$EQ ? 0 : ord === $elm$core$Basics$LT ? -1 : 1;
-	}));
-});
 
 
 
@@ -1543,7 +1543,7 @@ function _Json_runArrayDecoder(decoder, value, toElmValue)
 
 function _Json_isArray(value)
 {
-	return Array.isArray(value) || (typeof FileList === 'function' && value instanceof FileList);
+	return Array.isArray(value) || (typeof FileList !== 'undefined' && value instanceof FileList);
 }
 
 function _Json_toElmArray(array)
@@ -4373,10 +4373,17 @@ function _Time_getZoneName()
 var $author$project$Lib$WkApp$Every = function (a) {
 	return {$: 'Every', a: a};
 };
-var $author$project$Types$Tick = F2(
+var $author$project$BugSoln$Tick = F2(
 	function (a, b) {
 		return {$: 'Tick', a: a, b: b};
 	});
+var $author$project$BugSoln$Right = {$: 'Right'};
+var $elm$core$Basics$negate = function (n) {
+	return -n;
+};
+var $author$project$BugSoln$initialModel = {direction: $author$project$BugSoln$Right, x: 0, y: -4};
+var $elm$core$Basics$EQ = {$: 'EQ'};
+var $elm$core$Basics$LT = {$: 'LT'};
 var $elm$core$List$cons = _List_cons;
 var $elm$core$Elm$JsArray$foldr = _JsArray_foldr;
 var $elm$core$Array$foldr = F3(
@@ -4454,36 +4461,7 @@ var $elm$core$Set$toList = function (_v0) {
 	var dict = _v0.a;
 	return $elm$core$Dict$keys(dict);
 };
-var $elm$core$Basics$EQ = {$: 'EQ'};
 var $elm$core$Basics$GT = {$: 'GT'};
-var $elm$core$Basics$LT = {$: 'LT'};
-var $author$project$Types$Normal = {$: 'Normal'};
-var $author$project$Types$Right = {$: 'Right'};
-var $elm$core$Basics$negate = function (n) {
-	return -n;
-};
-var $elm$core$Basics$eq = _Utils_equal;
-var $author$project$Main$nextFoodLocation = function (oldLoc) {
-	var loc4 = _Utils_Tuple2(0, -6);
-	var loc3 = _Utils_Tuple2(0, 6);
-	var loc2 = _Utils_Tuple2(-6, 0);
-	var loc1 = _Utils_Tuple2(6, 0);
-	return _Utils_eq(oldLoc, loc1) ? loc2 : (_Utils_eq(oldLoc, loc2) ? loc3 : (_Utils_eq(oldLoc, loc3) ? loc4 : loc1));
-};
-var $author$project$Main$initialModel = {
-	food: $author$project$Main$nextFoodLocation(
-		_Utils_Tuple2(0, 0)),
-	snake: {
-		body: _List_fromArray(
-			[
-				_Utils_Tuple2(-3, 0),
-				_Utils_Tuple2(-4, 0)
-			]),
-		direction: $author$project$Types$Right,
-		head: _Utils_Tuple2(-2, 0),
-		state: $author$project$Types$Normal
-	}
-};
 var $elm$core$Result$Err = function (a) {
 	return {$: 'Err', a: a};
 };
@@ -4753,6 +4731,7 @@ var $elm$core$Basics$apR = F2(
 	function (x, f) {
 		return f(x);
 	});
+var $elm$core$Basics$eq = _Utils_equal;
 var $elm$core$Basics$floor = _Basics_floor;
 var $elm$core$Elm$JsArray$length = _JsArray_length;
 var $elm$core$Basics$gt = _Utils_gt;
@@ -8788,446 +8767,114 @@ var $author$project$Lib$WkApp$simpleGameApp = F3(
 				}
 			});
 	});
-var $author$project$Types$Down = {$: 'Down'};
-var $author$project$Types$Left = {$: 'Left'};
-var $author$project$Main$NewGame = {$: 'NewGame'};
-var $author$project$Main$None = {$: 'None'};
-var $author$project$Lib$WkApp$Space = {$: 'Space'};
-var $author$project$Main$Turn = function (a) {
-	return {$: 'Turn', a: a};
+var $author$project$BugSoln$Left = {$: 'Left'};
+var $author$project$BugSoln$Go = function (a) {
+	return {$: 'Go', a: a};
 };
-var $author$project$Types$Up = {$: 'Up'};
-var $author$project$Main$decodeKeys = function (keyF) {
+var $author$project$BugSoln$Jump = {$: 'Jump'};
+var $author$project$BugSoln$None = {$: 'None'};
+var $author$project$Lib$WkApp$Space = {$: 'Space'};
+var $author$project$BugSoln$decodeKeys = function (keyF) {
 	return _Utils_eq(
 		keyF($author$project$Lib$WkApp$Space),
-		$author$project$Lib$WkApp$JustDown) ? $author$project$Main$NewGame : (_Utils_eq(
+		$author$project$Lib$WkApp$JustDown) ? $author$project$BugSoln$Jump : (_Utils_eq(
 		keyF($author$project$Lib$WkApp$LeftArrow),
-		$author$project$Lib$WkApp$JustDown) ? $author$project$Main$Turn($author$project$Types$Left) : (_Utils_eq(
-		keyF($author$project$Lib$WkApp$DownArrow),
-		$author$project$Lib$WkApp$JustDown) ? $author$project$Main$Turn($author$project$Types$Down) : (_Utils_eq(
+		$author$project$Lib$WkApp$JustDown) ? $author$project$BugSoln$Go($author$project$BugSoln$Left) : (_Utils_eq(
 		keyF($author$project$Lib$WkApp$RightArrow),
-		$author$project$Lib$WkApp$JustDown) ? $author$project$Main$Turn($author$project$Types$Right) : (_Utils_eq(
-		keyF($author$project$Lib$WkApp$UpArrow),
-		$author$project$Lib$WkApp$JustDown) ? $author$project$Main$Turn($author$project$Types$Up) : $author$project$Main$None))));
+		$author$project$Lib$WkApp$JustDown) ? $author$project$BugSoln$Go($author$project$BugSoln$Right) : $author$project$BugSoln$None));
 };
-var $author$project$Types$Eating = {$: 'Eating'};
-var $author$project$Types$HitSelf = {$: 'HitSelf'};
-var $author$project$Types$HitWall = {$: 'HitWall'};
-var $author$project$Snake$gotFood = F2(
-	function (h, f) {
-		return _Utils_eq(h, f);
-	});
-var $elm$core$List$member = F2(
-	function (x, xs) {
-		return A2(
-			$elm$core$List$any,
-			function (a) {
-				return _Utils_eq(a, x);
-			},
-			xs);
-	});
-var $author$project$Snake$hitSelf = F2(
-	function (head, body) {
-		return A2($elm$core$List$member, head, body);
-	});
-var $author$project$Snake$hitWall = F2(
-	function (_v0, walls) {
-		var i = _v0.a;
-		var j = _v0.b;
-		return (_Utils_cmp(i, walls.left) < 0) || ((_Utils_cmp(i, walls.right) > 0) || ((_Utils_cmp(j, walls.bottom) < 0) || (_Utils_cmp(j, walls.top) > 0)));
-	});
-var $elm$core$List$takeReverse = F3(
-	function (n, list, kept) {
-		takeReverse:
-		while (true) {
-			if (n <= 0) {
-				return kept;
-			} else {
-				if (!list.b) {
-					return kept;
-				} else {
-					var x = list.a;
-					var xs = list.b;
-					var $temp$n = n - 1,
-						$temp$list = xs,
-						$temp$kept = A2($elm$core$List$cons, x, kept);
-					n = $temp$n;
-					list = $temp$list;
-					kept = $temp$kept;
-					continue takeReverse;
-				}
-			}
-		}
-	});
-var $elm$core$List$takeTailRec = F2(
-	function (n, list) {
-		return $elm$core$List$reverse(
-			A3($elm$core$List$takeReverse, n, list, _List_Nil));
-	});
-var $elm$core$List$takeFast = F3(
-	function (ctr, n, list) {
-		if (n <= 0) {
-			return _List_Nil;
-		} else {
-			var _v0 = _Utils_Tuple2(n, list);
-			_v0$1:
-			while (true) {
-				_v0$5:
-				while (true) {
-					if (!_v0.b.b) {
-						return list;
-					} else {
-						if (_v0.b.b.b) {
-							switch (_v0.a) {
-								case 1:
-									break _v0$1;
-								case 2:
-									var _v2 = _v0.b;
-									var x = _v2.a;
-									var _v3 = _v2.b;
-									var y = _v3.a;
-									return _List_fromArray(
-										[x, y]);
-								case 3:
-									if (_v0.b.b.b.b) {
-										var _v4 = _v0.b;
-										var x = _v4.a;
-										var _v5 = _v4.b;
-										var y = _v5.a;
-										var _v6 = _v5.b;
-										var z = _v6.a;
-										return _List_fromArray(
-											[x, y, z]);
-									} else {
-										break _v0$5;
-									}
-								default:
-									if (_v0.b.b.b.b && _v0.b.b.b.b.b) {
-										var _v7 = _v0.b;
-										var x = _v7.a;
-										var _v8 = _v7.b;
-										var y = _v8.a;
-										var _v9 = _v8.b;
-										var z = _v9.a;
-										var _v10 = _v9.b;
-										var w = _v10.a;
-										var tl = _v10.b;
-										return (ctr > 1000) ? A2(
-											$elm$core$List$cons,
-											x,
-											A2(
-												$elm$core$List$cons,
-												y,
-												A2(
-													$elm$core$List$cons,
-													z,
-													A2(
-														$elm$core$List$cons,
-														w,
-														A2($elm$core$List$takeTailRec, n - 4, tl))))) : A2(
-											$elm$core$List$cons,
-											x,
-											A2(
-												$elm$core$List$cons,
-												y,
-												A2(
-													$elm$core$List$cons,
-													z,
-													A2(
-														$elm$core$List$cons,
-														w,
-														A3($elm$core$List$takeFast, ctr + 1, n - 4, tl)))));
-									} else {
-										break _v0$5;
-									}
-							}
-						} else {
-							if (_v0.a === 1) {
-								break _v0$1;
-							} else {
-								break _v0$5;
-							}
-						}
-					}
-				}
-				return list;
-			}
-			var _v1 = _v0.b;
-			var x = _v1.a;
-			return _List_fromArray(
-				[x]);
-		}
-	});
-var $elm$core$List$take = F2(
-	function (n, list) {
-		return A3($elm$core$List$takeFast, 0, n, list);
-	});
-var $author$project$Snake$stepBody = F3(
-	function (currHead, gotFoodNext, currBody) {
-		var removeLast = function (list) {
-			return A2(
-				$elm$core$List$take,
-				$elm$core$List$length(list) - 1,
-				list);
-		};
-		return A2(
-			$elm$core$List$cons,
-			currHead,
-			function () {
-				if (gotFoodNext) {
-					return currBody;
-				} else {
-					return removeLast(currBody);
-				}
-			}());
-	});
-var $author$project$Snake$stepHead = F2(
-	function (_v0, direction) {
-		var i = _v0.a;
-		var j = _v0.b;
-		switch (direction.$) {
-			case 'Up':
-				return _Utils_Tuple2(i, j + 1);
-			case 'Right':
-				return _Utils_Tuple2(i + 1, j);
-			case 'Down':
-				return _Utils_Tuple2(i, j - 1);
-			default:
-				return _Utils_Tuple2(i - 1, j);
-		}
-	});
-var $author$project$Snake$stepSnake = F3(
-	function (food, walls, snake) {
-		var nextHead = A2($author$project$Snake$stepHead, snake.head, snake.direction);
-		var nextGotFood = A2($author$project$Snake$gotFood, nextHead, food);
-		var nextBody = A3($author$project$Snake$stepBody, snake.head, nextGotFood, snake.body);
-		var nextState = A2($author$project$Snake$hitSelf, nextHead, nextBody) ? $author$project$Types$HitSelf : (A2($author$project$Snake$hitWall, nextHead, walls) ? $author$project$Types$HitWall : (nextGotFood ? $author$project$Types$Eating : $author$project$Types$Normal));
-		return _Utils_update(
-			snake,
-			{body: nextBody, head: nextHead, state: nextState});
-	});
-var $author$project$Main$step = F2(
-	function (walls, model) {
-		var newSnake = A3($author$project$Snake$stepSnake, model.food, walls, model.snake);
+var $author$project$BugSoln$go = F2(
+	function (dir, model) {
 		return _Utils_update(
 			model,
-			{
-				food: _Utils_eq(newSnake.state, $author$project$Types$Eating) ? $author$project$Main$nextFoodLocation(model.food) : model.food,
-				snake: newSnake
-			});
+			{direction: dir});
 	});
-var $author$project$Snake$invalidTransitions = _List_fromArray(
-	[
-		_Utils_Tuple2($author$project$Types$Left, $author$project$Types$Right),
-		_Utils_Tuple2($author$project$Types$Right, $author$project$Types$Left),
-		_Utils_Tuple2($author$project$Types$Up, $author$project$Types$Down),
-		_Utils_Tuple2($author$project$Types$Down, $author$project$Types$Up)
-	]);
-var $author$project$Snake$nextDirection = F2(
-	function (oldDir, newDir) {
-		return A2(
-			$elm$core$List$member,
-			_Utils_Tuple2(oldDir, newDir),
-			$author$project$Snake$invalidTransitions) ? oldDir : newDir;
-	});
-var $author$project$Snake$turn = F2(
-	function (newDir, snake) {
+var $author$project$BugSoln$jump = function (model) {
+	return _Utils_update(
+		model,
+		{y: model.y + 0.2});
+};
+var $author$project$BugSoln$step = function (model) {
+	var _v0 = model.direction;
+	if (_v0.$ === 'Left') {
 		return _Utils_update(
-			snake,
-			{
-				direction: A2($author$project$Snake$nextDirection, snake.direction, newDir)
-			});
-	});
-var $author$project$Grid$grid = {cellSize: 20.0, numColumns: 14, numRows: 14};
-var $author$project$Grid$walls = {bottom: ((-$author$project$Grid$grid.numRows) / 2) | 0, left: ((-$author$project$Grid$grid.numColumns) / 2) | 0, right: ($author$project$Grid$grid.numColumns / 2) | 0, top: ($author$project$Grid$grid.numRows / 2) | 0};
-var $author$project$Main$update = F2(
+			model,
+			{x: model.x - 0.2});
+	} else {
+		return _Utils_update(
+			model,
+			{x: model.x + 0.2});
+	}
+};
+var $author$project$BugSoln$update = F2(
 	function (msg, model) {
-		var time = msg.a;
-		var _v1 = msg.b;
-		var keyFunc = _v1.a;
-		var sumOfArrows1 = _v1.b;
-		var sumOfArrows2 = _v1.c;
-		var _v2 = _Utils_Tuple2(
-			model.snake.state,
-			$author$project$Main$decodeKeys(keyFunc));
-		_v2$2:
-		while (true) {
-			_v2$3:
+		var _v0 = model;
+		var x = _v0.x;
+		var y = _v0.y;
+		var direction = _v0.direction;
+		if (msg.$ === 'Tick') {
+			var seconds = msg.a;
+			var _v2 = msg.b;
+			var keyFunction = _v2.a;
+			var _v3 = _Utils_Tuple2(
+				$author$project$BugSoln$decodeKeys(keyFunction),
+				direction);
+			_v3$3:
 			while (true) {
-				switch (_v2.a.$) {
-					case 'HitSelf':
-						switch (_v2.b.$) {
-							case 'NewGame':
-								var _v3 = _v2.a;
-								var _v4 = _v2.b;
-								return $author$project$Main$initialModel;
-							case 'Turn':
-								break _v2$2;
-							default:
-								break _v2$2;
-						}
-					case 'HitWall':
-						switch (_v2.b.$) {
-							case 'NewGame':
-								var _v5 = _v2.a;
-								var _v6 = _v2.b;
-								return $author$project$Main$initialModel;
-							case 'Turn':
-								break _v2$3;
-							default:
-								break _v2$3;
+				switch (_v3.a.$) {
+					case 'Jump':
+						var _v4 = _v3.a;
+						return $author$project$BugSoln$step(
+							$author$project$BugSoln$jump(model));
+					case 'Go':
+						if (_v3.a.a.$ === 'Left') {
+							if (_v3.b.$ === 'Right') {
+								var _v5 = _v3.a.a;
+								var _v6 = _v3.b;
+								return A2($author$project$BugSoln$go, $author$project$BugSoln$Left, model);
+							} else {
+								break _v3$3;
+							}
+						} else {
+							if (_v3.b.$ === 'Left') {
+								var _v7 = _v3.a.a;
+								var _v8 = _v3.b;
+								return A2($author$project$BugSoln$go, $author$project$BugSoln$Right, model);
+							} else {
+								break _v3$3;
+							}
 						}
 					default:
-						if (_v2.b.$ === 'Turn') {
-							var direction = _v2.b.a;
-							var snake = model.snake;
-							return A2(
-								$author$project$Main$step,
-								$author$project$Grid$walls,
-								_Utils_update(
-									model,
-									{
-										snake: A2($author$project$Snake$turn, direction, snake)
-									}));
-						} else {
-							return A2($author$project$Main$step, $author$project$Grid$walls, model);
-						}
+						break _v3$3;
 				}
 			}
-			var _v8 = _v2.a;
-			return model;
+			return $author$project$BugSoln$step(model);
+		} else {
+			return $author$project$BugSoln$initialModel;
 		}
-		var _v7 = _v2.a;
-		return model;
 	});
-var $author$project$Main$isGameOver = function (g) {
-	return _Utils_eq(g.snake.state, $author$project$Types$HitSelf) || _Utils_eq(g.snake.state, $author$project$Types$HitWall);
-};
-var $MacCASOutreach$graphicsvg$GraphicSVG$darkGreen = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 78, 154, 6, 1);
-var $MacCASOutreach$graphicsvg$GraphicSVG$darkRed = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 164, 0, 0, 1);
-var $MacCASOutreach$graphicsvg$GraphicSVG$Path = function (a) {
-	return {$: 'Path', a: a};
-};
-var $MacCASOutreach$graphicsvg$GraphicSVG$line = F2(
-	function (p1, p2) {
-		return $MacCASOutreach$graphicsvg$GraphicSVG$Path(
-			_List_fromArray(
-				[p1, p2]));
-	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$outlined = F3(
-	function (style, outlineClr, stencil) {
-		var lineStyle = function () {
-			if (style.$ === 'NoLine') {
-				return $elm$core$Maybe$Nothing;
-			} else {
-				return $elm$core$Maybe$Just(
-					_Utils_Tuple2(style, outlineClr));
-			}
-		}();
-		return A3($MacCASOutreach$graphicsvg$GraphicSVG$Inked, $elm$core$Maybe$Nothing, lineStyle, stencil);
-	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$Oval = F2(
-	function (a, b) {
-		return {$: 'Oval', a: a, b: b};
-	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$oval = F2(
-	function (w, h) {
-		return A2($MacCASOutreach$graphicsvg$GraphicSVG$Oval, w, h);
-	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$Solid = function (a) {
-	return {$: 'Solid', a: a};
-};
-var $MacCASOutreach$graphicsvg$GraphicSVG$solid = function (th) {
-	return $MacCASOutreach$graphicsvg$GraphicSVG$Solid(th);
-};
-var $author$project$Food$apple = function (size) {
-	return $MacCASOutreach$graphicsvg$GraphicSVG$group(
-		_List_fromArray(
-			[
-				A3(
-				$MacCASOutreach$graphicsvg$GraphicSVG$outlined,
-				$MacCASOutreach$graphicsvg$GraphicSVG$solid(size * 0.1),
-				$MacCASOutreach$graphicsvg$GraphicSVG$darkGreen,
-				A2(
-					$MacCASOutreach$graphicsvg$GraphicSVG$line,
-					_Utils_Tuple2((-0.1) * size, 0.2 * size),
-					_Utils_Tuple2(0.2 * size, 0.8 * size))),
-				A2(
-				$MacCASOutreach$graphicsvg$GraphicSVG$move,
-				_Utils_Tuple2((-size) * 0.2, 0),
-				A2(
-					$MacCASOutreach$graphicsvg$GraphicSVG$filled,
-					$MacCASOutreach$graphicsvg$GraphicSVG$darkRed,
-					A2($MacCASOutreach$graphicsvg$GraphicSVG$oval, size * 0.6, size))),
-				A2(
-				$MacCASOutreach$graphicsvg$GraphicSVG$move,
-				_Utils_Tuple2(size * 0.2, 0),
-				A2(
-					$MacCASOutreach$graphicsvg$GraphicSVG$filled,
-					$MacCASOutreach$graphicsvg$GraphicSVG$darkRed,
-					A2($MacCASOutreach$graphicsvg$GraphicSVG$oval, size * 0.6, size)))
-			]));
-};
-var $author$project$Grid$toGrid = function (i) {
-	return $author$project$Grid$grid.cellSize * i;
-};
-var $author$project$Food$view = function (_v0) {
-	var i = _v0.a;
-	var j = _v0.b;
-	return _List_fromArray(
-		[
-			A2(
-			$MacCASOutreach$graphicsvg$GraphicSVG$move,
-			_Utils_Tuple2(
-				$author$project$Grid$toGrid(i),
-				$author$project$Grid$toGrid(j)),
-			$author$project$Food$apple(
-				$author$project$Grid$toGrid(1)))
-		]);
-};
+var $author$project$BugSoln$Reset = {$: 'Reset'};
 var $MacCASOutreach$graphicsvg$GraphicSVG$Circle = function (a) {
 	return {$: 'Circle', a: a};
 };
 var $MacCASOutreach$graphicsvg$GraphicSVG$circle = function (r) {
 	return $MacCASOutreach$graphicsvg$GraphicSVG$Circle(r);
 };
-var $MacCASOutreach$graphicsvg$GraphicSVG$darkGrey = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 186, 189, 182, 1);
+var $MacCASOutreach$graphicsvg$GraphicSVG$collage = F3(
+	function (w, h, shapes) {
+		return A3($MacCASOutreach$graphicsvg$GraphicSVG$Collage, w, h, shapes);
+	});
 var $MacCASOutreach$graphicsvg$GraphicSVG$graphPaperCustom = F3(
 	function (s, th, c) {
 		return A3($MacCASOutreach$graphicsvg$GraphicSVG$GraphPaper, s, th, c);
 	});
+var $MacCASOutreach$graphicsvg$GraphicSVG$green = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 115, 210, 22, 1);
 var $MacCASOutreach$graphicsvg$GraphicSVG$lightGrey = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 238, 238, 236, 1);
-var $author$project$Grid$view = _List_fromArray(
-	[
-		A3($MacCASOutreach$graphicsvg$GraphicSVG$graphPaperCustom, $author$project$Grid$grid.cellSize, 0.5, $MacCASOutreach$graphicsvg$GraphicSVG$lightGrey),
-		A2(
-		$MacCASOutreach$graphicsvg$GraphicSVG$filled,
-		$MacCASOutreach$graphicsvg$GraphicSVG$black,
-		$MacCASOutreach$graphicsvg$GraphicSVG$circle(0.05 * $author$project$Grid$grid.cellSize)),
-		A3(
-		$MacCASOutreach$graphicsvg$GraphicSVG$outlined,
-		$MacCASOutreach$graphicsvg$GraphicSVG$solid(3),
-		$MacCASOutreach$graphicsvg$GraphicSVG$darkGrey,
-		A2(
-			$MacCASOutreach$graphicsvg$GraphicSVG$rect,
-			$author$project$Grid$toGrid($author$project$Grid$grid.numColumns + 1),
-			$author$project$Grid$toGrid($author$project$Grid$grid.numRows + 1)))
-	]);
-var $MacCASOutreach$graphicsvg$GraphicSVG$brown = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 193, 125, 17, 1);
-var $elm$core$Basics$pi = _Basics_pi;
-var $elm$core$Basics$degrees = function (angleInDegrees) {
-	return (angleInDegrees * $elm$core$Basics$pi) / 180;
-};
-var $author$project$Grid$fracToGrid = function (f) {
-	return $author$project$Grid$grid.cellSize * f;
-};
-var $MacCASOutreach$graphicsvg$GraphicSVG$pink = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 255, 105, 180, 1);
-var $MacCASOutreach$graphicsvg$GraphicSVG$purple = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 117, 80, 123, 1);
-var $MacCASOutreach$graphicsvg$GraphicSVG$red = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 204, 0, 0, 1);
-var $MacCASOutreach$graphicsvg$GraphicSVG$rotate = F2(
-	function (theta, shape) {
-		return A2($MacCASOutreach$graphicsvg$GraphicSVG$Rotate, theta, shape);
+var $MacCASOutreach$graphicsvg$GraphicSVG$notifyTap = F2(
+	function (msg, shape) {
+		return A2($MacCASOutreach$graphicsvg$GraphicSVG$Tap, msg, shape);
 	});
+var $MacCASOutreach$graphicsvg$GraphicSVG$purple = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 117, 80, 123, 1);
 var $MacCASOutreach$graphicsvg$GraphicSVG$RoundRect = F3(
 	function (a, b, c) {
 		return {$: 'RoundRect', a: a, b: b, c: c};
@@ -9236,203 +8883,61 @@ var $MacCASOutreach$graphicsvg$GraphicSVG$roundedRect = F3(
 	function (w, h, r) {
 		return A3($MacCASOutreach$graphicsvg$GraphicSVG$RoundRect, w, h, r);
 	});
-var $author$project$Snake$viewSnakeHead = function (snake) {
-	var eyeRotation = $elm$core$Basics$degrees(
-		function () {
-			var _v3 = snake.direction;
-			switch (_v3.$) {
-				case 'Right':
-					return 0;
-				case 'Up':
-					return 90;
-				case 'Left':
-					return 180;
-				default:
-					return 270;
-			}
-		}());
-	var eyeRadius = $author$project$Grid$fracToGrid(0.15);
-	var _v0 = snake.head;
-	var i = _v0.a;
-	var j = _v0.b;
-	var _v1 = _Utils_Tuple2(
-		$author$project$Grid$toGrid(i),
-		$author$project$Grid$toGrid(j));
-	var headX0 = _v1.a;
-	var headY0 = _v1.b;
-	var eyeLeft = A2(
+var $author$project$BugSoln$view = function (model) {
+	var resetButton = A2(
 		$MacCASOutreach$graphicsvg$GraphicSVG$move,
-		_Utils_Tuple2(headX0, headY0),
+		_Utils_Tuple2(0, 4),
 		A2(
-			$MacCASOutreach$graphicsvg$GraphicSVG$rotate,
-			eyeRotation,
+			$MacCASOutreach$graphicsvg$GraphicSVG$notifyTap,
+			$author$project$BugSoln$Reset,
 			A2(
-				$MacCASOutreach$graphicsvg$GraphicSVG$move,
-				_Utils_Tuple2(
-					$author$project$Grid$fracToGrid(0.25),
-					$author$project$Grid$fracToGrid(0.25)),
-				A2(
-					$MacCASOutreach$graphicsvg$GraphicSVG$filled,
-					$MacCASOutreach$graphicsvg$GraphicSVG$black,
-					$MacCASOutreach$graphicsvg$GraphicSVG$circle(eyeRadius)))));
-	var eyeRight = A2(
-		$MacCASOutreach$graphicsvg$GraphicSVG$move,
-		_Utils_Tuple2(headX0, headY0),
-		A2(
-			$MacCASOutreach$graphicsvg$GraphicSVG$rotate,
-			eyeRotation,
-			A2(
-				$MacCASOutreach$graphicsvg$GraphicSVG$move,
-				_Utils_Tuple2(
-					$author$project$Grid$fracToGrid(0.25),
-					$author$project$Grid$fracToGrid(-0.25)),
-				A2(
-					$MacCASOutreach$graphicsvg$GraphicSVG$filled,
-					$MacCASOutreach$graphicsvg$GraphicSVG$black,
-					$MacCASOutreach$graphicsvg$GraphicSVG$circle(eyeRadius)))));
-	var head = A2(
-		$MacCASOutreach$graphicsvg$GraphicSVG$move,
-		_Utils_Tuple2(headX0, headY0),
-		A2(
-			$MacCASOutreach$graphicsvg$GraphicSVG$filled,
-			function () {
-				var _v2 = snake.state;
-				switch (_v2.$) {
-					case 'Normal':
-						return $MacCASOutreach$graphicsvg$GraphicSVG$brown;
-					case 'Eating':
-						return $MacCASOutreach$graphicsvg$GraphicSVG$pink;
-					case 'HitSelf':
-						return $MacCASOutreach$graphicsvg$GraphicSVG$red;
-					default:
-						return $MacCASOutreach$graphicsvg$GraphicSVG$purple;
-				}
-			}(),
-			A3(
-				$MacCASOutreach$graphicsvg$GraphicSVG$roundedRect,
-				$author$project$Grid$toGrid(1),
-				$author$project$Grid$toGrid(1),
-				$author$project$Grid$fracToGrid(0.25))));
-	return _List_fromArray(
-		[head, eyeLeft, eyeRight]);
-};
-var $author$project$Snake$viewSnakeSegment = function (_v0) {
-	var posX = _v0.a;
-	var posY = _v0.b;
-	return A2(
+				$MacCASOutreach$graphicsvg$GraphicSVG$filled,
+				$MacCASOutreach$graphicsvg$GraphicSVG$purple,
+				$MacCASOutreach$graphicsvg$GraphicSVG$circle(0.5))));
+	var eye = A2(
 		$MacCASOutreach$graphicsvg$GraphicSVG$move,
 		_Utils_Tuple2(
-			$author$project$Grid$toGrid(posX),
-			$author$project$Grid$toGrid(posY)),
+			model.x + function () {
+				var _v0 = model.direction;
+				if (_v0.$ === 'Right') {
+					return 0.35;
+				} else {
+					return -0.35;
+				}
+			}(),
+			model.y + 0.1),
 		A2(
 			$MacCASOutreach$graphicsvg$GraphicSVG$filled,
 			$MacCASOutreach$graphicsvg$GraphicSVG$black,
-			$MacCASOutreach$graphicsvg$GraphicSVG$circle(
-				$author$project$Grid$fracToGrid(0.5))));
-};
-var $author$project$Snake$view = function (snake) {
-	return _Utils_ap(
-		A2($elm$core$List$map, $author$project$Snake$viewSnakeSegment, snake.body),
-		$author$project$Snake$viewSnakeHead(snake));
-};
-var $MacCASOutreach$graphicsvg$GraphicSVG$AlignCentred = {$: 'AlignCentred'};
-var $MacCASOutreach$graphicsvg$GraphicSVG$Face = F8(
-	function (a, b, c, d, e, f, g, h) {
-		return {$: 'Face', a: a, b: b, c: c, d: d, e: e, f: f, g: g, h: h};
-	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$Text = F2(
-	function (a, b) {
-		return {$: 'Text', a: a, b: b};
-	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$centered = function (stencil) {
-	if (stencil.$ === 'Text') {
-		var _v1 = stencil.a;
-		var si = _v1.a;
-		var bo = _v1.b;
-		var i = _v1.c;
-		var u = _v1.d;
-		var s = _v1.e;
-		var sel = _v1.f;
-		var f = _v1.g;
-		var c = _v1.h;
-		var str = stencil.b;
-		return A2(
-			$MacCASOutreach$graphicsvg$GraphicSVG$Text,
-			A8($MacCASOutreach$graphicsvg$GraphicSVG$Face, si, bo, i, u, s, sel, f, $MacCASOutreach$graphicsvg$GraphicSVG$AlignCentred),
-			str);
-	} else {
-		var a = stencil;
-		return a;
-	}
-};
-var $MacCASOutreach$graphicsvg$GraphicSVG$size = F2(
-	function (sze, stencil) {
-		if (stencil.$ === 'Text') {
-			var _v1 = stencil.a;
-			var si = _v1.a;
-			var bo = _v1.b;
-			var i = _v1.c;
-			var u = _v1.d;
-			var s = _v1.e;
-			var sel = _v1.f;
-			var f = _v1.g;
-			var c = _v1.h;
-			var str = stencil.b;
-			return A2(
-				$MacCASOutreach$graphicsvg$GraphicSVG$Text,
-				A8($MacCASOutreach$graphicsvg$GraphicSVG$Face, sze, bo, i, u, s, sel, f, c),
-				str);
-		} else {
-			var a = stencil;
-			return a;
-		}
-	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$AlignLeft = {$: 'AlignLeft'};
-var $MacCASOutreach$graphicsvg$GraphicSVG$Serif = {$: 'Serif'};
-var $MacCASOutreach$graphicsvg$GraphicSVG$text = function (str) {
-	return A2(
-		$MacCASOutreach$graphicsvg$GraphicSVG$Text,
-		A8($MacCASOutreach$graphicsvg$GraphicSVG$Face, 12, false, false, false, false, false, $MacCASOutreach$graphicsvg$GraphicSVG$Serif, $MacCASOutreach$graphicsvg$GraphicSVG$AlignLeft),
-		str);
-};
-var $author$project$Main$viewGameOver = _List_fromArray(
-	[
+			$MacCASOutreach$graphicsvg$GraphicSVG$circle(0.05)));
+	var body = A2(
+		$MacCASOutreach$graphicsvg$GraphicSVG$move,
+		_Utils_Tuple2(model.x, model.y),
 		A2(
-		$MacCASOutreach$graphicsvg$GraphicSVG$filled,
-		$MacCASOutreach$graphicsvg$GraphicSVG$red,
-		$MacCASOutreach$graphicsvg$GraphicSVG$centered(
-			A2(
-				$MacCASOutreach$graphicsvg$GraphicSVG$size,
-				$author$project$Grid$fracToGrid(1.5),
-				$MacCASOutreach$graphicsvg$GraphicSVG$text('GAME OVER'))))
-	]);
-var $MacCASOutreach$graphicsvg$GraphicSVG$collage = F3(
-	function (w, h, shapes) {
-		return A3($MacCASOutreach$graphicsvg$GraphicSVG$Collage, w, h, shapes);
-	});
-var $author$project$Grid$viewport = A2(
-	$MacCASOutreach$graphicsvg$GraphicSVG$collage,
-	$author$project$Grid$toGrid($author$project$Grid$grid.numColumns + 4),
-	$author$project$Grid$toGrid($author$project$Grid$grid.numRows + 4));
-var $author$project$Main$view = function (model) {
-	return $author$project$Grid$viewport(
-		_Utils_ap(
-			$author$project$Grid$view,
-			_Utils_ap(
-				$author$project$Food$view(model.food),
-				_Utils_ap(
-					$author$project$Snake$view(model.snake),
-					$author$project$Main$isGameOver(model) ? $author$project$Main$viewGameOver : _List_Nil))));
+			$MacCASOutreach$graphicsvg$GraphicSVG$filled,
+			$MacCASOutreach$graphicsvg$GraphicSVG$green,
+			A3($MacCASOutreach$graphicsvg$GraphicSVG$roundedRect, 1, 0.5, 0.2)));
+	return A3(
+		$MacCASOutreach$graphicsvg$GraphicSVG$collage,
+		10,
+		10,
+		_List_fromArray(
+			[
+				A3($MacCASOutreach$graphicsvg$GraphicSVG$graphPaperCustom, 1, 0.05, $MacCASOutreach$graphicsvg$GraphicSVG$lightGrey),
+				body,
+				eye,
+				resetButton
+			]));
 };
-var $author$project$Main$main = A3(
+var $author$project$BugSoln$main = A3(
 	$author$project$Lib$WkApp$simpleGameApp,
-	$author$project$Lib$WkApp$Every(100),
-	$author$project$Types$Tick,
-	{init: $author$project$Main$initialModel, title: 'Snake', update: $author$project$Main$update, view: $author$project$Main$view});
-_Platform_export({'Main':{'init':$author$project$Main$main(
+	$author$project$Lib$WkApp$Every(300),
+	$author$project$BugSoln$Tick,
+	{init: $author$project$BugSoln$initialModel, title: 'Game!', update: $author$project$BugSoln$update, view: $author$project$BugSoln$view});
+_Platform_export({'BugSoln':{'init':$author$project$BugSoln$main(
 	$elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));
 
-  var app = Elm.Main.init({ node: document.getElementById("elm") });
+  var app = Elm.BugSoln.init({ node: document.getElementById("elm") });
 }
 catch (e)
 {

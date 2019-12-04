@@ -4404,7 +4404,6 @@ var $elm$core$Set$toList = function (_v0) {
 	return $elm$core$Dict$keys(dict);
 };
 var $elm$core$Basics$GT = {$: 'GT'};
-var $elm$core$Basics$append = _Utils_append;
 var $MacCASOutreach$graphicsvg$GraphicSVG$App$URLChanged = function (a) {
 	return {$: 'URLChanged', a: a};
 };
@@ -4450,6 +4449,7 @@ var $elm$core$Maybe$Just = function (a) {
 var $elm$core$Maybe$Nothing = {$: 'Nothing'};
 var $elm$core$String$all = _String_all;
 var $elm$core$Basics$and = _Basics_and;
+var $elm$core$Basics$append = _Utils_append;
 var $elm$json$Json$Encode$encode = _Json_encode;
 var $elm$core$String$fromInt = _String_fromNumber;
 var $elm$core$String$join = F2(
@@ -7852,55 +7852,6 @@ var $author$project$Main$initialModel = {
 		state: $author$project$Types$Normal
 	}
 };
-var $MacCASOutreach$graphicsvg$GraphicSVG$Circle = function (a) {
-	return {$: 'Circle', a: a};
-};
-var $MacCASOutreach$graphicsvg$GraphicSVG$circle = function (r) {
-	return $MacCASOutreach$graphicsvg$GraphicSVG$Circle(r);
-};
-var $MacCASOutreach$graphicsvg$GraphicSVG$darkGrey = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 186, 189, 182, 1);
-var $MacCASOutreach$graphicsvg$GraphicSVG$graphPaperCustom = F3(
-	function (s, th, c) {
-		return A3($MacCASOutreach$graphicsvg$GraphicSVG$GraphPaper, s, th, c);
-	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$lightGrey = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 238, 238, 236, 1);
-var $MacCASOutreach$graphicsvg$GraphicSVG$outlined = F3(
-	function (style, outlineClr, stencil) {
-		var lineStyle = function () {
-			if (style.$ === 'NoLine') {
-				return $elm$core$Maybe$Nothing;
-			} else {
-				return $elm$core$Maybe$Just(
-					_Utils_Tuple2(style, outlineClr));
-			}
-		}();
-		return A3($MacCASOutreach$graphicsvg$GraphicSVG$Inked, $elm$core$Maybe$Nothing, lineStyle, stencil);
-	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$Solid = function (a) {
-	return {$: 'Solid', a: a};
-};
-var $MacCASOutreach$graphicsvg$GraphicSVG$solid = function (th) {
-	return $MacCASOutreach$graphicsvg$GraphicSVG$Solid(th);
-};
-var $author$project$Grid$toGrid = function (i) {
-	return $author$project$Grid$grid.cellSize * i;
-};
-var $author$project$Grid$view = _List_fromArray(
-	[
-		A3($MacCASOutreach$graphicsvg$GraphicSVG$graphPaperCustom, $author$project$Grid$grid.cellSize, 0.5, $MacCASOutreach$graphicsvg$GraphicSVG$lightGrey),
-		A2(
-		$MacCASOutreach$graphicsvg$GraphicSVG$filled,
-		$MacCASOutreach$graphicsvg$GraphicSVG$black,
-		$MacCASOutreach$graphicsvg$GraphicSVG$circle(0.05 * $author$project$Grid$grid.cellSize)),
-		A3(
-		$MacCASOutreach$graphicsvg$GraphicSVG$outlined,
-		$MacCASOutreach$graphicsvg$GraphicSVG$solid(3),
-		$MacCASOutreach$graphicsvg$GraphicSVG$darkGrey,
-		A2(
-			$MacCASOutreach$graphicsvg$GraphicSVG$rect,
-			$author$project$Grid$toGrid($author$project$Grid$grid.numColumns + 1),
-			$author$project$Grid$toGrid($author$project$Grid$grid.numRows + 1)))
-	]);
 var $author$project$Types$HitSelf = {$: 'HitSelf'};
 var $author$project$Types$HitWall = {$: 'HitWall'};
 var $author$project$Main$isGameOver = function (g) {
@@ -7917,6 +7868,18 @@ var $MacCASOutreach$graphicsvg$GraphicSVG$line = F2(
 			_List_fromArray(
 				[p1, p2]));
 	});
+var $MacCASOutreach$graphicsvg$GraphicSVG$outlined = F3(
+	function (style, outlineClr, stencil) {
+		var lineStyle = function () {
+			if (style.$ === 'NoLine') {
+				return $elm$core$Maybe$Nothing;
+			} else {
+				return $elm$core$Maybe$Just(
+					_Utils_Tuple2(style, outlineClr));
+			}
+		}();
+		return A3($MacCASOutreach$graphicsvg$GraphicSVG$Inked, $elm$core$Maybe$Nothing, lineStyle, stencil);
+	});
 var $MacCASOutreach$graphicsvg$GraphicSVG$Oval = F2(
 	function (a, b) {
 		return {$: 'Oval', a: a, b: b};
@@ -7925,6 +7888,12 @@ var $MacCASOutreach$graphicsvg$GraphicSVG$oval = F2(
 	function (w, h) {
 		return A2($MacCASOutreach$graphicsvg$GraphicSVG$Oval, w, h);
 	});
+var $MacCASOutreach$graphicsvg$GraphicSVG$Solid = function (a) {
+	return {$: 'Solid', a: a};
+};
+var $MacCASOutreach$graphicsvg$GraphicSVG$solid = function (th) {
+	return $MacCASOutreach$graphicsvg$GraphicSVG$Solid(th);
+};
 var $author$project$Food$apple = function (size) {
 	return $MacCASOutreach$graphicsvg$GraphicSVG$group(
 		_List_fromArray(
@@ -7953,6 +7922,9 @@ var $author$project$Food$apple = function (size) {
 					A2($MacCASOutreach$graphicsvg$GraphicSVG$oval, size * 0.6, size)))
 			]));
 };
+var $author$project$Grid$toGrid = function (i) {
+	return $author$project$Grid$grid.cellSize * i;
+};
 var $author$project$Food$view = function (_v0) {
 	var i = _v0.a;
 	var j = _v0.b;
@@ -7967,6 +7939,34 @@ var $author$project$Food$view = function (_v0) {
 				$author$project$Grid$toGrid(1)))
 		]);
 };
+var $MacCASOutreach$graphicsvg$GraphicSVG$Circle = function (a) {
+	return {$: 'Circle', a: a};
+};
+var $MacCASOutreach$graphicsvg$GraphicSVG$circle = function (r) {
+	return $MacCASOutreach$graphicsvg$GraphicSVG$Circle(r);
+};
+var $MacCASOutreach$graphicsvg$GraphicSVG$darkGrey = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 186, 189, 182, 1);
+var $MacCASOutreach$graphicsvg$GraphicSVG$graphPaperCustom = F3(
+	function (s, th, c) {
+		return A3($MacCASOutreach$graphicsvg$GraphicSVG$GraphPaper, s, th, c);
+	});
+var $MacCASOutreach$graphicsvg$GraphicSVG$lightGrey = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 238, 238, 236, 1);
+var $author$project$Grid$view = _List_fromArray(
+	[
+		A3($MacCASOutreach$graphicsvg$GraphicSVG$graphPaperCustom, $author$project$Grid$grid.cellSize, 0.5, $MacCASOutreach$graphicsvg$GraphicSVG$lightGrey),
+		A2(
+		$MacCASOutreach$graphicsvg$GraphicSVG$filled,
+		$MacCASOutreach$graphicsvg$GraphicSVG$black,
+		$MacCASOutreach$graphicsvg$GraphicSVG$circle(0.05 * $author$project$Grid$grid.cellSize)),
+		A3(
+		$MacCASOutreach$graphicsvg$GraphicSVG$outlined,
+		$MacCASOutreach$graphicsvg$GraphicSVG$solid(3),
+		$MacCASOutreach$graphicsvg$GraphicSVG$darkGrey,
+		A2(
+			$MacCASOutreach$graphicsvg$GraphicSVG$rect,
+			$author$project$Grid$toGrid($author$project$Grid$grid.numColumns + 1),
+			$author$project$Grid$toGrid($author$project$Grid$grid.numRows + 1)))
+	]);
 var $MacCASOutreach$graphicsvg$GraphicSVG$brown = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 193, 125, 17, 1);
 var $elm$core$Basics$pi = _Basics_pi;
 var $elm$core$Basics$degrees = function (angleInDegrees) {
@@ -8180,9 +8180,7 @@ var $author$project$Grid$viewport = A2(
 var $author$project$Main$main = $MacCASOutreach$graphicsvg$GraphicSVG$App$graphicsApp(
 	{
 		view: $author$project$Grid$viewport(
-			_Utils_ap(
-				$author$project$Grid$view,
-				$author$project$Main$view($author$project$Main$initialModel)))
+			$author$project$Main$view($author$project$Main$initialModel))
 	});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));

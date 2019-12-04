@@ -14,7 +14,7 @@ type Direction
 
 
 initialModel =
-    { x = 4, y = 2, direction = Left }
+    { x = 0, y = -4, direction = Right }
 
 
 view model =
@@ -38,12 +38,16 @@ view model =
                           )
                     , model.y + 0.1
                     )
+
+        resetButton =
+            circle 0.5 |> filled purple |> notifyTap Reset |> move ( 0, 4 )
     in
-    collage 10 10 [ body, eye ]
+    collage 10 10 [ graphPaperCustom 1 0.05 lightGrey, body, eye, resetButton ]
 
 
 type Msg
     = Tick Float App.GetKeyState
+    | Reset
 
 
 type UserRequest
@@ -52,8 +56,8 @@ type UserRequest
     | None
 
 
-userRequest : (Keys -> KeyState) -> UserRequest
-userRequest keyF =
+decodeKeys : (Keys -> KeyState) -> UserRequest
+decodeKeys keyF =
     if keyF Space == JustDown then
         Jump
 
@@ -91,7 +95,7 @@ update msg model =
     in
     case msg of
         Tick seconds ( keyFunction, _, _ ) ->
-            case ( userRequest keyFunction, direction ) of
+            case ( decodeKeys keyFunction, direction ) of
                 ( Jump, _ ) ->
                     jump model |> step
 
@@ -103,6 +107,9 @@ update msg model =
 
                 ( _, _ ) ->
                     model |> step
+
+        Reset ->
+            initialModel
 
 
 main =

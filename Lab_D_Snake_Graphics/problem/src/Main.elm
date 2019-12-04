@@ -16,7 +16,7 @@ main =
     graphicsApp
         { view =
             Grid.viewport
-                (Grid.view ++ view initialModel)
+                (view initialModel)
         }
 
 
