@@ -1,20 +1,31 @@
 module BugSoln exposing (..)
 
+-- 👉 TODO: Make proper Elm module
+
 import GraphicSVG exposing (..)
 import Lib.WkApp as App exposing (KeyState(..), Keys(..))
 
 
+
+------- MODEL -------
+
+
 type alias Model =
-    { x : Float, y : Float, direction : Direction }
+    -- 👉 TODO: Fill this out
+    ()
 
 
-type Direction
-    = Left
-    | Right
+type alias Direction =
+    -- 👉 TODO: Fill this out
+    ()
 
 
 initialModel =
-    { x = 0, y = -4, direction = Right }
+    { x = 0, y = -4, direction = Left }
+
+
+
+------- VIEW -------
 
 
 view model =
@@ -22,20 +33,14 @@ view model =
         body =
             roundedRect 1 0.5 0.2
                 |> filled green
+                -- 👉 TODO: Try different colors Left vs. Right
                 |> move ( model.x, model.y )
 
         eye =
             circle 0.05
                 |> filled black
                 |> move
-                    ( model.x
-                        + (case model.direction of
-                            Right ->
-                                0.35
-
-                            Left ->
-                                -0.35
-                          )
+                    ( model.x + 0.35 {- 👉 TODO: This should depend on bug direction -}
                     , model.y + 0.1
                     )
 
@@ -45,30 +50,8 @@ view model =
     collage 10 10 [ graphPaperCustom 1 0.05 lightGrey, body, eye, resetButton ]
 
 
-type Msg
-    = Tick Float App.GetKeyState
-    | Reset
 
-
-type UserRequest
-    = Go Direction
-    | Jump
-    | None
-
-
-decodeKeys : (Keys -> KeyState) -> UserRequest
-decodeKeys keyF =
-    if keyF Space == JustDown then
-        Jump
-
-    else if keyF LeftArrow == JustDown then
-        Go Left
-
-    else if keyF RightArrow == JustDown then
-        Go Right
-
-    else
-        None
+------- ACTIONS ON MODEL -------
 
 
 step model =
@@ -88,36 +71,5 @@ go dir model =
     { model | direction = dir }
 
 
-update msg model =
-    let
-        { x, y, direction } =
-            model
-    in
-    case msg of
-        Tick seconds ( keyFunction, _, _ ) ->
-            case ( decodeKeys keyFunction, direction ) of
-                ( Jump, _ ) ->
-                    jump model |> step
-
-                ( Go Left, Right ) ->
-                    go Left model
-
-                ( Go Right, Left ) ->
-                    go Right model
-
-                ( _, _ ) ->
-                    model |> step
-
-        Reset ->
-            initialModel
-
-
 main =
-    App.simpleGameApp
-        (App.Every 300)
-        Tick
-        { title = "Game!"
-        , view = view
-        , update = update
-        , init = initialModel
-        }
+    graphicsApp { view = collage 10 10 (view initialModel) }

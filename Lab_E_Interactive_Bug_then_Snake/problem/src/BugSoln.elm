@@ -57,7 +57,7 @@ view model =
                 |> filled (rgba 0 0 0 0)
                 |> addOutline (dashed 0.05) lightBlue
                 |> move ( 0, -1 )
-                |> notifyTapAt TapAt
+                |> notifyTapAt BoardTapAt
 
         resetButton =
             circle 0.5 |> filled purple |> notifyTap ResetBtnTap |> move ( 0, 4 )
@@ -91,18 +91,18 @@ type UserRequest
 
 type Msg
     = Tick Float App.GetKeyState
-    | TapAt ( Float, Float )
+    | BoardTapAt ( Float, Float )
     | ResetBtnTap
     | JumpBtnTap
 
 
 
-------- DECODE keys, mouse, etc. to UserRequest ------
+------- DECODE KEYS, MOUSE -> UserRequest ------
 
 
 decodeKeys : (Keys -> KeyState) -> UserRequest
 decodeKeys keyF =
-    if keyF Space == JustDown then
+    if keyF Space == JustDown || keyF Space == Down then
         Jump
 
     else
@@ -171,7 +171,7 @@ update msg model =
         JumpBtnTap ->
             jump model |> step
 
-        TapAt ( tapX, tapY ) ->
+        BoardTapAt ( tapX, tapY ) ->
             case ( model.direction, tapX <= model.x ) of
                 ( Right, True ) ->
                     { model | direction = Left }
