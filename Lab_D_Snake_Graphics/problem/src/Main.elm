@@ -1,7 +1,7 @@
 module Main exposing (..)
 
 import Food
-import GraphicSVG exposing (Shape, blue, centered, collage, filled, move, red, size, text)
+import GraphicSVG exposing (Shape, black, blue, centered, collage, filled, move, red, size, text)
 import GraphicSVG.App exposing (graphicsApp)
 import Grid
 import Snake
@@ -43,8 +43,12 @@ initialModel =
 
 view : Model -> List (Shape msg)
 view model =
-    {- 👉 TODO: Show the grid, food, snake, and optionally a "Game Over" message
-       These should be based on the input `model`
+    {- 👉 TODO: Show the grid, food, snake.
+        Depending on state, also show:
+            - a "Game Over" message
+            - text "Play Again" (will become a button to press)
+                filled black, located at ( 0, 180 )
+       All these should be based on the input `model`. Use `++` to append lists.
     -}
     []
 

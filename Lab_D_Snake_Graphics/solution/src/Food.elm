@@ -3,10 +3,10 @@ module Food exposing (..)
 import GraphicSVG exposing (..)
 import GraphicSVG.App exposing (graphicsApp)
 import Grid exposing (grid, toGrid)
-import Types
+import Types exposing (Food)
 
 
-view : Types.Food -> List (Shape msg)
+view : Food -> List (Shape msg)
 view ( i, j ) =
     [ apple (1 |> toGrid)
         |> move ( i |> toGrid, j |> toGrid )

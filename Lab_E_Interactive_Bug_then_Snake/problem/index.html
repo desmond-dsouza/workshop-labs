@@ -8768,31 +8768,23 @@ var $author$project$Lib$WkApp$simpleGameApp = F3(
 			});
 	});
 var $author$project$BugSoln$Left = {$: 'Left'};
-var $author$project$BugSoln$Go = function (a) {
-	return {$: 'Go', a: a};
-};
 var $author$project$BugSoln$Jump = {$: 'Jump'};
 var $author$project$BugSoln$None = {$: 'None'};
 var $author$project$Lib$WkApp$Space = {$: 'Space'};
 var $author$project$BugSoln$decodeKeys = function (keyF) {
-	return _Utils_eq(
+	return (_Utils_eq(
 		keyF($author$project$Lib$WkApp$Space),
-		$author$project$Lib$WkApp$JustDown) ? $author$project$BugSoln$Jump : (_Utils_eq(
-		keyF($author$project$Lib$WkApp$LeftArrow),
-		$author$project$Lib$WkApp$JustDown) ? $author$project$BugSoln$Go($author$project$BugSoln$Left) : (_Utils_eq(
-		keyF($author$project$Lib$WkApp$RightArrow),
-		$author$project$Lib$WkApp$JustDown) ? $author$project$BugSoln$Go($author$project$BugSoln$Right) : $author$project$BugSoln$None));
+		$author$project$Lib$WkApp$JustDown) || _Utils_eq(
+		keyF($author$project$Lib$WkApp$Space),
+		$author$project$Lib$WkApp$Down)) ? $author$project$BugSoln$Jump : $author$project$BugSoln$None;
 };
-var $author$project$BugSoln$go = F2(
-	function (dir, model) {
-		return _Utils_update(
-			model,
-			{direction: dir});
-	});
 var $author$project$BugSoln$jump = function (model) {
 	return _Utils_update(
 		model,
 		{y: model.y + 0.2});
+};
+var $author$project$BugSoln$reset = function (model) {
+	return $author$project$BugSoln$initialModel;
 };
 var $author$project$BugSoln$step = function (model) {
 	var _v0 = model.direction;
@@ -8812,48 +8804,364 @@ var $author$project$BugSoln$update = F2(
 		var x = _v0.x;
 		var y = _v0.y;
 		var direction = _v0.direction;
-		if (msg.$ === 'Tick') {
-			var seconds = msg.a;
-			var _v2 = msg.b;
-			var keyFunction = _v2.a;
-			var _v3 = _Utils_Tuple2(
-				$author$project$BugSoln$decodeKeys(keyFunction),
-				direction);
-			_v3$3:
-			while (true) {
-				switch (_v3.a.$) {
-					case 'Jump':
-						var _v4 = _v3.a;
-						return $author$project$BugSoln$step(
-							$author$project$BugSoln$jump(model));
-					case 'Go':
-						if (_v3.a.a.$ === 'Left') {
-							if (_v3.b.$ === 'Right') {
-								var _v5 = _v3.a.a;
-								var _v6 = _v3.b;
-								return A2($author$project$BugSoln$go, $author$project$BugSoln$Left, model);
-							} else {
-								break _v3$3;
-							}
-						} else {
-							if (_v3.b.$ === 'Left') {
-								var _v7 = _v3.a.a;
-								var _v8 = _v3.b;
-								return A2($author$project$BugSoln$go, $author$project$BugSoln$Right, model);
-							} else {
-								break _v3$3;
-							}
-						}
-					default:
-						break _v3$3;
+		switch (msg.$) {
+			case 'Tick':
+				var seconds = msg.a;
+				var _v2 = msg.b;
+				var keyFunction = _v2.a;
+				var _v3 = _Utils_Tuple2(
+					$author$project$BugSoln$decodeKeys(keyFunction),
+					direction);
+				if (_v3.a.$ === 'Jump') {
+					var _v4 = _v3.a;
+					return $author$project$BugSoln$step(
+						$author$project$BugSoln$jump(model));
+				} else {
+					return $author$project$BugSoln$step(model);
 				}
-			}
-			return $author$project$BugSoln$step(model);
-		} else {
-			return $author$project$BugSoln$initialModel;
+			case 'ResetBtnTap':
+				return $author$project$BugSoln$reset(model);
+			case 'JumpBtnTap':
+				return $author$project$BugSoln$step(
+					$author$project$BugSoln$jump(model));
+			default:
+				var _v5 = msg.a;
+				var tapX = _v5.a;
+				var tapY = _v5.b;
+				var _v6 = _Utils_Tuple2(
+					model.direction,
+					_Utils_cmp(tapX, model.x) < 1);
+				_v6$2:
+				while (true) {
+					if (_v6.a.$ === 'Right') {
+						if (_v6.b) {
+							var _v7 = _v6.a;
+							return _Utils_update(
+								model,
+								{direction: $author$project$BugSoln$Left});
+						} else {
+							break _v6$2;
+						}
+					} else {
+						if (!_v6.b) {
+							var _v8 = _v6.a;
+							return _Utils_update(
+								model,
+								{direction: $author$project$BugSoln$Right});
+						} else {
+							break _v6$2;
+						}
+					}
+				}
+				return model;
 		}
 	});
-var $author$project$BugSoln$Reset = {$: 'Reset'};
+var $author$project$BugSoln$BoardTapAt = function (a) {
+	return {$: 'BoardTapAt', a: a};
+};
+var $author$project$BugSoln$JumpBtnTap = {$: 'JumpBtnTap'};
+var $author$project$BugSoln$ResetBtnTap = {$: 'ResetBtnTap'};
+var $MacCASOutreach$graphicsvg$GraphicSVG$NoLine = {$: 'NoLine'};
+var $MacCASOutreach$graphicsvg$GraphicSVG$blank = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 0, 0, 0, 0);
+var $MacCASOutreach$graphicsvg$GraphicSVG$subtract = F2(
+	function (shape1, shape2) {
+		return A2($MacCASOutreach$graphicsvg$GraphicSVG$AlphaMask, shape1, shape2);
+	});
+var $MacCASOutreach$graphicsvg$GraphicSVG$addOutline = F3(
+	function (style, outlineClr, shape) {
+		addOutline:
+		while (true) {
+			var lineStyle = function () {
+				if (style.$ === 'NoLine') {
+					return $elm$core$Maybe$Nothing;
+				} else {
+					return $elm$core$Maybe$Just(
+						_Utils_Tuple2(style, outlineClr));
+				}
+			}();
+			switch (shape.$) {
+				case 'Inked':
+					var clr = shape.a;
+					var st = shape.c;
+					return A3($MacCASOutreach$graphicsvg$GraphicSVG$Inked, clr, lineStyle, st);
+				case 'Move':
+					var s = shape.a;
+					var sh = shape.b;
+					return A2(
+						$MacCASOutreach$graphicsvg$GraphicSVG$Move,
+						s,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'Rotate':
+					var r = shape.a;
+					var sh = shape.b;
+					return A2(
+						$MacCASOutreach$graphicsvg$GraphicSVG$Rotate,
+						r,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'Scale':
+					var sx = shape.a;
+					var sy = shape.b;
+					var sh = shape.c;
+					return A3(
+						$MacCASOutreach$graphicsvg$GraphicSVG$Scale,
+						sx,
+						sy,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'Skew':
+					var skx = shape.a;
+					var sky = shape.b;
+					var sh = shape.c;
+					return A3(
+						$MacCASOutreach$graphicsvg$GraphicSVG$Skew,
+						skx,
+						sky,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'Transformed':
+					var tm = shape.a;
+					var sh = shape.b;
+					return A2(
+						$MacCASOutreach$graphicsvg$GraphicSVG$Transformed,
+						tm,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'Group':
+					var list = shape.a;
+					var innerlist = A2(
+						$elm$core$List$filterMap,
+						function (shp) {
+							if (shp.$ === 'GroupOutline') {
+								return $elm$core$Maybe$Nothing;
+							} else {
+								return $elm$core$Maybe$Just(
+									A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, $MacCASOutreach$graphicsvg$GraphicSVG$NoLine, $MacCASOutreach$graphicsvg$GraphicSVG$black, shp));
+							}
+						},
+						list);
+					if (!innerlist.b) {
+						return $MacCASOutreach$graphicsvg$GraphicSVG$Group(_List_Nil);
+					} else {
+						if (!innerlist.b.b) {
+							var hd = innerlist.a;
+							var $temp$style = style,
+								$temp$outlineClr = outlineClr,
+								$temp$shape = hd;
+							style = $temp$style;
+							outlineClr = $temp$outlineClr;
+							shape = $temp$shape;
+							continue addOutline;
+						} else {
+							if (_Utils_eq(lineStyle, $elm$core$Maybe$Nothing)) {
+								return $MacCASOutreach$graphicsvg$GraphicSVG$Group(innerlist);
+							} else {
+								var outlnshp = $MacCASOutreach$graphicsvg$GraphicSVG$GroupOutline(
+									A2(
+										$MacCASOutreach$graphicsvg$GraphicSVG$subtract,
+										$MacCASOutreach$graphicsvg$GraphicSVG$Group(innerlist),
+										$MacCASOutreach$graphicsvg$GraphicSVG$Group(
+											A2(
+												$elm$core$List$map,
+												A2($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr),
+												innerlist))));
+								return $MacCASOutreach$graphicsvg$GraphicSVG$Group(
+									_Utils_ap(
+										innerlist,
+										_List_fromArray(
+											[outlnshp])));
+							}
+						}
+					}
+				case 'GroupOutline':
+					var cmbndshp = shape.a;
+					return $MacCASOutreach$graphicsvg$GraphicSVG$GroupOutline(cmbndshp);
+				case 'AlphaMask':
+					var reg = shape.a;
+					var sh = shape.b;
+					var ptrn = A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, $MacCASOutreach$graphicsvg$GraphicSVG$NoLine, $MacCASOutreach$graphicsvg$GraphicSVG$black, reg);
+					var inside = A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, $MacCASOutreach$graphicsvg$GraphicSVG$NoLine, $MacCASOutreach$graphicsvg$GraphicSVG$black, sh);
+					if (_Utils_eq(lineStyle, $elm$core$Maybe$Nothing)) {
+						return A2($MacCASOutreach$graphicsvg$GraphicSVG$AlphaMask, ptrn, inside);
+					} else {
+						var ptrnlnd = A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, reg);
+						var ptrnoutln = A2($MacCASOutreach$graphicsvg$GraphicSVG$Clip, inside, ptrnlnd);
+						var newshp = A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh);
+						var shpoutln = A2($MacCASOutreach$graphicsvg$GraphicSVG$Clip, inside, newshp);
+						return A2(
+							$MacCASOutreach$graphicsvg$GraphicSVG$AlphaMask,
+							ptrn,
+							$MacCASOutreach$graphicsvg$GraphicSVG$Group(
+								_List_fromArray(
+									[
+										inside,
+										$MacCASOutreach$graphicsvg$GraphicSVG$GroupOutline(
+										$MacCASOutreach$graphicsvg$GraphicSVG$Group(
+											_List_fromArray(
+												[shpoutln, ptrnoutln])))
+									])));
+					}
+				case 'Clip':
+					var reg = shape.a;
+					var sh = shape.b;
+					var ptrn = A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, $MacCASOutreach$graphicsvg$GraphicSVG$NoLine, $MacCASOutreach$graphicsvg$GraphicSVG$black, reg);
+					var inside = A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, $MacCASOutreach$graphicsvg$GraphicSVG$NoLine, $MacCASOutreach$graphicsvg$GraphicSVG$black, sh);
+					if (_Utils_eq(lineStyle, $elm$core$Maybe$Nothing)) {
+						return A2($MacCASOutreach$graphicsvg$GraphicSVG$Clip, ptrn, inside);
+					} else {
+						var ptrnlnd = A3(
+							$MacCASOutreach$graphicsvg$GraphicSVG$addOutline,
+							style,
+							outlineClr,
+							A2($MacCASOutreach$graphicsvg$GraphicSVG$repaint, $MacCASOutreach$graphicsvg$GraphicSVG$blank, reg));
+						var ptrnoutln = A2($MacCASOutreach$graphicsvg$GraphicSVG$Clip, inside, ptrnlnd);
+						var newshp = A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh);
+						var shpoutln = A2($MacCASOutreach$graphicsvg$GraphicSVG$Clip, inside, newshp);
+						return A2(
+							$MacCASOutreach$graphicsvg$GraphicSVG$Clip,
+							ptrn,
+							$MacCASOutreach$graphicsvg$GraphicSVG$Group(
+								_List_fromArray(
+									[
+										inside,
+										$MacCASOutreach$graphicsvg$GraphicSVG$GroupOutline(
+										$MacCASOutreach$graphicsvg$GraphicSVG$Group(
+											_List_fromArray(
+												[shpoutln, ptrnoutln])))
+									])));
+					}
+				case 'Link':
+					var s = shape.a;
+					var sh = shape.b;
+					return A2(
+						$MacCASOutreach$graphicsvg$GraphicSVG$Link,
+						s,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'Tap':
+					var userMsg = shape.a;
+					var sh = shape.b;
+					return A2(
+						$MacCASOutreach$graphicsvg$GraphicSVG$Tap,
+						userMsg,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'TapAt':
+					var userMsg = shape.a;
+					var sh = shape.b;
+					return A2(
+						$MacCASOutreach$graphicsvg$GraphicSVG$TapAt,
+						userMsg,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'EnterShape':
+					var userMsg = shape.a;
+					var sh = shape.b;
+					return A2(
+						$MacCASOutreach$graphicsvg$GraphicSVG$EnterShape,
+						userMsg,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'EnterAt':
+					var userMsg = shape.a;
+					var sh = shape.b;
+					return A2(
+						$MacCASOutreach$graphicsvg$GraphicSVG$EnterAt,
+						userMsg,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'Exit':
+					var userMsg = shape.a;
+					var sh = shape.b;
+					return A2(
+						$MacCASOutreach$graphicsvg$GraphicSVG$Exit,
+						userMsg,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'ExitAt':
+					var userMsg = shape.a;
+					var sh = shape.b;
+					return A2(
+						$MacCASOutreach$graphicsvg$GraphicSVG$ExitAt,
+						userMsg,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'MouseDown':
+					var userMsg = shape.a;
+					var sh = shape.b;
+					return A2(
+						$MacCASOutreach$graphicsvg$GraphicSVG$MouseDown,
+						userMsg,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'MouseDownAt':
+					var userMsg = shape.a;
+					var sh = shape.b;
+					return A2(
+						$MacCASOutreach$graphicsvg$GraphicSVG$MouseDownAt,
+						userMsg,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'MouseUp':
+					var userMsg = shape.a;
+					var sh = shape.b;
+					return A2(
+						$MacCASOutreach$graphicsvg$GraphicSVG$MouseUp,
+						userMsg,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'MouseUpAt':
+					var userMsg = shape.a;
+					var sh = shape.b;
+					return A2(
+						$MacCASOutreach$graphicsvg$GraphicSVG$MouseUpAt,
+						userMsg,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'MoveOverAt':
+					var userMsg = shape.a;
+					var sh = shape.b;
+					return A2(
+						$MacCASOutreach$graphicsvg$GraphicSVG$MoveOverAt,
+						userMsg,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'TouchStart':
+					var userMsg = shape.a;
+					var sh = shape.b;
+					return A2(
+						$MacCASOutreach$graphicsvg$GraphicSVG$TouchStart,
+						userMsg,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'TouchEnd':
+					var userMsg = shape.a;
+					var sh = shape.b;
+					return A2(
+						$MacCASOutreach$graphicsvg$GraphicSVG$TouchEnd,
+						userMsg,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'TouchStartAt':
+					var userMsg = shape.a;
+					var sh = shape.b;
+					return A2(
+						$MacCASOutreach$graphicsvg$GraphicSVG$TouchStartAt,
+						userMsg,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'TouchEndAt':
+					var userMsg = shape.a;
+					var sh = shape.b;
+					return A2(
+						$MacCASOutreach$graphicsvg$GraphicSVG$TouchEndAt,
+						userMsg,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'TouchMoveAt':
+					var userMsg = shape.a;
+					var sh = shape.b;
+					return A2(
+						$MacCASOutreach$graphicsvg$GraphicSVG$TouchMoveAt,
+						userMsg,
+						A3($MacCASOutreach$graphicsvg$GraphicSVG$addOutline, style, outlineClr, sh));
+				case 'ForeignObject':
+					var w = shape.a;
+					var h = shape.b;
+					var htm = shape.c;
+					return A3($MacCASOutreach$graphicsvg$GraphicSVG$ForeignObject, w, h, htm);
+				case 'Everything':
+					return $MacCASOutreach$graphicsvg$GraphicSVG$Everything;
+				case 'Notathing':
+					return $MacCASOutreach$graphicsvg$GraphicSVG$Notathing;
+				default:
+					var s = shape.a;
+					var th = shape.b;
+					var clr = shape.c;
+					return A3($MacCASOutreach$graphicsvg$GraphicSVG$GraphPaper, s, th, clr);
+			}
+		}
+	});
 var $MacCASOutreach$graphicsvg$GraphicSVG$Circle = function (a) {
 	return {$: 'Circle', a: a};
 };
@@ -8864,17 +9172,55 @@ var $MacCASOutreach$graphicsvg$GraphicSVG$collage = F3(
 	function (w, h, shapes) {
 		return A3($MacCASOutreach$graphicsvg$GraphicSVG$Collage, w, h, shapes);
 	});
+var $MacCASOutreach$graphicsvg$GraphicSVG$Broken = F2(
+	function (a, b) {
+		return {$: 'Broken', a: a, b: b};
+	});
+var $MacCASOutreach$graphicsvg$GraphicSVG$dashed = function (th) {
+	return A2(
+		$MacCASOutreach$graphicsvg$GraphicSVG$Broken,
+		_List_fromArray(
+			[
+				_Utils_Tuple2(th * 5, th * 2.5)
+			]),
+		th);
+};
 var $MacCASOutreach$graphicsvg$GraphicSVG$graphPaperCustom = F3(
 	function (s, th, c) {
 		return A3($MacCASOutreach$graphicsvg$GraphicSVG$GraphPaper, s, th, c);
 	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$green = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 115, 210, 22, 1);
+var $MacCASOutreach$graphicsvg$GraphicSVG$lightBlue = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 114, 159, 207, 1);
 var $MacCASOutreach$graphicsvg$GraphicSVG$lightGrey = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 238, 238, 236, 1);
 var $MacCASOutreach$graphicsvg$GraphicSVG$notifyTap = F2(
 	function (msg, shape) {
 		return A2($MacCASOutreach$graphicsvg$GraphicSVG$Tap, msg, shape);
 	});
+var $MacCASOutreach$graphicsvg$GraphicSVG$notifyTapAt = F2(
+	function (msg, shape) {
+		return A2($MacCASOutreach$graphicsvg$GraphicSVG$TapAt, msg, shape);
+	});
+var $MacCASOutreach$graphicsvg$GraphicSVG$orange = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 245, 121, 0, 1);
 var $MacCASOutreach$graphicsvg$GraphicSVG$purple = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 117, 80, 123, 1);
+var $elm$core$Basics$clamp = F3(
+	function (low, high, number) {
+		return (_Utils_cmp(number, low) < 0) ? low : ((_Utils_cmp(number, high) > 0) ? high : number);
+	});
+var $MacCASOutreach$graphicsvg$GraphicSVG$ssa = function (n) {
+	return A3($elm$core$Basics$clamp, 0, 1, n);
+};
+var $MacCASOutreach$graphicsvg$GraphicSVG$ssc = function (n) {
+	return A3($elm$core$Basics$clamp, 0, 255, n);
+};
+var $MacCASOutreach$graphicsvg$GraphicSVG$rgba = F4(
+	function (r, g, b, a) {
+		return A4(
+			$MacCASOutreach$graphicsvg$GraphicSVG$RGBA,
+			$MacCASOutreach$graphicsvg$GraphicSVG$ssc(r),
+			$MacCASOutreach$graphicsvg$GraphicSVG$ssc(g),
+			$MacCASOutreach$graphicsvg$GraphicSVG$ssc(b),
+			$MacCASOutreach$graphicsvg$GraphicSVG$ssa(a));
+	});
+var $MacCASOutreach$graphicsvg$GraphicSVG$green = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 115, 210, 22, 1);
 var $MacCASOutreach$graphicsvg$GraphicSVG$RoundRect = F3(
 	function (a, b, c) {
 		return {$: 'RoundRect', a: a, b: b, c: c};
@@ -8883,40 +9229,75 @@ var $MacCASOutreach$graphicsvg$GraphicSVG$roundedRect = F3(
 	function (w, h, r) {
 		return A3($MacCASOutreach$graphicsvg$GraphicSVG$RoundRect, w, h, r);
 	});
+var $author$project$BugSoln$viewBug = F2(
+	function (_v0, direction) {
+		var x = _v0.a;
+		var y = _v0.b;
+		var eye = A2(
+			$MacCASOutreach$graphicsvg$GraphicSVG$move,
+			_Utils_Tuple2(
+				x + function () {
+					if (direction.$ === 'Right') {
+						return 0.35;
+					} else {
+						return -0.35;
+					}
+				}(),
+				y + 0.1),
+			A2(
+				$MacCASOutreach$graphicsvg$GraphicSVG$filled,
+				$MacCASOutreach$graphicsvg$GraphicSVG$black,
+				$MacCASOutreach$graphicsvg$GraphicSVG$circle(0.05)));
+		var body = A2(
+			$MacCASOutreach$graphicsvg$GraphicSVG$move,
+			_Utils_Tuple2(x, y),
+			A2(
+				$MacCASOutreach$graphicsvg$GraphicSVG$filled,
+				$MacCASOutreach$graphicsvg$GraphicSVG$green,
+				A3($MacCASOutreach$graphicsvg$GraphicSVG$roundedRect, 1, 0.5, 0.2)));
+		return $MacCASOutreach$graphicsvg$GraphicSVG$group(
+			_List_fromArray(
+				[body, eye]));
+	});
 var $author$project$BugSoln$view = function (model) {
+	var tapSurface = A2(
+		$MacCASOutreach$graphicsvg$GraphicSVG$notifyTapAt,
+		$author$project$BugSoln$BoardTapAt,
+		A2(
+			$MacCASOutreach$graphicsvg$GraphicSVG$move,
+			_Utils_Tuple2(0, -1),
+			A3(
+				$MacCASOutreach$graphicsvg$GraphicSVG$addOutline,
+				$MacCASOutreach$graphicsvg$GraphicSVG$dashed(0.05),
+				$MacCASOutreach$graphicsvg$GraphicSVG$lightBlue,
+				A2(
+					$MacCASOutreach$graphicsvg$GraphicSVG$filled,
+					A4($MacCASOutreach$graphicsvg$GraphicSVG$rgba, 0, 0, 0, 0),
+					A2($MacCASOutreach$graphicsvg$GraphicSVG$rect, 10, 8)))));
 	var resetButton = A2(
 		$MacCASOutreach$graphicsvg$GraphicSVG$move,
 		_Utils_Tuple2(0, 4),
 		A2(
 			$MacCASOutreach$graphicsvg$GraphicSVG$notifyTap,
-			$author$project$BugSoln$Reset,
+			$author$project$BugSoln$ResetBtnTap,
 			A2(
 				$MacCASOutreach$graphicsvg$GraphicSVG$filled,
 				$MacCASOutreach$graphicsvg$GraphicSVG$purple,
 				$MacCASOutreach$graphicsvg$GraphicSVG$circle(0.5))));
-	var eye = A2(
+	var jumpButton = A2(
 		$MacCASOutreach$graphicsvg$GraphicSVG$move,
-		_Utils_Tuple2(
-			model.x + function () {
-				var _v0 = model.direction;
-				if (_v0.$ === 'Right') {
-					return 0.35;
-				} else {
-					return -0.35;
-				}
-			}(),
-			model.y + 0.1),
+		_Utils_Tuple2(2, 4),
 		A2(
-			$MacCASOutreach$graphicsvg$GraphicSVG$filled,
-			$MacCASOutreach$graphicsvg$GraphicSVG$black,
-			$MacCASOutreach$graphicsvg$GraphicSVG$circle(0.05)));
-	var body = A2(
-		$MacCASOutreach$graphicsvg$GraphicSVG$move,
+			$MacCASOutreach$graphicsvg$GraphicSVG$notifyTap,
+			$author$project$BugSoln$JumpBtnTap,
+			A2(
+				$MacCASOutreach$graphicsvg$GraphicSVG$filled,
+				$MacCASOutreach$graphicsvg$GraphicSVG$orange,
+				$MacCASOutreach$graphicsvg$GraphicSVG$circle(0.5))));
+	var bug = A2(
+		$author$project$BugSoln$viewBug,
 		_Utils_Tuple2(model.x, model.y),
-		A2(
-			$MacCASOutreach$graphicsvg$GraphicSVG$filled,
-			$MacCASOutreach$graphicsvg$GraphicSVG$green,
-			A3($MacCASOutreach$graphicsvg$GraphicSVG$roundedRect, 1, 0.5, 0.2)));
+		model.direction);
 	return A3(
 		$MacCASOutreach$graphicsvg$GraphicSVG$collage,
 		10,
@@ -8924,9 +9305,10 @@ var $author$project$BugSoln$view = function (model) {
 		_List_fromArray(
 			[
 				A3($MacCASOutreach$graphicsvg$GraphicSVG$graphPaperCustom, 1, 0.05, $MacCASOutreach$graphicsvg$GraphicSVG$lightGrey),
-				body,
-				eye,
-				resetButton
+				bug,
+				resetButton,
+				jumpButton,
+				tapSurface
 			]));
 };
 var $author$project$BugSoln$main = A3(

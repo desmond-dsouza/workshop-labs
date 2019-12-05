@@ -51,20 +51,30 @@ viewBug ( x, y ) direction =
 
 
 view model =
+    {- 👉 TODO:
+       - Fill in `notifyX` for these shapes in stages
+       - Get each stage to compile
+    -}
     let
+        resetButton =
+            circle 0.5
+                |> filled purple
+                |> move ( 0, 4 )
+
+        -- |> notifyTap ResetBtnTap
+        jumpButton =
+            circle 0.5
+                |> filled orange
+                |> move ( 2, 4 )
+
+        -- |> notifyTap JumpBtnTap
         tapSurface =
             rect 10 8
                 |> filled (rgba 0 0 0 0)
                 |> addOutline (dashed 0.05) lightBlue
                 |> move ( 0, -1 )
-                |> notifyTapAt BoardTapAt
 
-        resetButton =
-            circle 0.5 |> filled purple |> notifyTap ResetBtnTap |> move ( 0, 4 )
-
-        jumpButton =
-            circle 0.5 |> filled orange |> notifyTap JumpBtnTap |> move ( 2, 4 )
-
+        -- |> notifyTapAt BoardTapAt
         bug =
             viewBug ( model.x, model.y ) model.direction
     in
@@ -80,46 +90,70 @@ view model =
 
 
 ------- INTERACTION -------
+{- 💡 HINT:
+   - Build up Msg, UserRequest, update, and decode in stages
+   - Subscribe to receiving those messages e.g. in `view` or `main`
+-}
 
 
-type UserRequest
-    = Jump
-    | Go Direction
-    | Reset
-    | None
-
-
-type Msg
-    = Tick Float App.GetKeyState
-    | BoardTapAt ( Float, Float )
-    | ResetBtnTap
-    | JumpBtnTap
+type
+    Msg
+    {- 👉 TODO:
+       - Tick (with Float for seconds + GetKeyState)
+       - Reset button tapped
+       - Jump button tapped
+       - Board tapped at some (x, y) position
+    -}
+    = FillMeIn_1
 
 
 
+-- = Tick Float App.GetKeyState
+-- | ResetBtnTap
+-- | JumpBtnTap
+-- | BoardTapAt ( Float, Float )
+
+
+type
+    UserRequest
+    -- 👉 TODO: Union type for user requests
+    = FillMeIn_2
+
+
+
+-- = Jump
+-- | Go Direction
+-- | Reset
+-- | None
 ------- DECODE KEYS, MOUSE -> UserRequest ------
 
 
 decodeKeys : (Keys -> KeyState) -> UserRequest
 decodeKeys keyF =
-    if keyF Space == JustDown || keyF Space == Down then
-        Jump
+    -- 👉 TODO: Jump if Space key was pressed
+    None
 
-    else
-        None
+    -- if keyF Space == JustDown || keyF Space == Down then
+    --     Jump
+
+    -- else
+    --     None
 
 
 decodeTap : ( Float, Float ) -> Model -> UserRequest
 decodeTap ( tapX, tapY ) model =
-    case ( model.direction, tapX <= model.x ) of
-        ( Right, True ) ->
-            Go Left
+    -- 👉 TODO: Flip direction based on tap vs. bug position
+    None
 
-        ( Left, False ) ->
-            Go Right
+    -- case ( model.direction, tapX <= model.x ) of
+    --     ( Right, True ) ->
+    --         Go Left
 
-        _ ->
-            None
+    --     ( Left, False ) ->
+    --         Go Right
+
+    --     _ ->
+    --         None
 
 
 
@@ -152,35 +186,38 @@ reset model =
 
 
 update msg model =
-    let
-        { x, y, direction } =
-            model
-    in
-    case msg of
-        Tick seconds ( keyFunction, _, _ ) ->
-            case ( decodeKeys keyFunction, direction ) of
-                ( Jump, _ ) ->
-                    jump model |> step
+    -- 👉 TODO: Handle the Msg variants one at a time
+    model
 
-                ( _, _ ) ->
-                    model |> step
+    -- let
+    --     { x, y, direction } =
+    --         model
+    -- in
+    -- case msg of
+    --     Tick seconds ( keyFunction, _, _ ) ->
+    --         case ( decodeKeys keyFunction, direction ) of
+    --             ( Jump, _ ) ->
+    --                 jump model |> step
 
-        ResetBtnTap ->
-            reset model
+    --             ( _, _ ) ->
+    --                 model |> step
 
-        JumpBtnTap ->
-            jump model |> step
+    --     ResetBtnTap ->
+    --         reset model
 
-        BoardTapAt ( tapX, tapY ) ->
-            case ( model.direction, tapX <= model.x ) of
-                ( Right, True ) ->
-                    { model | direction = Left }
+    --     JumpBtnTap ->
+    --         jump model |> step
 
-                ( Left, False ) ->
-                    { model | direction = Right }
+    --     BoardTapAt ( tapX, tapY ) ->
+    --         case ( model.direction, tapX <= model.x ) of
+    --             ( Right, True ) ->
+    --                 { model | direction = Left }
 
-                _ ->
-                    model
+    --             ( Left, False ) ->
+    --                 { model | direction = Right }
+
+    --             _ ->
+    --                 model
 
 
 main =

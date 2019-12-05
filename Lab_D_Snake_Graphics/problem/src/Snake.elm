@@ -89,13 +89,11 @@ invalidTransitions =
 
 nextDirection : Direction -> Direction -> Direction
 nextDirection oldDir newDir =
-    {- 👉 TODO:
-       Should be newDir only when oldDir -> newDir is a valid transition.
-       Else should be oldDir.
+    if List.member ( oldDir, newDir ) invalidTransitions then
+        oldDir
 
-       💡 HINT: See `List.member` and `invalidTransistions` above.
-    -}
-    newDir
+    else
+        newDir
 
 
 turn : Direction -> Snake -> Snake

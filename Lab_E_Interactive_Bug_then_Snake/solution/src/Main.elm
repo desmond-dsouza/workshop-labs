@@ -1,7 +1,22 @@
 module Main exposing (..)
 
 import Food
-import GraphicSVG exposing (Collage, Shape, blue, centered, collage, filled, move, red, size, text)
+import GraphicSVG
+    exposing
+        ( Collage
+        , Shape
+        , black
+        , blue
+        , centered
+        , collage
+        , filled
+        , move
+        , notifyTap
+        , red
+        , sansserif
+        , size
+        , text
+        )
 import Grid
 import Lib.WkApp as App exposing (KeyState(..), Keys(..))
 import Snake
@@ -75,6 +90,7 @@ view : Model -> Collage Msg
 view model =
     Grid.viewport
         (Grid.view
+            ++ maybeNewGameButton model
             ++ Food.view model.food
             ++ Snake.view model.snake
             ++ (if isGameOver model then
@@ -84,6 +100,20 @@ view model =
                     []
                )
         )
+
+
+maybeNewGameButton model =
+    if isGameOver model then
+        [ text "Play Again (arrows to steer)"
+            |> sansserif
+            |> centered
+            |> filled black
+            |> notifyTap Types.NewGameMsg
+            |> move ( 0, 180 )
+        ]
+
+    else
+        []
 
 
 isGameOver : Model -> Bool
@@ -154,6 +184,9 @@ update msg model =
 
                 ( _, _ ) ->
                     model |> step Grid.walls
+
+        NewGameMsg ->
+            initialModel
 
 
 step : Walls -> Model -> Model

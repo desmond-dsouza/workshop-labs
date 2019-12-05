@@ -8,7 +8,7 @@ import Types exposing (..)
 grid : Grid
 grid =
     -- best to use even numbers for cols & rows
-    { numColumns = 14, numRows = 14, cellSize = 20.0 }
+    { numColumns = 14, numRows = 14, cellSize = 20 }
 
 
 toGrid : Int -> Float
@@ -42,7 +42,7 @@ view =
 
 
 viewport =
-    collage ((grid.numColumns + 4) |> toGrid) ((grid.numRows + 4) |> toGrid)
+    collage ((grid.numColumns + 6) |> toGrid) ((grid.numRows + 6) |> toGrid)
 
 
 main =

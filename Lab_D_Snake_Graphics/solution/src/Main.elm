@@ -1,7 +1,7 @@
 module Main exposing (..)
 
 import Food
-import GraphicSVG exposing (Shape, blue, centered, collage, filled, move, red, size, text)
+import GraphicSVG exposing (Shape, black, blue, centered, collage, filled, move, red, sansserif, size, text)
 import GraphicSVG.App exposing (graphicsApp)
 import Grid
 import Snake
@@ -44,6 +44,7 @@ initialModel =
 view : Model -> List (Shape msg)
 view model =
     Grid.view
+        ++ maybeNewGameButton model
         ++ Food.view model.food
         ++ Snake.view model.snake
         ++ (if isGameOver model then
@@ -52,6 +53,19 @@ view model =
             else
                 []
            )
+
+
+maybeNewGameButton model =
+    if isGameOver model then
+        [ text "Play Again (arrows to steer)"
+            |> sansserif
+            |> centered
+            |> filled black
+            |> move ( 0, 180 )
+        ]
+
+    else
+        []
 
 
 isGameOver : Model -> Bool

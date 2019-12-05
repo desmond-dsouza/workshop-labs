@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Main</title>
+  <title>BugSoln</title>
   <style>body { padding: 0; margin: 0; }</style>
 </head>
 
@@ -4404,7 +4404,6 @@ var $elm$core$Set$toList = function (_v0) {
 	return $elm$core$Dict$keys(dict);
 };
 var $elm$core$Basics$GT = {$: 'GT'};
-var $elm$core$Basics$append = _Utils_append;
 var $MacCASOutreach$graphicsvg$GraphicSVG$App$URLChanged = function (a) {
 	return {$: 'URLChanged', a: a};
 };
@@ -4450,6 +4449,7 @@ var $elm$core$Maybe$Just = function (a) {
 var $elm$core$Maybe$Nothing = {$: 'Nothing'};
 var $elm$core$String$all = _String_all;
 var $elm$core$Basics$and = _Basics_and;
+var $elm$core$Basics$append = _Utils_append;
 var $elm$json$Json$Encode$encode = _Json_encode;
 var $elm$core$String$fromInt = _String_fromNumber;
 var $elm$core$String$join = F2(
@@ -7836,359 +7836,23 @@ var $MacCASOutreach$graphicsvg$GraphicSVG$App$graphicsApp = function (userApp) {
 			}
 		});
 };
-var $author$project$Types$Normal = {$: 'Normal'};
-var $author$project$Types$Right = {$: 'Right'};
-var $author$project$Grid$grid = {numColumns: 14, numRows: 14};
-var $author$project$Main$initialModel = {
-	food: _Utils_Tuple2((($author$project$Grid$grid.numColumns / 2) | 0) - 1, 0),
-	snake: {
-		body: _List_fromArray(
-			[
-				_Utils_Tuple2(-3, 0),
-				_Utils_Tuple2(-4, 0)
-			]),
-		direction: $author$project$Types$Right,
-		head: _Utils_Tuple2(-2, 0),
-		state: $author$project$Types$Normal
-	}
-};
-var $author$project$Grid$cellSize = 20.0;
-var $MacCASOutreach$graphicsvg$GraphicSVG$Circle = function (a) {
-	return {$: 'Circle', a: a};
-};
-var $MacCASOutreach$graphicsvg$GraphicSVG$circle = function (r) {
-	return $MacCASOutreach$graphicsvg$GraphicSVG$Circle(r);
-};
-var $MacCASOutreach$graphicsvg$GraphicSVG$darkGrey = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 186, 189, 182, 1);
-var $MacCASOutreach$graphicsvg$GraphicSVG$graphPaperCustom = F3(
-	function (s, th, c) {
-		return A3($MacCASOutreach$graphicsvg$GraphicSVG$GraphPaper, s, th, c);
-	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$lightGrey = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 238, 238, 236, 1);
-var $MacCASOutreach$graphicsvg$GraphicSVG$outlined = F3(
-	function (style, outlineClr, stencil) {
-		var lineStyle = function () {
-			if (style.$ === 'NoLine') {
-				return $elm$core$Maybe$Nothing;
-			} else {
-				return $elm$core$Maybe$Just(
-					_Utils_Tuple2(style, outlineClr));
-			}
-		}();
-		return A3($MacCASOutreach$graphicsvg$GraphicSVG$Inked, $elm$core$Maybe$Nothing, lineStyle, stencil);
-	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$Solid = function (a) {
-	return {$: 'Solid', a: a};
-};
-var $MacCASOutreach$graphicsvg$GraphicSVG$solid = function (th) {
-	return $MacCASOutreach$graphicsvg$GraphicSVG$Solid(th);
-};
-var $author$project$Grid$toGrid = function (i) {
-	return $author$project$Grid$cellSize * i;
-};
-var $author$project$Grid$view = _List_fromArray(
-	[
-		A3($MacCASOutreach$graphicsvg$GraphicSVG$graphPaperCustom, $author$project$Grid$cellSize, 0.5, $MacCASOutreach$graphicsvg$GraphicSVG$lightGrey),
-		A2(
-		$MacCASOutreach$graphicsvg$GraphicSVG$filled,
-		$MacCASOutreach$graphicsvg$GraphicSVG$black,
-		$MacCASOutreach$graphicsvg$GraphicSVG$circle(0.05 * $author$project$Grid$cellSize)),
-		A3(
-		$MacCASOutreach$graphicsvg$GraphicSVG$outlined,
-		$MacCASOutreach$graphicsvg$GraphicSVG$solid(3),
-		$MacCASOutreach$graphicsvg$GraphicSVG$darkGrey,
-		A2(
-			$MacCASOutreach$graphicsvg$GraphicSVG$rect,
-			$author$project$Grid$toGrid($author$project$Grid$grid.numColumns + 1),
-			$author$project$Grid$toGrid($author$project$Grid$grid.numRows + 1)))
-	]);
-var $author$project$Types$HitSelf = {$: 'HitSelf'};
-var $author$project$Types$HitWall = {$: 'HitWall'};
-var $author$project$Main$isGameOver = function (g) {
-	return _Utils_eq(g.snake.state, $author$project$Types$HitSelf) || _Utils_eq(g.snake.state, $author$project$Types$HitWall);
-};
-var $MacCASOutreach$graphicsvg$GraphicSVG$darkGreen = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 78, 154, 6, 1);
-var $MacCASOutreach$graphicsvg$GraphicSVG$darkRed = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 164, 0, 0, 1);
-var $MacCASOutreach$graphicsvg$GraphicSVG$Path = function (a) {
-	return {$: 'Path', a: a};
-};
-var $MacCASOutreach$graphicsvg$GraphicSVG$line = F2(
-	function (p1, p2) {
-		return $MacCASOutreach$graphicsvg$GraphicSVG$Path(
-			_List_fromArray(
-				[p1, p2]));
-	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$Oval = F2(
-	function (a, b) {
-		return {$: 'Oval', a: a, b: b};
-	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$oval = F2(
-	function (w, h) {
-		return A2($MacCASOutreach$graphicsvg$GraphicSVG$Oval, w, h);
-	});
-var $author$project$Food$apple = function (size) {
-	return $MacCASOutreach$graphicsvg$GraphicSVG$group(
-		_List_fromArray(
-			[
-				A3(
-				$MacCASOutreach$graphicsvg$GraphicSVG$outlined,
-				$MacCASOutreach$graphicsvg$GraphicSVG$solid(size * 0.1),
-				$MacCASOutreach$graphicsvg$GraphicSVG$darkGreen,
-				A2(
-					$MacCASOutreach$graphicsvg$GraphicSVG$line,
-					_Utils_Tuple2((-0.1) * size, 0.2 * size),
-					_Utils_Tuple2(0.2 * size, 0.8 * size))),
-				A2(
-				$MacCASOutreach$graphicsvg$GraphicSVG$move,
-				_Utils_Tuple2((-size) * 0.2, 0),
-				A2(
-					$MacCASOutreach$graphicsvg$GraphicSVG$filled,
-					$MacCASOutreach$graphicsvg$GraphicSVG$darkRed,
-					A2($MacCASOutreach$graphicsvg$GraphicSVG$oval, size * 0.6, size))),
-				A2(
-				$MacCASOutreach$graphicsvg$GraphicSVG$move,
-				_Utils_Tuple2(size * 0.2, 0),
-				A2(
-					$MacCASOutreach$graphicsvg$GraphicSVG$filled,
-					$MacCASOutreach$graphicsvg$GraphicSVG$darkRed,
-					A2($MacCASOutreach$graphicsvg$GraphicSVG$oval, size * 0.6, size)))
-			]));
-};
-var $author$project$Food$view = function (_v0) {
-	var i = _v0.a;
-	var j = _v0.b;
-	return _List_fromArray(
-		[
-			A2(
-			$MacCASOutreach$graphicsvg$GraphicSVG$move,
-			_Utils_Tuple2(
-				$author$project$Grid$toGrid(i),
-				$author$project$Grid$toGrid(j)),
-			$author$project$Food$apple(
-				$author$project$Grid$toGrid(1)))
-		]);
-};
-var $MacCASOutreach$graphicsvg$GraphicSVG$brown = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 193, 125, 17, 1);
-var $elm$core$Basics$pi = _Basics_pi;
-var $elm$core$Basics$degrees = function (angleInDegrees) {
-	return (angleInDegrees * $elm$core$Basics$pi) / 180;
-};
-var $author$project$Grid$fracToGrid = function (f) {
-	return $author$project$Grid$cellSize * f;
-};
-var $MacCASOutreach$graphicsvg$GraphicSVG$pink = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 255, 105, 180, 1);
-var $MacCASOutreach$graphicsvg$GraphicSVG$purple = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 117, 80, 123, 1);
-var $MacCASOutreach$graphicsvg$GraphicSVG$red = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 204, 0, 0, 1);
-var $MacCASOutreach$graphicsvg$GraphicSVG$rotate = F2(
-	function (theta, shape) {
-		return A2($MacCASOutreach$graphicsvg$GraphicSVG$Rotate, theta, shape);
-	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$RoundRect = F3(
-	function (a, b, c) {
-		return {$: 'RoundRect', a: a, b: b, c: c};
-	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$roundedRect = F3(
-	function (w, h, r) {
-		return A3($MacCASOutreach$graphicsvg$GraphicSVG$RoundRect, w, h, r);
-	});
-var $author$project$Snake$viewSnakeHead = function (snake) {
-	var rotation = $elm$core$Basics$degrees(
-		function () {
-			var _v3 = snake.direction;
-			switch (_v3.$) {
-				case 'Right':
-					return 0;
-				case 'Up':
-					return 90;
-				case 'Left':
-					return 180;
-				default:
-					return 270;
-			}
-		}());
-	var eyeRadius = $author$project$Grid$fracToGrid(0.15);
-	var _v0 = snake.head;
-	var i = _v0.a;
-	var j = _v0.b;
-	var _v1 = _Utils_Tuple2(
-		$author$project$Grid$toGrid(i),
-		$author$project$Grid$toGrid(j));
-	var headX0 = _v1.a;
-	var headY0 = _v1.b;
-	var eyeLeft = A2(
-		$MacCASOutreach$graphicsvg$GraphicSVG$move,
-		_Utils_Tuple2(headX0, headY0),
-		A2(
-			$MacCASOutreach$graphicsvg$GraphicSVG$rotate,
-			rotation,
-			A2(
-				$MacCASOutreach$graphicsvg$GraphicSVG$move,
-				_Utils_Tuple2(
-					$author$project$Grid$fracToGrid(0.25),
-					$author$project$Grid$fracToGrid(0.25)),
-				A2(
-					$MacCASOutreach$graphicsvg$GraphicSVG$filled,
-					$MacCASOutreach$graphicsvg$GraphicSVG$black,
-					$MacCASOutreach$graphicsvg$GraphicSVG$circle(eyeRadius)))));
-	var eyeRight = A2(
-		$MacCASOutreach$graphicsvg$GraphicSVG$move,
-		_Utils_Tuple2(headX0, headY0),
-		A2(
-			$MacCASOutreach$graphicsvg$GraphicSVG$rotate,
-			rotation,
-			A2(
-				$MacCASOutreach$graphicsvg$GraphicSVG$move,
-				_Utils_Tuple2(
-					$author$project$Grid$fracToGrid(0.25),
-					$author$project$Grid$fracToGrid(-0.25)),
-				A2(
-					$MacCASOutreach$graphicsvg$GraphicSVG$filled,
-					$MacCASOutreach$graphicsvg$GraphicSVG$black,
-					$MacCASOutreach$graphicsvg$GraphicSVG$circle(eyeRadius)))));
-	var head = A2(
-		$MacCASOutreach$graphicsvg$GraphicSVG$move,
-		_Utils_Tuple2(headX0, headY0),
-		A2(
-			$MacCASOutreach$graphicsvg$GraphicSVG$filled,
-			function () {
-				var _v2 = snake.state;
-				switch (_v2.$) {
-					case 'Normal':
-						return $MacCASOutreach$graphicsvg$GraphicSVG$brown;
-					case 'Eating':
-						return $MacCASOutreach$graphicsvg$GraphicSVG$pink;
-					case 'HitSelf':
-						return $MacCASOutreach$graphicsvg$GraphicSVG$red;
-					default:
-						return $MacCASOutreach$graphicsvg$GraphicSVG$purple;
-				}
-			}(),
-			A3(
-				$MacCASOutreach$graphicsvg$GraphicSVG$roundedRect,
-				$author$project$Grid$toGrid(1),
-				$author$project$Grid$toGrid(1),
-				$author$project$Grid$fracToGrid(0.25))));
-	return _List_fromArray(
-		[head, eyeLeft, eyeRight]);
-};
-var $author$project$Snake$viewSnakeSegment = function (_v0) {
-	var posX = _v0.a;
-	var posY = _v0.b;
-	return A2(
-		$MacCASOutreach$graphicsvg$GraphicSVG$move,
-		_Utils_Tuple2(
-			$author$project$Grid$toGrid(posX),
-			$author$project$Grid$toGrid(posY)),
-		A2(
-			$MacCASOutreach$graphicsvg$GraphicSVG$filled,
-			$MacCASOutreach$graphicsvg$GraphicSVG$black,
-			$MacCASOutreach$graphicsvg$GraphicSVG$circle(
-				$author$project$Grid$fracToGrid(0.5))));
-};
-var $author$project$Snake$view = function (snake) {
-	return _Utils_ap(
-		A2($elm$core$List$map, $author$project$Snake$viewSnakeSegment, snake.body),
-		$author$project$Snake$viewSnakeHead(snake));
-};
-var $MacCASOutreach$graphicsvg$GraphicSVG$AlignCentred = {$: 'AlignCentred'};
-var $MacCASOutreach$graphicsvg$GraphicSVG$Face = F8(
-	function (a, b, c, d, e, f, g, h) {
-		return {$: 'Face', a: a, b: b, c: c, d: d, e: e, f: f, g: g, h: h};
-	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$Text = F2(
-	function (a, b) {
-		return {$: 'Text', a: a, b: b};
-	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$centered = function (stencil) {
-	if (stencil.$ === 'Text') {
-		var _v1 = stencil.a;
-		var si = _v1.a;
-		var bo = _v1.b;
-		var i = _v1.c;
-		var u = _v1.d;
-		var s = _v1.e;
-		var sel = _v1.f;
-		var f = _v1.g;
-		var c = _v1.h;
-		var str = stencil.b;
-		return A2(
-			$MacCASOutreach$graphicsvg$GraphicSVG$Text,
-			A8($MacCASOutreach$graphicsvg$GraphicSVG$Face, si, bo, i, u, s, sel, f, $MacCASOutreach$graphicsvg$GraphicSVG$AlignCentred),
-			str);
-	} else {
-		var a = stencil;
-		return a;
-	}
-};
-var $MacCASOutreach$graphicsvg$GraphicSVG$size = F2(
-	function (sze, stencil) {
-		if (stencil.$ === 'Text') {
-			var _v1 = stencil.a;
-			var si = _v1.a;
-			var bo = _v1.b;
-			var i = _v1.c;
-			var u = _v1.d;
-			var s = _v1.e;
-			var sel = _v1.f;
-			var f = _v1.g;
-			var c = _v1.h;
-			var str = stencil.b;
-			return A2(
-				$MacCASOutreach$graphicsvg$GraphicSVG$Text,
-				A8($MacCASOutreach$graphicsvg$GraphicSVG$Face, sze, bo, i, u, s, sel, f, c),
-				str);
-		} else {
-			var a = stencil;
-			return a;
-		}
-	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$AlignLeft = {$: 'AlignLeft'};
-var $MacCASOutreach$graphicsvg$GraphicSVG$Serif = {$: 'Serif'};
-var $MacCASOutreach$graphicsvg$GraphicSVG$text = function (str) {
-	return A2(
-		$MacCASOutreach$graphicsvg$GraphicSVG$Text,
-		A8($MacCASOutreach$graphicsvg$GraphicSVG$Face, 12, false, false, false, false, false, $MacCASOutreach$graphicsvg$GraphicSVG$Serif, $MacCASOutreach$graphicsvg$GraphicSVG$AlignLeft),
-		str);
-};
-var $author$project$Main$viewGameOver = _List_fromArray(
-	[
-		A2(
-		$MacCASOutreach$graphicsvg$GraphicSVG$filled,
-		$MacCASOutreach$graphicsvg$GraphicSVG$red,
-		$MacCASOutreach$graphicsvg$GraphicSVG$centered(
-			A2(
-				$MacCASOutreach$graphicsvg$GraphicSVG$size,
-				$author$project$Grid$fracToGrid(1.5),
-				$MacCASOutreach$graphicsvg$GraphicSVG$text('GAME OVER'))))
-	]);
-var $author$project$Main$view = function (model) {
-	return _Utils_ap(
-		$author$project$Grid$view,
-		_Utils_ap(
-			$author$project$Food$view(model.food),
-			_Utils_ap(
-				$author$project$Snake$view(model.snake),
-				$author$project$Main$isGameOver(model) ? $author$project$Main$viewGameOver : _List_Nil)));
-};
+var $author$project$BugSoln$Right = {$: 'Right'};
+var $author$project$BugSoln$initialModel = {direction: $author$project$BugSoln$Right, x: 0, y: -4};
 var $MacCASOutreach$graphicsvg$GraphicSVG$collage = F3(
 	function (w, h, shapes) {
 		return A3($MacCASOutreach$graphicsvg$GraphicSVG$Collage, w, h, shapes);
 	});
-var $author$project$Grid$viewport = A2(
-	$MacCASOutreach$graphicsvg$GraphicSVG$collage,
-	$author$project$Grid$toGrid($author$project$Grid$grid.numColumns + 4),
-	$author$project$Grid$toGrid($author$project$Grid$grid.numRows + 4));
-var $author$project$Main$main = $MacCASOutreach$graphicsvg$GraphicSVG$App$graphicsApp(
+var $author$project$BugSoln$view = function (model) {
+	return A3($MacCASOutreach$graphicsvg$GraphicSVG$collage, 10, 10, _List_Nil);
+};
+var $author$project$BugSoln$main = $MacCASOutreach$graphicsvg$GraphicSVG$App$graphicsApp(
 	{
-		view: $author$project$Grid$viewport(
-			_Utils_ap(
-				$author$project$Grid$view,
-				$author$project$Main$view($author$project$Main$initialModel)))
+		view: $author$project$BugSoln$view($author$project$BugSoln$initialModel)
 	});
-_Platform_export({'Main':{'init':$author$project$Main$main(
+_Platform_export({'BugSoln':{'init':$author$project$BugSoln$main(
 	$elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));
 
-  var app = Elm.Main.init({ node: document.getElementById("elm") });
+  var app = Elm.BugSoln.init({ node: document.getElementById("elm") });
 }
 catch (e)
 {

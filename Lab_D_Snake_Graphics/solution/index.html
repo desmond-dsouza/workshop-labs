@@ -7857,6 +7857,80 @@ var $author$project$Types$HitWall = {$: 'HitWall'};
 var $author$project$Main$isGameOver = function (g) {
 	return _Utils_eq(g.snake.state, $author$project$Types$HitSelf) || _Utils_eq(g.snake.state, $author$project$Types$HitWall);
 };
+var $MacCASOutreach$graphicsvg$GraphicSVG$AlignCentred = {$: 'AlignCentred'};
+var $MacCASOutreach$graphicsvg$GraphicSVG$Face = F8(
+	function (a, b, c, d, e, f, g, h) {
+		return {$: 'Face', a: a, b: b, c: c, d: d, e: e, f: f, g: g, h: h};
+	});
+var $MacCASOutreach$graphicsvg$GraphicSVG$Text = F2(
+	function (a, b) {
+		return {$: 'Text', a: a, b: b};
+	});
+var $MacCASOutreach$graphicsvg$GraphicSVG$centered = function (stencil) {
+	if (stencil.$ === 'Text') {
+		var _v1 = stencil.a;
+		var si = _v1.a;
+		var bo = _v1.b;
+		var i = _v1.c;
+		var u = _v1.d;
+		var s = _v1.e;
+		var sel = _v1.f;
+		var f = _v1.g;
+		var c = _v1.h;
+		var str = stencil.b;
+		return A2(
+			$MacCASOutreach$graphicsvg$GraphicSVG$Text,
+			A8($MacCASOutreach$graphicsvg$GraphicSVG$Face, si, bo, i, u, s, sel, f, $MacCASOutreach$graphicsvg$GraphicSVG$AlignCentred),
+			str);
+	} else {
+		var a = stencil;
+		return a;
+	}
+};
+var $MacCASOutreach$graphicsvg$GraphicSVG$Sansserif = {$: 'Sansserif'};
+var $MacCASOutreach$graphicsvg$GraphicSVG$sansserif = function (stencil) {
+	if (stencil.$ === 'Text') {
+		var _v1 = stencil.a;
+		var si = _v1.a;
+		var bo = _v1.b;
+		var i = _v1.c;
+		var u = _v1.d;
+		var s = _v1.e;
+		var sel = _v1.f;
+		var f = _v1.g;
+		var c = _v1.h;
+		var str = stencil.b;
+		return A2(
+			$MacCASOutreach$graphicsvg$GraphicSVG$Text,
+			A8($MacCASOutreach$graphicsvg$GraphicSVG$Face, si, bo, i, u, s, sel, $MacCASOutreach$graphicsvg$GraphicSVG$Sansserif, c),
+			str);
+	} else {
+		var a = stencil;
+		return a;
+	}
+};
+var $MacCASOutreach$graphicsvg$GraphicSVG$AlignLeft = {$: 'AlignLeft'};
+var $MacCASOutreach$graphicsvg$GraphicSVG$Serif = {$: 'Serif'};
+var $MacCASOutreach$graphicsvg$GraphicSVG$text = function (str) {
+	return A2(
+		$MacCASOutreach$graphicsvg$GraphicSVG$Text,
+		A8($MacCASOutreach$graphicsvg$GraphicSVG$Face, 12, false, false, false, false, false, $MacCASOutreach$graphicsvg$GraphicSVG$Serif, $MacCASOutreach$graphicsvg$GraphicSVG$AlignLeft),
+		str);
+};
+var $author$project$Main$maybeNewGameButton = function (model) {
+	return $author$project$Main$isGameOver(model) ? _List_fromArray(
+		[
+			A2(
+			$MacCASOutreach$graphicsvg$GraphicSVG$move,
+			_Utils_Tuple2(0, 180),
+			A2(
+				$MacCASOutreach$graphicsvg$GraphicSVG$filled,
+				$MacCASOutreach$graphicsvg$GraphicSVG$black,
+				$MacCASOutreach$graphicsvg$GraphicSVG$centered(
+					$MacCASOutreach$graphicsvg$GraphicSVG$sansserif(
+						$MacCASOutreach$graphicsvg$GraphicSVG$text('Play Again (arrows to steer)')))))
+		]) : _List_Nil;
+};
 var $MacCASOutreach$graphicsvg$GraphicSVG$darkGreen = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 78, 154, 6, 1);
 var $MacCASOutreach$graphicsvg$GraphicSVG$darkRed = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 164, 0, 0, 1);
 var $MacCASOutreach$graphicsvg$GraphicSVG$Path = function (a) {
@@ -8089,36 +8163,6 @@ var $author$project$Snake$view = function (snake) {
 		A2($elm$core$List$map, $author$project$Snake$viewSnakeSegment, snake.body),
 		$author$project$Snake$viewSnakeHead(snake));
 };
-var $MacCASOutreach$graphicsvg$GraphicSVG$AlignCentred = {$: 'AlignCentred'};
-var $MacCASOutreach$graphicsvg$GraphicSVG$Face = F8(
-	function (a, b, c, d, e, f, g, h) {
-		return {$: 'Face', a: a, b: b, c: c, d: d, e: e, f: f, g: g, h: h};
-	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$Text = F2(
-	function (a, b) {
-		return {$: 'Text', a: a, b: b};
-	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$centered = function (stencil) {
-	if (stencil.$ === 'Text') {
-		var _v1 = stencil.a;
-		var si = _v1.a;
-		var bo = _v1.b;
-		var i = _v1.c;
-		var u = _v1.d;
-		var s = _v1.e;
-		var sel = _v1.f;
-		var f = _v1.g;
-		var c = _v1.h;
-		var str = stencil.b;
-		return A2(
-			$MacCASOutreach$graphicsvg$GraphicSVG$Text,
-			A8($MacCASOutreach$graphicsvg$GraphicSVG$Face, si, bo, i, u, s, sel, f, $MacCASOutreach$graphicsvg$GraphicSVG$AlignCentred),
-			str);
-	} else {
-		var a = stencil;
-		return a;
-	}
-};
 var $MacCASOutreach$graphicsvg$GraphicSVG$size = F2(
 	function (sze, stencil) {
 		if (stencil.$ === 'Text') {
@@ -8141,14 +8185,6 @@ var $MacCASOutreach$graphicsvg$GraphicSVG$size = F2(
 			return a;
 		}
 	});
-var $MacCASOutreach$graphicsvg$GraphicSVG$AlignLeft = {$: 'AlignLeft'};
-var $MacCASOutreach$graphicsvg$GraphicSVG$Serif = {$: 'Serif'};
-var $MacCASOutreach$graphicsvg$GraphicSVG$text = function (str) {
-	return A2(
-		$MacCASOutreach$graphicsvg$GraphicSVG$Text,
-		A8($MacCASOutreach$graphicsvg$GraphicSVG$Face, 12, false, false, false, false, false, $MacCASOutreach$graphicsvg$GraphicSVG$Serif, $MacCASOutreach$graphicsvg$GraphicSVG$AlignLeft),
-		str);
-};
 var $author$project$Main$viewGameOver = _List_fromArray(
 	[
 		A2(
@@ -8164,10 +8200,12 @@ var $author$project$Main$view = function (model) {
 	return _Utils_ap(
 		$author$project$Grid$view,
 		_Utils_ap(
-			$author$project$Food$view(model.food),
+			$author$project$Main$maybeNewGameButton(model),
 			_Utils_ap(
-				$author$project$Snake$view(model.snake),
-				$author$project$Main$isGameOver(model) ? $author$project$Main$viewGameOver : _List_Nil)));
+				$author$project$Food$view(model.food),
+				_Utils_ap(
+					$author$project$Snake$view(model.snake),
+					$author$project$Main$isGameOver(model) ? $author$project$Main$viewGameOver : _List_Nil))));
 };
 var $MacCASOutreach$graphicsvg$GraphicSVG$collage = F3(
 	function (w, h, shapes) {
@@ -8175,8 +8213,8 @@ var $MacCASOutreach$graphicsvg$GraphicSVG$collage = F3(
 	});
 var $author$project$Grid$viewport = A2(
 	$MacCASOutreach$graphicsvg$GraphicSVG$collage,
-	$author$project$Grid$toGrid($author$project$Grid$grid.numColumns + 4),
-	$author$project$Grid$toGrid($author$project$Grid$grid.numRows + 4));
+	$author$project$Grid$toGrid($author$project$Grid$grid.numColumns + 6),
+	$author$project$Grid$toGrid($author$project$Grid$grid.numRows + 6));
 var $author$project$Main$main = $MacCASOutreach$graphicsvg$GraphicSVG$App$graphicsApp(
 	{
 		view: $author$project$Grid$viewport(

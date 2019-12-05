@@ -42,7 +42,7 @@ view =
 
 
 viewport =
-    collage ((grid.numColumns + 4) |> toGrid) ((grid.numRows + 4) |> toGrid)
+    collage ((grid.numColumns + 6) |> toGrid) ((grid.numRows + 6) |> toGrid)
 
 
 main =
