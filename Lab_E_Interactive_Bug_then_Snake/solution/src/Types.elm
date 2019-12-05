@@ -1,7 +1,6 @@
 module Types exposing (..)
 
 import Lib.WkApp as App
-import Time
 
 
 type alias Model =

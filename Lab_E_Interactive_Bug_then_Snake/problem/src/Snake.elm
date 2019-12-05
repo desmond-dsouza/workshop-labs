@@ -95,8 +95,8 @@ nextDirection oldDir newDir =
 
 
 turn : Direction -> Snake -> Snake
-turn newDirection snake =
-    { snake | direction = nextDirection snake.direction newDirection }
+turn newDir snake =
+    { snake | direction = nextDirection snake.direction newDir }
 
 
 stepHead : Head -> Direction -> Head

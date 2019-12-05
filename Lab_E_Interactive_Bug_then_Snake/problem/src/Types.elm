@@ -1,5 +1,7 @@
 module Types exposing (..)
 
+import Lib.WkApp as App
+
 
 type alias Model =
     { snake : Snake
@@ -55,3 +57,8 @@ type alias Grid =
 
 type alias Walls =
     { left : Int, right : Int, top : Int, bottom : Int }
+
+
+type Msg
+    = Tick Float App.GetKeyState
+    | NewGame

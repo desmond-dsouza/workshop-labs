@@ -14,7 +14,7 @@ import Types exposing (..)
 
 main =
     App.simpleGameApp
-        (App.Every 100)
+        (App.Every 1000)
         Tick
         { init = initialModel
         , view = view
@@ -145,7 +145,7 @@ decodeKeys keyF =
 update : Types.Msg -> Model -> Model
 update msg model =
     case msg of
-        Tick time ( keyFunc, sumOfArrows1, sumOfArrows2 ) ->
+        Tick time ( keyFunc, _, _ ) ->
             case ( model.snake.state, decodeKeys keyFunc ) of
                 ( HitSelf, NewGame ) ->
                     initialModel

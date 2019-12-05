@@ -9046,8 +9046,6 @@ var $author$project$Main$update = F2(
 			var time = msg.a;
 			var _v1 = msg.b;
 			var keyFunc = _v1.a;
-			var sumOfArrows1 = _v1.b;
-			var sumOfArrows2 = _v1.c;
 			var _v2 = _Utils_Tuple2(
 				model.snake.state,
 				$author$project$Main$decodeKeys(keyFunc));
@@ -9476,7 +9474,7 @@ var $author$project$Main$view = function (model) {
 };
 var $author$project$Main$main = A3(
 	$author$project$Lib$WkApp$simpleGameApp,
-	$author$project$Lib$WkApp$Every(100),
+	$author$project$Lib$WkApp$Every(1000),
 	$author$project$Types$Tick,
 	{init: $author$project$Main$initialModel, title: 'Snake', update: $author$project$Main$update, view: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(

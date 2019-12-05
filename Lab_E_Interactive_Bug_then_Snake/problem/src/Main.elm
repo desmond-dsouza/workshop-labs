@@ -1,50 +1,25 @@
 module Main exposing (..)
 
 import Food
-import GraphicSVG exposing (Shape, blue, centered, collage, filled, move, red, size, text)
-import GraphicSVG.App exposing (graphicsApp)
+import GraphicSVG exposing (..)
 import Grid
+import Lib.WkApp as App exposing (KeyState(..), Keys(..))
 import Snake
 import Types exposing (..)
 
 
 
-{- 👉 TODO:
-      - You already have `view` as a function, and an `initialModel`
-      - You already have many update-related functions, like `step` and `turn`
-      - You will need to `import` `simpleGameApp` and other items from Lib.WkApp
-          - And will no longer need `GraphicSVG.App` or `graphicsApp`
-      - In `Types.elm` define Msg type as: Tick Float GetKeyState
-          - Tick will tell us a time slice has elapsed
-          - GetKeyState will give information about keys pressed
-          - GetKeyState = (Keys -> KeyState, _, _)
-          - We only need the 1st item in GetKeyState to detect specific keys
-      - Use `simpleGameApp` in your `main` -- it will need an `update`
-      - Write a dummy `update` function that just `steps` the model (i.e. animation only)
-          - Your goal is just for `simpleGameApp` to compile and run
-      - When the snake eats the apple, just let the new apple be in the same place (for now)
-      - Add helper `decodeKeys: (Keys -> KeyState) -> UserRequests`
-      - Add union type `UserRequests` to describe the main user requests that accompany each Tick
-          - Turn in some direction
-          - Start new game
-          - None (for the case where the keys do not encode a user request)
-      - Using `decodeKeys`, extend `update` to turn the snake
-      - Extend `update` to start a new game on demand
-
-   If you finish the above early, you can try this to move the food around a bit:
-      - Cycle the apple across 4 fixed locations coded into `nextFoodLocation`
-      - nextFoodLocation : Food -> Food -- given current food location, what is the next one
-
-
--}
 -- MAIN -------------------
 
 
 main =
-    graphicsApp
-        { view =
-            Grid.viewport
-                (Grid.view ++ view initialModel)
+    App.simpleGameApp
+        (App.Every 1000)
+        Tick
+        { init = initialModel
+        , view = view
+        , update = update
+        , title = "Snake"
         }
 
 
@@ -61,25 +36,69 @@ initialModel =
         , direction = Right
         , state = Normal
         }
-    , food = ( Grid.grid.numColumns // 2 - 1, 0 )
+    , food = nextFoodLocation ( 0, 0 )
     }
+
+
+nextFoodLocation oldLoc =
+    let
+        loc1 =
+            ( 6, 0 )
+
+        loc2 =
+            ( -6, 0 )
+
+        loc3 =
+            ( 0, 6 )
+
+        loc4 =
+            ( 0, -6 )
+    in
+    if oldLoc == loc1 then
+        loc2
+
+    else if oldLoc == loc2 then
+        loc3
+
+    else if oldLoc == loc3 then
+        loc4
+
+    else
+        loc1
 
 
 
 -- VIEW ----------------
 
 
-view : Model -> List (Shape msg)
+view : Model -> Collage Types.Msg
 view model =
-    Grid.view
-        ++ Food.view model.food
-        ++ Snake.view model.snake
-        ++ (if isGameOver model then
-                viewGameOver
+    Grid.viewport
+        (Grid.view
+            ++ maybeNewGameButton model
+            ++ Food.view model.food
+            ++ Snake.view model.snake
+            ++ (if isGameOver model then
+                    viewGameOver
 
-            else
-                []
-           )
+                else
+                    []
+               )
+        )
+
+
+maybeNewGameButton model =
+    if isGameOver model then
+        [ text "Play Again (arrows to steer)"
+            |> sansserif
+            |> centered
+            |> filled black
+            |> notifyTap Types.NewGame
+            |> move ( 0, 180 )
+        ]
+
+    else
+        []
 
 
 isGameOver : Model -> Bool
@@ -87,9 +106,72 @@ isGameOver g =
     g.snake.state == Types.HitSelf || g.snake.state == Types.HitWall
 
 
-viewGameOver : List (Shape msg)
+viewGameOver : List (Shape Types.Msg)
 viewGameOver =
     [ text "GAME OVER" |> size (1.5 |> Grid.fracToGrid) |> centered |> filled red ]
+
+
+
+-- UPDATE ----------------
+
+
+type UserRequest
+    = NewGame
+    | Turn Direction
+    | None
+
+
+decodeKeys : (Keys -> KeyState) -> UserRequest
+decodeKeys keyF =
+    if keyF Space == JustDown then
+        NewGame
+
+    else if keyF LeftArrow == JustDown then
+        Turn Types.Left
+
+    else if keyF DownArrow == JustDown then
+        Turn Types.Down
+
+    else if keyF RightArrow == JustDown then
+        Turn Types.Right
+
+    else if keyF UpArrow == JustDown then
+        Turn Types.Up
+
+    else
+        None
+
+
+update : Types.Msg -> Model -> Model
+update msg model =
+    case msg of
+        Tick time ( keyFunc, _, _ ) ->
+            case ( model.snake.state, decodeKeys keyFunc ) of
+                ( HitSelf, NewGame ) ->
+                    initialModel
+
+                ( HitWall, NewGame ) ->
+                    initialModel
+
+                ( HitSelf, _ ) ->
+                    model
+
+                ( HitWall, _ ) ->
+                    model
+
+                ( _, Turn direction ) ->
+                    let
+                        snake =
+                            model.snake
+                    in
+                    { model | snake = Snake.turn direction snake }
+                        |> step Grid.walls
+
+                ( _, _ ) ->
+                    model |> step Grid.walls
+
+        Types.NewGame ->
+            initialModel
 
 
 step : Walls -> Model -> Model
@@ -98,4 +180,12 @@ step walls model =
         newSnake =
             Snake.stepSnake model.food walls model.snake
     in
-    { model | snake = newSnake }
+    { model
+        | snake = newSnake
+        , food =
+            if newSnake.state == Eating then
+                nextFoodLocation model.food
+
+            else
+                model.food
+    }
