@@ -51,10 +51,6 @@ viewBug ( x, y ) direction =
 
 
 view model =
-    {- 👉 TODO:
-       - Fill in `notifyX` for these shapes in stages
-       - Get each stage to compile
-    -}
     let
         resetButton =
             circle 0.5
@@ -90,29 +86,16 @@ view model =
 
 
 ------- INTERACTION -------
-{- 💡 HINT:
-   - Build up Msg, UserRequest, update, and decode in stages
-   - Subscribe to receiving those messages e.g. in `view` or `main`
--}
 
 
-type
-    Msg
-    {- 👉 TODO:
-       - Tick (with Float for seconds + GetKeyState)
-       - Reset button tapped
-       - Jump button tapped
-       - Board tapped at some (x, y) position
-    -}
+type Msg
     = Tick Float App.GetKeyState
     | ResetBtnTap
     | JumpBtnTap
     | BoardTapAt ( Float, Float )
 
 
-type
-    UserRequest
-    -- 👉 TODO: Union type for user requests
+type UserRequest
     = Jump
     | Go Direction
     | Reset
@@ -170,11 +153,21 @@ decodeKeys keyF =
 
 
 update msg model =
+    {- 👉 TODO: This type changes:
+       - Add the original type annotation for this
+       - Compile
+       - Change to the new type including `Cmd`
+    -}
     let
         { x, y, direction } =
             model
     in
     case msg of
+        {- 👉 TODO: Add Cmds: playSound "..." or Cmd.none
+           - jump.wav for jumps (keyboard or button)
+           - success.wav for Reset
+           - bump.mp3 for changing direction
+        -}
         Tick seconds ( keyFunction, _, _ ) ->
             case ( decodeKeys keyFunction, direction ) of
                 ( Just Space, _ ) ->
@@ -209,6 +202,7 @@ update msg model =
 
 main =
     App.simpleGameApp
+        -- 👉 TODO: simpleGameApp cannot handle Cmds. Fix this.
         (App.Every 300)
         Tick
         { title = "Game!"
