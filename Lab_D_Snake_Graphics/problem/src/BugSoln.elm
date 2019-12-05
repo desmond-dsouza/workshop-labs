@@ -1,4 +1,4 @@
-module BugSolnGraphics exposing (..)
+module BugSoln exposing (..)
 
 import GraphicSVG exposing (..)
 import GraphicSVG.App exposing (graphicsApp)
@@ -30,30 +30,28 @@ viewBug ( x, y ) direction =
        body: green rounded rectangle 1x0.5x0.2
        eye: r=0.05 black at +/- 0.35x, +0.1y
     -}
-    circle 1 |> filled green
+    let
+        body =
+            roundedRect 1 0.5 0.2
+                |> filled green
+                |> move ( x, y )
 
+        eye =
+            circle 0.05
+                |> filled black
+                |> move
+                    ( x
+                        + (case direction of
+                            Right ->
+                                0.35
 
-
--- let
---     body =
---         roundedRect 1 0.5 0.2
---             |> filled green
---             |> move ( x, y )
---     eye =
---         circle 0.05
---             |> filled black
---             |> move
---                 ( x
---                     + (case direction of
---                         Right ->
---                             0.35
---                         Left ->
---                             -0.35
---                       )
---                 , y + 0.1
---                 )
--- in
--- group [ body, eye ]
+                            Left ->
+                                -0.35
+                          )
+                    , y + 0.1
+                    )
+    in
+    group [ body, eye ]
 
 
 view model =
@@ -64,31 +62,33 @@ view model =
        - orange circle jumpButton at (2, 4)
        - the bug
     -}
-    collage 10 10 []
+    let
+        tapSurface =
+            rect 10 8
+                |> filled (rgba 0 0 0 0)
+                |> addOutline (dashed 0.05) lightBlue
+                |> move ( 0, -1 )
+
+        resetButton =
+            circle 0.5 |> filled purple |> move ( 0, 4 )
+
+        jumpButton =
+            circle 0.5 |> filled orange |> move ( 2, 4 )
+
+        bug =
+            viewBug ( model.x, model.y ) model.direction
+    in
+    collage 10
+        10
+        [ graphPaperCustom 1 0.05 lightGrey
+        , bug
+        , resetButton
+        , jumpButton
+        , tapSurface
+        ]
 
 
 
--- let
---     tapSurface =
---         rect 10 8
---             |> filled (rgba 0 0 0 0)
---             |> addOutline (dashed 0.05) lightBlue
---             |> move ( 0, -1 )
---     resetButton =
---         circle 0.5 |> filled purple |> move ( 0, 4 )
---     jumpButton =
---         circle 0.5 |> filled orange |> move ( 2, 4 )
---     bug =
---         viewBug ( model.x, model.y ) model.direction
--- in
--- collage 10
---     10
---     [ graphPaperCustom 1 0.05 lightGrey
---     , bug
---     , resetButton
---     , jumpButton
---     , tapSurface
---     ]
 ------- ACTIONS ON MODEL -------
 
 

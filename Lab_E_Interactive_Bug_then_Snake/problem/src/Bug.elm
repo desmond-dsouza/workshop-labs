@@ -1,4 +1,4 @@
-module BugSoln exposing (..)
+module Bug exposing (..)
 
 import GraphicSVG exposing (..)
 import Lib.WkApp as App exposing (KeyState(..), Keys(..))
@@ -60,21 +60,21 @@ view model =
             circle 0.5
                 |> filled purple
                 |> move ( 0, 4 )
-                |> notifyTap ResetBtnTap
 
+        -- |> notifyTap ResetBtnTap
         jumpButton =
             circle 0.5
                 |> filled orange
                 |> move ( 2, 4 )
-                |> notifyTap JumpBtnTap
 
+        -- |> notifyTap JumpBtnTap
         tapSurface =
             rect 10 8
                 |> filled (rgba 0 0 0 0)
                 |> addOutline (dashed 0.05) lightBlue
                 |> move ( 0, -1 )
-                |> notifyTapAt BoardTapAt
 
+        -- |> notifyTapAt BoardTapAt
         bug =
             viewBug ( model.x, model.y ) model.direction
     in
@@ -104,50 +104,57 @@ type
        - Jump button tapped
        - Board tapped at some (x, y) position
     -}
-    = Tick Float App.GetKeyState
-    | ResetBtnTap
-    | JumpBtnTap
-    | BoardTapAt ( Float, Float )
+    = FillMeIn_1
+
+
+
+-- = Tick Float App.GetKeyState
+-- | ResetBtnTap
+-- | JumpBtnTap
+-- | BoardTapAt ( Float, Float )
 
 
 type
     UserRequest
     -- 👉 TODO: Union type for user requests
-    = Jump
-    | Go Direction
-    | Reset
-    | None
+    = FillMeIn_2
 
 
 
+-- = Jump
+-- | Go Direction
+-- | Reset
+-- | None
 ------- DECODE KEYS, MOUSE -> UserRequest ------
 
 
 decodeKeys : (Keys -> KeyState) -> UserRequest
 decodeKeys keyF =
     -- 👉 TODO: Jump if Space key was pressed
-    if keyF Space == JustDown || keyF Space == Down then
-        Jump
+    None
 
-    else
-        None
+
+
+-- if keyF Space == JustDown || keyF Space == Down then
+--     Jump
+-- else
+--     None
 
 
 decodeTap : ( Float, Float ) -> Model -> UserRequest
 decodeTap ( tapX, tapY ) model =
     -- 👉 TODO: Flip direction based on tap vs. bug position
-    case ( model.direction, tapX <= model.x ) of
-        ( Right, True ) ->
-            Go Left
-
-        ( Left, False ) ->
-            Go Right
-
-        _ ->
-            None
+    None
 
 
 
+-- case ( model.direction, tapX <= model.x ) of
+--     ( Right, True ) ->
+--         Go Left
+--     ( Left, False ) ->
+--         Go Right
+--     _ ->
+--         None
 ------- ACTIONS ON MODEL -------
 
 
@@ -178,35 +185,33 @@ reset model =
 
 update msg model =
     -- 👉 TODO: Handle the Msg variants one at a time
-    let
-        { x, y, direction } =
-            model
-    in
-    case msg of
-        Tick seconds ( keyFunction, _, _ ) ->
-            case ( decodeKeys keyFunction, direction ) of
-                ( Jump, _ ) ->
-                    jump model |> step
+    model
 
-                ( _, _ ) ->
-                    model |> step
 
-        ResetBtnTap ->
-            reset model
 
-        JumpBtnTap ->
-            jump model |> step
-
-        BoardTapAt ( tapX, tapY ) ->
-            case ( model.direction, tapX <= model.x ) of
-                ( Right, True ) ->
-                    { model | direction = Left }
-
-                ( Left, False ) ->
-                    { model | direction = Right }
-
-                _ ->
-                    model
+-- let
+--     { x, y, direction } =
+--         model
+-- in
+-- case msg of
+--     Tick seconds ( keyFunction, _, _ ) ->
+--         case ( decodeKeys keyFunction, direction ) of
+--             ( Jump, _ ) ->
+--                 jump model |> step
+--             ( _, _ ) ->
+--                 model |> step
+--     ResetBtnTap ->
+--         reset model
+--     JumpBtnTap ->
+--         jump model |> step
+--     BoardTapAt ( tapX, tapY ) ->
+--         case ( model.direction, tapX <= model.x ) of
+--             ( Right, True ) ->
+--                 { model | direction = Left }
+--             ( Left, False ) ->
+--                 { model | direction = Right }
+--             _ ->
+--                 model
 
 
 main =
