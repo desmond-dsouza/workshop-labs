@@ -1,6 +1,5 @@
 module Snake exposing (..)
 
-import Debug
 import GraphicSVG exposing (..)
 import GraphicSVG.App exposing (graphicsApp)
 import Grid exposing (fracToGrid, grid, toGrid)

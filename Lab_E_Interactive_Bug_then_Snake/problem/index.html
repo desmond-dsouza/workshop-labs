@@ -4459,14 +4459,20 @@ var $elm$core$Basics$GT = {$: 'GT'};
 var $elm$core$Basics$LT = {$: 'LT'};
 var $author$project$Types$Normal = {$: 'Normal'};
 var $author$project$Types$Right = {$: 'Right'};
-var $author$project$Grid$grid = {cellSize: 20, numColumns: 14, numRows: 14};
-var $elm$core$Basics$idiv = _Basics_idiv;
 var $elm$core$Basics$negate = function (n) {
 	return -n;
 };
-var $elm$core$Basics$sub = _Basics_sub;
+var $elm$core$Basics$eq = _Utils_equal;
+var $author$project$Main$nextFoodLocation = function (oldLoc) {
+	var loc4 = _Utils_Tuple2(0, -6);
+	var loc3 = _Utils_Tuple2(0, 6);
+	var loc2 = _Utils_Tuple2(-6, 0);
+	var loc1 = _Utils_Tuple2(6, 0);
+	return _Utils_eq(oldLoc, loc1) ? loc2 : (_Utils_eq(oldLoc, loc2) ? loc3 : (_Utils_eq(oldLoc, loc3) ? loc4 : loc1));
+};
 var $author$project$Main$initialModel = {
-	food: _Utils_Tuple2((($author$project$Grid$grid.numColumns / 2) | 0) - 1, 0),
+	food: $author$project$Main$nextFoodLocation(
+		_Utils_Tuple2(0, 0)),
 	snake: {
 		body: _List_fromArray(
 			[
@@ -4559,6 +4565,7 @@ var $elm$core$List$length = function (xs) {
 };
 var $elm$core$List$map2 = _List_map2;
 var $elm$core$Basics$le = _Utils_le;
+var $elm$core$Basics$sub = _Basics_sub;
 var $elm$core$List$rangeHelp = F3(
 	function (lo, hi, list) {
 		rangeHelp:
@@ -4746,7 +4753,6 @@ var $elm$core$Basics$apR = F2(
 	function (x, f) {
 		return f(x);
 	});
-var $elm$core$Basics$eq = _Utils_equal;
 var $elm$core$Basics$floor = _Basics_floor;
 var $elm$core$Elm$JsArray$length = _JsArray_length;
 var $elm$core$Basics$gt = _Utils_gt;
@@ -4824,6 +4830,7 @@ var $elm$core$Array$builderToArray = F2(
 				builder.tail);
 		}
 	});
+var $elm$core$Basics$idiv = _Basics_idiv;
 var $elm$core$Basics$lt = _Utils_lt;
 var $elm$core$Array$initializeHelp = F5(
 	function (fn, fromIndex, len, nodeList, tail) {
@@ -9004,7 +9011,10 @@ var $author$project$Main$step = F2(
 		var newSnake = A3($author$project$Snake$stepSnake, model.food, walls, model.snake);
 		return _Utils_update(
 			model,
-			{snake: newSnake});
+			{
+				food: _Utils_eq(newSnake.state, $author$project$Types$Eating) ? $author$project$Main$nextFoodLocation(model.food) : model.food,
+				snake: newSnake
+			});
 	});
 var $author$project$Snake$invalidTransitions = _List_fromArray(
 	[
@@ -9028,73 +9038,68 @@ var $author$project$Snake$turn = F2(
 				direction: A2($author$project$Snake$nextDirection, snake.direction, newDir)
 			});
 	});
+var $author$project$Grid$grid = {cellSize: 20, numColumns: 14, numRows: 14};
 var $author$project$Grid$walls = {bottom: ((-$author$project$Grid$grid.numRows) / 2) | 0, left: ((-$author$project$Grid$grid.numColumns) / 2) | 0, right: ($author$project$Grid$grid.numColumns / 2) | 0, top: ($author$project$Grid$grid.numRows / 2) | 0};
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		switch (msg.$) {
-			case 'Tick':
-				var time = msg.a;
-				var _v1 = msg.b;
-				var keyFunc = _v1.a;
-				var _v2 = _Utils_Tuple2(
-					model.snake.state,
-					$author$project$Main$decodeKeys(keyFunc));
-				_v2$2:
+		if (msg.$ === 'Tick') {
+			var time = msg.a;
+			var _v1 = msg.b;
+			var keyFunc = _v1.a;
+			var _v2 = _Utils_Tuple2(
+				model.snake.state,
+				$author$project$Main$decodeKeys(keyFunc));
+			_v2$2:
+			while (true) {
+				_v2$3:
 				while (true) {
-					_v2$3:
-					while (true) {
-						switch (_v2.a.$) {
-							case 'HitSelf':
-								switch (_v2.b.$) {
-									case 'NewGame':
-										var _v3 = _v2.a;
-										var _v4 = _v2.b;
-										return $author$project$Main$initialModel;
-									case 'Turn':
-										break _v2$2;
-									default:
-										break _v2$2;
-								}
-							case 'HitWall':
-								switch (_v2.b.$) {
-									case 'NewGame':
-										var _v5 = _v2.a;
-										var _v6 = _v2.b;
-										return $author$project$Main$initialModel;
-									case 'Turn':
-										break _v2$3;
-									default:
-										break _v2$3;
-								}
-							default:
-								if (_v2.b.$ === 'Turn') {
-									var direction = _v2.b.a;
-									var snake = model.snake;
-									return A2(
-										$author$project$Main$step,
-										$author$project$Grid$walls,
-										_Utils_update(
-											model,
-											{
-												snake: A2($author$project$Snake$turn, direction, snake)
-											}));
-								} else {
-									return A2($author$project$Main$step, $author$project$Grid$walls, model);
-								}
-						}
+					switch (_v2.a.$) {
+						case 'HitSelf':
+							switch (_v2.b.$) {
+								case 'NewGame':
+									var _v3 = _v2.a;
+									var _v4 = _v2.b;
+									return $author$project$Main$initialModel;
+								case 'Turn':
+									break _v2$2;
+								default:
+									break _v2$2;
+							}
+						case 'HitWall':
+							switch (_v2.b.$) {
+								case 'NewGame':
+									var _v5 = _v2.a;
+									var _v6 = _v2.b;
+									return $author$project$Main$initialModel;
+								case 'Turn':
+									break _v2$3;
+								default:
+									break _v2$3;
+							}
+						default:
+							if (_v2.b.$ === 'Turn') {
+								var direction = _v2.b.a;
+								var snake = model.snake;
+								return A2(
+									$author$project$Main$step,
+									$author$project$Grid$walls,
+									_Utils_update(
+										model,
+										{
+											snake: A2($author$project$Snake$turn, direction, snake)
+										}));
+							} else {
+								return A2($author$project$Main$step, $author$project$Grid$walls, model);
+							}
 					}
-					var _v8 = _v2.a;
-					return model;
 				}
-				var _v7 = _v2.a;
+				var _v8 = _v2.a;
 				return model;
-			case 'NewFood':
-				var food = msg.a;
-				return _Utils_update(
-					model,
-					{food: food});
-			default:
-				return $author$project$Main$initialModel;
+			}
+			var _v7 = _v2.a;
+			return model;
+		} else {
+			return $author$project$Main$initialModel;
 		}
 	});
 var $author$project$Main$isGameOver = function (g) {
@@ -9264,6 +9269,12 @@ var $author$project$Food$view = function (_v0) {
 				$author$project$Grid$toGrid(1)))
 		]);
 };
+var $MacCASOutreach$graphicsvg$GraphicSVG$Circle = function (a) {
+	return {$: 'Circle', a: a};
+};
+var $MacCASOutreach$graphicsvg$GraphicSVG$circle = function (r) {
+	return $MacCASOutreach$graphicsvg$GraphicSVG$Circle(r);
+};
 var $MacCASOutreach$graphicsvg$GraphicSVG$darkGrey = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 186, 189, 182, 1);
 var $MacCASOutreach$graphicsvg$GraphicSVG$graphPaperCustom = F3(
 	function (s, th, c) {
@@ -9273,6 +9284,10 @@ var $MacCASOutreach$graphicsvg$GraphicSVG$lightGrey = A4($MacCASOutreach$graphic
 var $author$project$Grid$view = _List_fromArray(
 	[
 		A3($MacCASOutreach$graphicsvg$GraphicSVG$graphPaperCustom, $author$project$Grid$grid.cellSize, 0.5, $MacCASOutreach$graphicsvg$GraphicSVG$lightGrey),
+		A2(
+		$MacCASOutreach$graphicsvg$GraphicSVG$filled,
+		$MacCASOutreach$graphicsvg$GraphicSVG$black,
+		$MacCASOutreach$graphicsvg$GraphicSVG$circle(0.05 * $author$project$Grid$grid.cellSize)),
 		A3(
 		$MacCASOutreach$graphicsvg$GraphicSVG$outlined,
 		$MacCASOutreach$graphicsvg$GraphicSVG$solid(3),
@@ -9283,12 +9298,6 @@ var $author$project$Grid$view = _List_fromArray(
 			$author$project$Grid$toGrid($author$project$Grid$grid.numRows + 1)))
 	]);
 var $MacCASOutreach$graphicsvg$GraphicSVG$brown = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 193, 125, 17, 1);
-var $MacCASOutreach$graphicsvg$GraphicSVG$Circle = function (a) {
-	return {$: 'Circle', a: a};
-};
-var $MacCASOutreach$graphicsvg$GraphicSVG$circle = function (r) {
-	return $MacCASOutreach$graphicsvg$GraphicSVG$Circle(r);
-};
 var $elm$core$Basics$pi = _Basics_pi;
 var $elm$core$Basics$degrees = function (angleInDegrees) {
 	return (angleInDegrees * $elm$core$Basics$pi) / 180;
@@ -9465,7 +9474,7 @@ var $author$project$Main$view = function (model) {
 };
 var $author$project$Main$main = A3(
 	$author$project$Lib$WkApp$simpleGameApp,
-	$author$project$Lib$WkApp$Every(150),
+	$author$project$Lib$WkApp$Every(1000),
 	$author$project$Types$Tick,
 	{init: $author$project$Main$initialModel, title: 'Snake', update: $author$project$Main$update, view: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(

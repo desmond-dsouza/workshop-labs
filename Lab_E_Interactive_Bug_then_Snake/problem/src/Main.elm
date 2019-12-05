@@ -41,27 +41,16 @@ initialModel =
 
 
 nextFoodLocation oldLoc =
+    -- 👉 TODO: Pick 4 locations and rotate betwen them
     let
         loc1 =
             ( 6, 0 )
 
         loc2 =
             ( -6, 0 )
-
-        loc3 =
-            ( 0, 6 )
-
-        loc4 =
-            ( 0, -6 )
     in
     if oldLoc == loc1 then
         loc2
-
-    else if oldLoc == loc2 then
-        loc3
-
-    else if oldLoc == loc3 then
-        loc4
 
     else
         loc1
@@ -93,7 +82,9 @@ maybeNewGameButton model =
             |> sansserif
             |> centered
             |> filled black
-            |> notifyTap Types.NewGame
+            {- 👉 TODO: This button should trigger a NewGame Msg when pressed
+               💡 HINT: see notifyTap; Msg type is in Types.elm file.
+            -}
             |> move ( 0, 180 )
         ]
 
@@ -128,15 +119,9 @@ decodeKeys keyF =
 
     else if keyF LeftArrow == JustDown then
         Turn Types.Left
-
-    else if keyF DownArrow == JustDown then
-        Turn Types.Down
-
-    else if keyF RightArrow == JustDown then
-        Turn Types.Right
-
-    else if keyF UpArrow == JustDown then
-        Turn Types.Up
+        {- 👉 TODO: Should handle all arrow keys
+           - Should also handle case of no valid keys being pressed
+        -}
 
     else
         None
@@ -145,6 +130,7 @@ decodeKeys keyF =
 update : Types.Msg -> Model -> Model
 update msg model =
     case msg of
+        -- 👉 TODO: need to cover other msgs too, not just Tick
         Tick time ( keyFunc, _, _ ) ->
             case ( model.snake.state, decodeKeys keyFunc ) of
                 ( HitSelf, NewGame ) ->
@@ -153,25 +139,17 @@ update msg model =
                 ( HitWall, NewGame ) ->
                     initialModel
 
-                ( HitSelf, _ ) ->
-                    model
-
-                ( HitWall, _ ) ->
-                    model
-
+                {- 👉 TODO: carefully carefully other valid combinations -}
                 ( _, Turn direction ) ->
                     let
-                        snake =
+                        oldSnake =
                             model.snake
                     in
-                    { model | snake = Snake.turn direction snake }
-                        |> step Grid.walls
+                    -- 👉 TODO: need to turn snake & step it too
+                    { model | snake = oldSnake }
 
                 ( _, _ ) ->
-                    model |> step Grid.walls
-
-        Types.NewGame ->
-            initialModel
+                    model
 
 
 step : Walls -> Model -> Model
@@ -183,9 +161,6 @@ step walls model =
     { model
         | snake = newSnake
         , food =
-            if newSnake.state == Eating then
-                nextFoodLocation model.food
-
-            else
-                model.food
+            -- 👉 TODO: if newSnake is Eating, need new location of food
+            model.food
     }
