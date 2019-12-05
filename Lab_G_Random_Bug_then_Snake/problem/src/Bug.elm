@@ -1,11 +1,11 @@
-module BugSoln exposing (..)
+module Bug exposing (..)
 
 import GraphicSVG exposing (..)
 import Lib.WkApp as App exposing (KeyState(..), Keys(..), playSound)
-import Random
 
 
 
+-- 👉 TODO: Will need to import a module for random functions
 ------- MODEL -------
 
 
@@ -83,12 +83,17 @@ view model =
 ------- INTERACTION -------
 
 
-type Msg
+type
+    Msg
+    {- 👉 TODO:
+       - When you ask (by a Cmd) for some random value for bug's X-position
+            - what type of value will you ask for, within what range
+            - what Msg do you want "called back" containing that random value
+    -}
     = Tick Float App.GetKeyState
     | BoardTapAt ( Float, Float )
     | ResetBtnTap
     | JumpBtnTap
-    | NewX Float
 
 
 
@@ -113,6 +118,12 @@ go dir model =
 
 
 reset model =
+    {- 👉 TODO: Since this always resets to the same initialModel, stop using it
+       - Instead:
+           - ask (Cmd) for a random value to be send back via a Msg
+           - handle that Msg to make your new random model
+           - keep the existing model until your have your random value
+    -}
     initialModel
 
 
@@ -153,9 +164,16 @@ playSuccessCmd =
     playSound "Sounds/success.wav"
 
 
-cmdForRandomX : Cmd Msg
-cmdForRandomX =
-    Random.float -5 5 |> Random.generate NewX
+cmdForRandomXYZ : Cmd Msg
+cmdForRandomXYZ =
+    {- 👉 TODO:
+       Rename this variable and its definition to make a Cmd which:
+           - asks for a random value of the right type
+           - to be sent back via a specifc Msg that will carry that value
+
+          💡 HINT: Random.int, Random.float, etc.
+    -}
+    Cmd.none
 
 
 update msg model =
@@ -179,7 +197,14 @@ update msg model =
                     ( model |> step, Cmd.none )
 
         ResetBtnTap ->
-            ( model, Cmd.batch [ playSuccessCmd, cmdForRandomX ] )
+            {- 👉 TODO:
+                     Since you don't want to reset to a static initialModel:
+                         - Add a command to generate the random value you want via a Msg
+                         - Handle that new Msg alongside Tick, ResetBtnTap, etc.
+                         - Use the current model, just until you get your random value
+               💡 HINT: See Cmd.batch to combine commands
+            -}
+            ( reset model, playSuccessCmd )
 
         JumpBtnTap ->
             ( jump model |> step, playJumpCmd )
@@ -194,9 +219,6 @@ update msg model =
 
                 _ ->
                     ( model, Cmd.none )
-
-        NewX xPos ->
-            ( { model | x = xPos }, Cmd.none )
 
 
 main =
