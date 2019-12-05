@@ -1,17 +1,3 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>BugSoln</title>
-  <style>body { padding: 0; margin: 0; }</style>
-</head>
-
-<body>
-
-<pre id="elm"></pre>
-
-<script>
-try {
 (function(scope){
 'use strict';
 
@@ -1543,7 +1529,7 @@ function _Json_runArrayDecoder(decoder, value, toElmValue)
 
 function _Json_isArray(value)
 {
-	return Array.isArray(value) || (typeof FileList !== 'undefined' && value instanceof FileList);
+	return Array.isArray(value) || (typeof FileList === 'function' && value instanceof FileList);
 }
 
 function _Json_toElmArray(array)
@@ -4370,18 +4356,6 @@ function _Time_getZoneName()
 		callback(_Scheduler_succeed(name));
 	});
 }
-var $author$project$Lib$WkApp$Every = function (a) {
-	return {$: 'Every', a: a};
-};
-var $author$project$BugSoln$Tick = F2(
-	function (a, b) {
-		return {$: 'Tick', a: a, b: b};
-	});
-var $author$project$BugSoln$Right = {$: 'Right'};
-var $elm$core$Basics$negate = function (n) {
-	return -n;
-};
-var $author$project$BugSoln$initialModel = {direction: $author$project$BugSoln$Right, x: 0, y: -4};
 var $elm$core$Basics$EQ = {$: 'EQ'};
 var $elm$core$Basics$LT = {$: 'LT'};
 var $elm$core$List$cons = _List_cons;
@@ -4462,6 +4436,17 @@ var $elm$core$Set$toList = function (_v0) {
 	return $elm$core$Dict$keys(dict);
 };
 var $elm$core$Basics$GT = {$: 'GT'};
+var $author$project$Lib$WkApp$Every = function (a) {
+	return {$: 'Every', a: a};
+};
+var $author$project$Bug$Tick = F2(
+	function (a, b) {
+		return {$: 'Tick', a: a, b: b};
+	});
+var $elm$core$Tuple$first = function (_v0) {
+	var x = _v0.a;
+	return x;
+};
 var $elm$core$Result$Err = function (a) {
 	return {$: 'Err', a: a};
 };
@@ -4766,10 +4751,6 @@ var $elm$core$Array$compressNodes = F2(
 			}
 		}
 	});
-var $elm$core$Tuple$first = function (_v0) {
-	var x = _v0.a;
-	return x;
-};
 var $elm$core$Array$treeFromBuilder = F2(
 	function (nodeList, nodeListSize) {
 		treeFromBuilder:
@@ -4857,16 +4838,19 @@ var $elm$core$Result$isOk = function (result) {
 		return false;
 	}
 };
-var $elm$core$Platform$Cmd$batch = _Platform_batch;
-var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
+var $elm$core$Tuple$second = function (_v0) {
+	var y = _v0.b;
+	return y;
+};
 var $author$project$Lib$WkApp$InitTime = function (a) {
 	return {$: 'InitTime', a: a};
 };
 var $author$project$Lib$WkApp$UserMsg = function (a) {
 	return {$: 'UserMsg', a: a};
 };
+var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $MacCASOutreach$graphicsvg$GraphicSVG$Graphics = function (a) {
 	return {$: 'Graphics', a: a};
 };
@@ -5246,6 +5230,7 @@ var $MacCASOutreach$graphicsvg$GraphicSVG$getViewportSize = A2(
 	},
 	$elm$browser$Browser$Dom$getViewportOf('render'));
 var $elm$core$Platform$Cmd$map = _Platform_map;
+var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $MacCASOutreach$graphicsvg$GraphicSVG$hiddenAppUpdate = F4(
 	function (userView, userUpdate, msg, _v0) {
 		var userModel = _v0.a;
@@ -5321,6 +5306,9 @@ var $elm$svg$Svg$defs = $elm$svg$Svg$trustedNode('defs');
 var $elm$core$String$fromFloat = _String_fromNumber;
 var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
 var $elm$svg$Svg$Attributes$id = _VirtualDom_attribute('id');
+var $elm$core$Basics$negate = function (n) {
+	return -n;
+};
 var $elm$svg$Svg$rect = $elm$svg$Svg$trustedNode('rect');
 var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
 var $elm$svg$Svg$Attributes$x = _VirtualDom_attribute('x');
@@ -7153,10 +7141,6 @@ var $MacCASOutreach$graphicsvg$GraphicSVG$initialCmd = function (userCmd) {
 		_List_fromArray(
 			[$MacCASOutreach$graphicsvg$GraphicSVG$getViewportSize, userCmd]));
 };
-var $elm$core$Tuple$second = function (_v0) {
-	var y = _v0.b;
-	return y;
-};
 var $elm$core$Platform$Sub$map = _Platform_map;
 var $elm$browser$Browser$Events$Window = {$: 'Window'};
 var $elm$json$Json$Decode$int = _Json_decodeInt;
@@ -8739,10 +8723,10 @@ var $author$project$Lib$WkApp$wkGameApp = F3(
 				}
 			});
 	});
-var $author$project$Lib$WkApp$simpleGameApp = F3(
+var $author$project$Lib$WkApp$cmdGameApp = F3(
 	function (tickRate, tickMsg, userApp) {
 		var initFlags = function (flags) {
-			return _Utils_Tuple2(userApp.init, $elm$core$Platform$Cmd$none);
+			return _Utils_Tuple2(userApp.init.a, userApp.init.b);
 		};
 		return A3(
 			$author$project$Lib$WkApp$wkGameApp,
@@ -8755,9 +8739,7 @@ var $author$project$Lib$WkApp$simpleGameApp = F3(
 				},
 				update: F2(
 					function (msg, model) {
-						return _Utils_Tuple2(
-							A2(userApp.update, msg, model),
-							$elm$core$Platform$Cmd$none);
+						return A2(userApp.update, msg, model);
 					}),
 				view: function (m) {
 					return {
@@ -8767,9 +8749,11 @@ var $author$project$Lib$WkApp$simpleGameApp = F3(
 				}
 			});
 	});
-var $author$project$BugSoln$Left = {$: 'Left'};
+var $author$project$Bug$Right = {$: 'Right'};
+var $author$project$Bug$initialModel = {direction: $author$project$Bug$Right, x: 0, y: -4};
+var $author$project$Bug$Left = {$: 'Left'};
 var $author$project$Lib$WkApp$Space = {$: 'Space'};
-var $author$project$BugSoln$decodeKeys = function (keyF) {
+var $author$project$Bug$decodeKeys = function (keyF) {
 	return (_Utils_eq(
 		keyF($author$project$Lib$WkApp$Space),
 		$author$project$Lib$WkApp$JustDown) || _Utils_eq(
@@ -8784,15 +8768,17 @@ var $author$project$BugSoln$decodeKeys = function (keyF) {
 		keyF($author$project$Lib$WkApp$DownArrow),
 		$author$project$Lib$WkApp$JustDown) ? $elm$core$Maybe$Just($author$project$Lib$WkApp$DownArrow) : $elm$core$Maybe$Nothing))));
 };
-var $author$project$BugSoln$jump = function (model) {
+var $author$project$Bug$jump = function (model) {
 	return _Utils_update(
 		model,
 		{y: model.y + 0.2});
 };
-var $author$project$BugSoln$reset = function (model) {
-	return $author$project$BugSoln$initialModel;
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $author$project$Lib$WkApp$playSound = _Platform_outgoingPort('playSound', $elm$json$Json$Encode$string);
+var $author$project$Bug$reset = function (model) {
+	return $author$project$Bug$initialModel;
 };
-var $author$project$BugSoln$step = function (model) {
+var $author$project$Bug$step = function (model) {
 	var _v0 = model.direction;
 	if (_v0.$ === 'Left') {
 		return _Utils_update(
@@ -8804,7 +8790,7 @@ var $author$project$BugSoln$step = function (model) {
 			{x: model.x + 0.2});
 	}
 };
-var $author$project$BugSoln$update = F2(
+var $author$project$Bug$update = F2(
 	function (msg, model) {
 		var _v0 = model;
 		var x = _v0.x;
@@ -8816,7 +8802,7 @@ var $author$project$BugSoln$update = F2(
 				var _v2 = msg.b;
 				var keyFunction = _v2.a;
 				var _v3 = _Utils_Tuple2(
-					$author$project$BugSoln$decodeKeys(keyFunction),
+					$author$project$Bug$decodeKeys(keyFunction),
 					direction);
 				_v3$3:
 				while (true) {
@@ -8824,16 +8810,20 @@ var $author$project$BugSoln$update = F2(
 						switch (_v3.a.a.$) {
 							case 'Space':
 								var _v4 = _v3.a.a;
-								return $author$project$BugSoln$step(
-									$author$project$BugSoln$jump(model));
+								return _Utils_Tuple2(
+									$author$project$Bug$step(
+										$author$project$Bug$jump(model)),
+									$author$project$Lib$WkApp$playSound('Sounds/jump.wav'));
 							case 'LeftArrow':
 								if (_v3.b.$ === 'Right') {
 									var _v5 = _v3.a.a;
 									var _v6 = _v3.b;
-									return $author$project$BugSoln$step(
-										_Utils_update(
-											model,
-											{direction: $author$project$BugSoln$Left}));
+									return _Utils_Tuple2(
+										$author$project$Bug$step(
+											_Utils_update(
+												model,
+												{direction: $author$project$Bug$Left})),
+										$author$project$Lib$WkApp$playSound('Sounds/bump.mp3'));
 								} else {
 									break _v3$3;
 								}
@@ -8841,10 +8831,12 @@ var $author$project$BugSoln$update = F2(
 								if (_v3.b.$ === 'Left') {
 									var _v7 = _v3.a.a;
 									var _v8 = _v3.b;
-									return $author$project$BugSoln$step(
-										_Utils_update(
-											model,
-											{direction: $author$project$BugSoln$Right}));
+									return _Utils_Tuple2(
+										$author$project$Bug$step(
+											_Utils_update(
+												model,
+												{direction: $author$project$Bug$Right})),
+										$author$project$Lib$WkApp$playSound('Sounds/bump.mp3'));
 								} else {
 									break _v3$3;
 								}
@@ -8855,12 +8847,18 @@ var $author$project$BugSoln$update = F2(
 						break _v3$3;
 					}
 				}
-				return $author$project$BugSoln$step(model);
+				return _Utils_Tuple2(
+					$author$project$Bug$step(model),
+					$elm$core$Platform$Cmd$none);
 			case 'ResetBtnTap':
-				return $author$project$BugSoln$reset(model);
+				return _Utils_Tuple2(
+					$author$project$Bug$reset(model),
+					$author$project$Lib$WkApp$playSound('Sounds/success.wav'));
 			case 'JumpBtnTap':
-				return $author$project$BugSoln$step(
-					$author$project$BugSoln$jump(model));
+				return _Utils_Tuple2(
+					$author$project$Bug$step(
+						$author$project$Bug$jump(model)),
+					$author$project$Lib$WkApp$playSound('Sounds/jump.wav'));
 			default:
 				var _v9 = msg.a;
 				var tapX = _v9.a;
@@ -8873,31 +8871,35 @@ var $author$project$BugSoln$update = F2(
 					if (_v10.a.$ === 'Right') {
 						if (_v10.b) {
 							var _v11 = _v10.a;
-							return _Utils_update(
-								model,
-								{direction: $author$project$BugSoln$Left});
+							return _Utils_Tuple2(
+								_Utils_update(
+									model,
+									{direction: $author$project$Bug$Left}),
+								$author$project$Lib$WkApp$playSound('Sounds/bump.mp3'));
 						} else {
 							break _v10$2;
 						}
 					} else {
 						if (!_v10.b) {
 							var _v12 = _v10.a;
-							return _Utils_update(
-								model,
-								{direction: $author$project$BugSoln$Right});
+							return _Utils_Tuple2(
+								_Utils_update(
+									model,
+									{direction: $author$project$Bug$Right}),
+								$author$project$Lib$WkApp$playSound('Sounds/bump.mp3'));
 						} else {
 							break _v10$2;
 						}
 					}
 				}
-				return model;
+				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 		}
 	});
-var $author$project$BugSoln$BoardTapAt = function (a) {
+var $author$project$Bug$BoardTapAt = function (a) {
 	return {$: 'BoardTapAt', a: a};
 };
-var $author$project$BugSoln$JumpBtnTap = {$: 'JumpBtnTap'};
-var $author$project$BugSoln$ResetBtnTap = {$: 'ResetBtnTap'};
+var $author$project$Bug$JumpBtnTap = {$: 'JumpBtnTap'};
+var $author$project$Bug$ResetBtnTap = {$: 'ResetBtnTap'};
 var $MacCASOutreach$graphicsvg$GraphicSVG$NoLine = {$: 'NoLine'};
 var $MacCASOutreach$graphicsvg$GraphicSVG$blank = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 0, 0, 0, 0);
 var $MacCASOutreach$graphicsvg$GraphicSVG$subtract = F2(
@@ -9266,7 +9268,7 @@ var $MacCASOutreach$graphicsvg$GraphicSVG$roundedRect = F3(
 	function (w, h, r) {
 		return A3($MacCASOutreach$graphicsvg$GraphicSVG$RoundRect, w, h, r);
 	});
-var $author$project$BugSoln$viewBug = F2(
+var $author$project$Bug$viewBug = F2(
 	function (_v0, direction) {
 		var x = _v0.a;
 		var y = _v0.b;
@@ -9296,10 +9298,10 @@ var $author$project$BugSoln$viewBug = F2(
 			_List_fromArray(
 				[body, eye]));
 	});
-var $author$project$BugSoln$view = function (model) {
+var $author$project$Bug$view = function (model) {
 	var tapSurface = A2(
 		$MacCASOutreach$graphicsvg$GraphicSVG$notifyTapAt,
-		$author$project$BugSoln$BoardTapAt,
+		$author$project$Bug$BoardTapAt,
 		A2(
 			$MacCASOutreach$graphicsvg$GraphicSVG$move,
 			_Utils_Tuple2(0, -1),
@@ -9312,27 +9314,27 @@ var $author$project$BugSoln$view = function (model) {
 					A4($MacCASOutreach$graphicsvg$GraphicSVG$rgba, 0, 0, 0, 0),
 					A2($MacCASOutreach$graphicsvg$GraphicSVG$rect, 10, 8)))));
 	var resetButton = A2(
-		$MacCASOutreach$graphicsvg$GraphicSVG$notifyTap,
-		$author$project$BugSoln$ResetBtnTap,
+		$MacCASOutreach$graphicsvg$GraphicSVG$move,
+		_Utils_Tuple2(0, 4),
 		A2(
-			$MacCASOutreach$graphicsvg$GraphicSVG$move,
-			_Utils_Tuple2(0, 4),
+			$MacCASOutreach$graphicsvg$GraphicSVG$notifyTap,
+			$author$project$Bug$ResetBtnTap,
 			A2(
 				$MacCASOutreach$graphicsvg$GraphicSVG$filled,
 				$MacCASOutreach$graphicsvg$GraphicSVG$purple,
 				$MacCASOutreach$graphicsvg$GraphicSVG$circle(0.5))));
 	var jumpButton = A2(
-		$MacCASOutreach$graphicsvg$GraphicSVG$notifyTap,
-		$author$project$BugSoln$JumpBtnTap,
+		$MacCASOutreach$graphicsvg$GraphicSVG$move,
+		_Utils_Tuple2(2, 4),
 		A2(
-			$MacCASOutreach$graphicsvg$GraphicSVG$move,
-			_Utils_Tuple2(2, 4),
+			$MacCASOutreach$graphicsvg$GraphicSVG$notifyTap,
+			$author$project$Bug$JumpBtnTap,
 			A2(
 				$MacCASOutreach$graphicsvg$GraphicSVG$filled,
 				$MacCASOutreach$graphicsvg$GraphicSVG$orange,
 				$MacCASOutreach$graphicsvg$GraphicSVG$circle(0.5))));
 	var bug = A2(
-		$author$project$BugSoln$viewBug,
+		$author$project$Bug$viewBug,
 		_Utils_Tuple2(model.x, model.y),
 		model.direction);
 	return A3(
@@ -9348,28 +9350,15 @@ var $author$project$BugSoln$view = function (model) {
 				tapSurface
 			]));
 };
-var $author$project$BugSoln$main = A3(
-	$author$project$Lib$WkApp$simpleGameApp,
+var $author$project$Bug$main = A3(
+	$author$project$Lib$WkApp$cmdGameApp,
 	$author$project$Lib$WkApp$Every(300),
-	$author$project$BugSoln$Tick,
-	{init: $author$project$BugSoln$initialModel, title: 'Game!', update: $author$project$BugSoln$update, view: $author$project$BugSoln$view});
-_Platform_export({'BugSoln':{'init':$author$project$BugSoln$main(
+	$author$project$Bug$Tick,
+	{
+		init: _Utils_Tuple2($author$project$Bug$initialModel, $elm$core$Platform$Cmd$none),
+		title: 'Game!',
+		update: $author$project$Bug$update,
+		view: $author$project$Bug$view
+	});
+_Platform_export({'Bug':{'init':$author$project$Bug$main(
 	$elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));
-
-  var app = Elm.BugSoln.init({ node: document.getElementById("elm") });
-}
-catch (e)
-{
-  // display initialization errors (e.g. bad flags, infinite recursion)
-  var header = document.createElement("h1");
-  header.style.fontFamily = "monospace";
-  header.innerText = "Initialization Error";
-  var pre = document.getElementById("elm");
-  document.body.insertBefore(header, pre);
-  pre.innerText = e;
-  throw e;
-}
-</script>
-
-</body>
-</html>

@@ -9058,8 +9058,6 @@ var $author$project$Main$update = F2(
 			var time = msg.a;
 			var _v1 = msg.b;
 			var keyFunc = _v1.a;
-			var sumOfArrows1 = _v1.b;
-			var sumOfArrows2 = _v1.c;
 			var _v2 = _Utils_Tuple2(
 				model.snake.state,
 				$author$project$Main$decodeKeys(keyFunc));
@@ -9084,7 +9082,7 @@ var $author$project$Main$update = F2(
 					}
 				default:
 					if (_v2.b.$ === 'Just') {
-						var arrow = _v2.b.a;
+						var key = _v2.b.a;
 						var snake = model.snake;
 						return A2(
 							$author$project$Main$step,
@@ -9094,7 +9092,7 @@ var $author$project$Main$update = F2(
 								{
 									snake: A2(
 										$author$project$Snake$turn,
-										A2(keyToDir, snake.direction, arrow),
+										A2(keyToDir, snake.direction, key),
 										snake)
 								}));
 					} else {
