@@ -115,42 +115,54 @@ viewGameOver =
 -- UPDATE ----------------
 
 
-type UserRequest
-    = NewGame
-    | Turn Direction
-    | None
-
-
-decodeKeys : (Keys -> KeyState) -> UserRequest
+decodeKeys : (Keys -> KeyState) -> Maybe Keys
 decodeKeys keyF =
-    if keyF Space == JustDown then
-        NewGame
+    if keyF Space == JustDown || keyF Space == App.Down then
+        Just Space
 
     else if keyF LeftArrow == JustDown then
-        Turn Types.Left
-
-    else if keyF DownArrow == JustDown then
-        Turn Types.Down
+        Just LeftArrow
 
     else if keyF RightArrow == JustDown then
-        Turn Types.Right
+        Just RightArrow
 
     else if keyF UpArrow == JustDown then
-        Turn Types.Up
+        Just UpArrow
+
+    else if keyF DownArrow == JustDown then
+        Just DownArrow
 
     else
-        None
+        Nothing
 
 
 update : Types.Msg -> Model -> Model
 update msg model =
+    let
+        keyToDir oldDir key =
+            case key of
+                LeftArrow ->
+                    Left
+
+                RightArrow ->
+                    Right
+
+                UpArrow ->
+                    Types.Up
+
+                DownArrow ->
+                    Types.Down
+
+                _ ->
+                    oldDir
+    in
     case msg of
-        Tick time ( keyFunc, _, _ ) ->
+        Tick time ( keyFunc, sumOfArrows1, sumOfArrows2 ) ->
             case ( model.snake.state, decodeKeys keyFunc ) of
-                ( HitSelf, NewGame ) ->
+                ( HitSelf, Just Space ) ->
                     initialModel
 
-                ( HitWall, NewGame ) ->
+                ( HitWall, Just Space ) ->
                     initialModel
 
                 ( HitSelf, _ ) ->
@@ -159,12 +171,12 @@ update msg model =
                 ( HitWall, _ ) ->
                     model
 
-                ( _, Turn direction ) ->
+                ( _, Just arrow ) ->
                     let
                         snake =
                             model.snake
                     in
-                    { model | snake = Snake.turn direction snake }
+                    { model | snake = Snake.turn (keyToDir snake.direction arrow) snake }
                         |> step Grid.walls
 
                 ( _, _ ) ->

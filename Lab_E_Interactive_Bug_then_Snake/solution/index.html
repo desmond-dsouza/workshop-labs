@@ -8790,25 +8790,22 @@ var $author$project$Lib$WkApp$simpleGameApp = F3(
 	});
 var $author$project$Types$Down = {$: 'Down'};
 var $author$project$Types$Left = {$: 'Left'};
-var $author$project$Main$NewGame = {$: 'NewGame'};
-var $author$project$Main$None = {$: 'None'};
-var $author$project$Lib$WkApp$Space = {$: 'Space'};
-var $author$project$Main$Turn = function (a) {
-	return {$: 'Turn', a: a};
-};
 var $author$project$Types$Up = {$: 'Up'};
+var $author$project$Lib$WkApp$Space = {$: 'Space'};
 var $author$project$Main$decodeKeys = function (keyF) {
-	return _Utils_eq(
+	return (_Utils_eq(
 		keyF($author$project$Lib$WkApp$Space),
-		$author$project$Lib$WkApp$JustDown) ? $author$project$Main$NewGame : (_Utils_eq(
+		$author$project$Lib$WkApp$JustDown) || _Utils_eq(
+		keyF($author$project$Lib$WkApp$Space),
+		$author$project$Lib$WkApp$Down)) ? $elm$core$Maybe$Just($author$project$Lib$WkApp$Space) : (_Utils_eq(
 		keyF($author$project$Lib$WkApp$LeftArrow),
-		$author$project$Lib$WkApp$JustDown) ? $author$project$Main$Turn($author$project$Types$Left) : (_Utils_eq(
-		keyF($author$project$Lib$WkApp$DownArrow),
-		$author$project$Lib$WkApp$JustDown) ? $author$project$Main$Turn($author$project$Types$Down) : (_Utils_eq(
+		$author$project$Lib$WkApp$JustDown) ? $elm$core$Maybe$Just($author$project$Lib$WkApp$LeftArrow) : (_Utils_eq(
 		keyF($author$project$Lib$WkApp$RightArrow),
-		$author$project$Lib$WkApp$JustDown) ? $author$project$Main$Turn($author$project$Types$Right) : (_Utils_eq(
+		$author$project$Lib$WkApp$JustDown) ? $elm$core$Maybe$Just($author$project$Lib$WkApp$RightArrow) : (_Utils_eq(
 		keyF($author$project$Lib$WkApp$UpArrow),
-		$author$project$Lib$WkApp$JustDown) ? $author$project$Main$Turn($author$project$Types$Up) : $author$project$Main$None))));
+		$author$project$Lib$WkApp$JustDown) ? $elm$core$Maybe$Just($author$project$Lib$WkApp$UpArrow) : (_Utils_eq(
+		keyF($author$project$Lib$WkApp$DownArrow),
+		$author$project$Lib$WkApp$JustDown) ? $elm$core$Maybe$Just($author$project$Lib$WkApp$DownArrow) : $elm$core$Maybe$Nothing))));
 };
 var $author$project$Types$Eating = {$: 'Eating'};
 var $author$project$Types$HitSelf = {$: 'HitSelf'};
@@ -9042,62 +9039,68 @@ var $author$project$Grid$grid = {cellSize: 20, numColumns: 14, numRows: 14};
 var $author$project$Grid$walls = {bottom: ((-$author$project$Grid$grid.numRows) / 2) | 0, left: ((-$author$project$Grid$grid.numColumns) / 2) | 0, right: ($author$project$Grid$grid.numColumns / 2) | 0, top: ($author$project$Grid$grid.numRows / 2) | 0};
 var $author$project$Main$update = F2(
 	function (msg, model) {
+		var keyToDir = F2(
+			function (oldDir, key) {
+				switch (key.$) {
+					case 'LeftArrow':
+						return $author$project$Types$Left;
+					case 'RightArrow':
+						return $author$project$Types$Right;
+					case 'UpArrow':
+						return $author$project$Types$Up;
+					case 'DownArrow':
+						return $author$project$Types$Down;
+					default:
+						return oldDir;
+				}
+			});
 		if (msg.$ === 'Tick') {
 			var time = msg.a;
 			var _v1 = msg.b;
 			var keyFunc = _v1.a;
+			var sumOfArrows1 = _v1.b;
+			var sumOfArrows2 = _v1.c;
 			var _v2 = _Utils_Tuple2(
 				model.snake.state,
 				$author$project$Main$decodeKeys(keyFunc));
-			_v2$2:
-			while (true) {
-				_v2$3:
-				while (true) {
-					switch (_v2.a.$) {
-						case 'HitSelf':
-							switch (_v2.b.$) {
-								case 'NewGame':
-									var _v3 = _v2.a;
-									var _v4 = _v2.b;
-									return $author$project$Main$initialModel;
-								case 'Turn':
-									break _v2$2;
-								default:
-									break _v2$2;
-							}
-						case 'HitWall':
-							switch (_v2.b.$) {
-								case 'NewGame':
-									var _v5 = _v2.a;
-									var _v6 = _v2.b;
-									return $author$project$Main$initialModel;
-								case 'Turn':
-									break _v2$3;
-								default:
-									break _v2$3;
-							}
-						default:
-							if (_v2.b.$ === 'Turn') {
-								var direction = _v2.b.a;
-								var snake = model.snake;
-								return A2(
-									$author$project$Main$step,
-									$author$project$Grid$walls,
-									_Utils_update(
-										model,
-										{
-											snake: A2($author$project$Snake$turn, direction, snake)
-										}));
-							} else {
-								return A2($author$project$Main$step, $author$project$Grid$walls, model);
-							}
+			switch (_v2.a.$) {
+				case 'HitSelf':
+					if ((_v2.b.$ === 'Just') && (_v2.b.a.$ === 'Space')) {
+						var _v3 = _v2.a;
+						var _v4 = _v2.b.a;
+						return $author$project$Main$initialModel;
+					} else {
+						var _v7 = _v2.a;
+						return model;
 					}
-				}
-				var _v8 = _v2.a;
-				return model;
+				case 'HitWall':
+					if ((_v2.b.$ === 'Just') && (_v2.b.a.$ === 'Space')) {
+						var _v5 = _v2.a;
+						var _v6 = _v2.b.a;
+						return $author$project$Main$initialModel;
+					} else {
+						var _v8 = _v2.a;
+						return model;
+					}
+				default:
+					if (_v2.b.$ === 'Just') {
+						var arrow = _v2.b.a;
+						var snake = model.snake;
+						return A2(
+							$author$project$Main$step,
+							$author$project$Grid$walls,
+							_Utils_update(
+								model,
+								{
+									snake: A2(
+										$author$project$Snake$turn,
+										A2(keyToDir, snake.direction, arrow),
+										snake)
+								}));
+					} else {
+						return A2($author$project$Main$step, $author$project$Grid$walls, model);
+					}
 			}
-			var _v7 = _v2.a;
-			return model;
 		} else {
 			return $author$project$Main$initialModel;
 		}
