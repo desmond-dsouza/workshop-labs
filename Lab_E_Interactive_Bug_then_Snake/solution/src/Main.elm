@@ -1,22 +1,7 @@
 module Main exposing (..)
 
 import Food
-import GraphicSVG
-    exposing
-        ( Collage
-        , Shape
-        , black
-        , blue
-        , centered
-        , collage
-        , filled
-        , move
-        , notifyTap
-        , red
-        , sansserif
-        , size
-        , text
-        )
+import GraphicSVG exposing (..)
 import Grid
 import Lib.WkApp as App exposing (KeyState(..), Keys(..))
 import Snake
@@ -86,7 +71,7 @@ nextFoodLocation oldLoc =
 -- VIEW ----------------
 
 
-view : Model -> Collage Msg
+view : Model -> Collage Types.Msg
 view model =
     Grid.viewport
         (Grid.view
@@ -121,7 +106,7 @@ isGameOver g =
     g.snake.state == Types.HitSelf || g.snake.state == Types.HitWall
 
 
-viewGameOver : List (Shape Msg)
+viewGameOver : List (Shape Types.Msg)
 viewGameOver =
     [ text "GAME OVER" |> size (1.5 |> Grid.fracToGrid) |> centered |> filled red ]
 
@@ -157,7 +142,7 @@ decodeKeys keyF =
         None
 
 
-update : Msg -> Model -> Model
+update : Types.Msg -> Model -> Model
 update msg model =
     case msg of
         Tick time ( keyFunc, sumOfArrows1, sumOfArrows2 ) ->
