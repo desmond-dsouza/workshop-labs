@@ -3,20 +3,7 @@ module Food exposing (..)
 import GraphicSVG exposing (..)
 import GraphicSVG.App exposing (graphicsApp)
 import Grid exposing (grid, toGrid)
-import Random
 import Types exposing (Food, Msg(..), Position)
-
-
-randomFoodCmd : Cmd Msg
-randomFoodCmd =
-    let
-        walls =
-            Grid.walls
-
-        positionGenerator =
-            Random.pair (Random.int walls.left walls.right) (Random.int walls.bottom walls.top)
-    in
-    positionGenerator |> Random.generate NewFood
 
 
 view : Food -> List (Shape msg)

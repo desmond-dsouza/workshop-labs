@@ -9,12 +9,12 @@ import Types exposing (..)
 
 
 
+-- 👉 TODO: Will need to import a module for random functions
 -- MAIN -------------------
 
 
 main =
     App.cmdGameApp
-        -- 👉 TODO: simpleGameApp cannot handle Cmds, needs cmdGameApp
         (App.Every 400)
         Tick
         { init = ( initialModel, playStartCmd )
@@ -38,10 +38,17 @@ initialModel =
         , state = Normal
         }
     , food = nextFoodLocation ( 0, 0 )
+
+    {- 👉 TODO: change this food initialization to a fixed position (6, 0)
+       As soon as any food is eaten, randomness will move the next food around
+    -}
     }
 
 
 nextFoodLocation oldLoc =
+    {- 👉 TODO: You will not need this any more
+       after your random position is working
+    -}
     let
         loc1 =
             ( 6, 0 )
@@ -116,6 +123,19 @@ viewGameOver =
 -- UPDATE ----------------
 
 
+randomXYZCmd : Cmd Types.Msg
+randomXYZCmd =
+    {- 👉 TODO:
+       Rename this variable and its definition to make a Cmd which:
+           - asks for a random value of the right type for Food position
+           - to be sent back via a specifc Msg that will carry that value
+        Define that new variant to the Msg type (in file Types.elm)
+
+          💡 HINT: Random.pair, Random.int, Random.generate
+    -}
+    Cmd.none
+
+
 decodeKeys : (Keys -> KeyState) -> Maybe Keys
 decodeKeys keyF =
     if keyF Space == JustDown || keyF Space == App.Down then
@@ -137,15 +157,6 @@ decodeKeys keyF =
         Nothing
 
 
-
-{- 👉 TODO: Define playXYZCmd variables with types & sounds from Sounds directory
-   - playStartCmd
-   - playSuccessCmd
-   - playFailureCmd
-   (Or you can directly use playSound "file" where needed)
--}
-
-
 playStartCmd : Cmd msg
 playStartCmd =
     playSound "Sounds/fanfare.wav"
@@ -163,7 +174,6 @@ playFailureCmd =
 
 update : Types.Msg -> Model -> ( Model, Cmd msg )
 update msg model =
-    {- 👉 TODO: This type changes to include `Cmd` -}
     let
         keyToDir oldDir key =
             case key of
@@ -183,12 +193,6 @@ update msg model =
                     oldDir
     in
     case msg of
-        {- 👉 TODO:
-           Add Cmds:
-              - Cmd.none or your predefined sound variable (or playSound "...") here or to `step`
-              - Make sounds for eating, hit self, hit wall. Any other? Initial sound?
-              - Sounds directory has available sounds (DON'T spend much time choosing)
-        -}
         Tick time ( keyFunc, _, _ ) ->
             case ( model.snake.state, decodeKeys keyFunc ) of
                 ( HitSelf, Just Space ) ->
@@ -220,7 +224,6 @@ update msg model =
 
 step : Walls -> Model -> ( Model, Cmd msg )
 step walls model =
-    {- 👉 TODO: Convenient to change this to include sound Cmds -}
     let
         newSnake =
             Snake.stepSnake model.food walls model.snake
@@ -228,6 +231,15 @@ step walls model =
     ( { model
         | snake = newSnake
         , food =
+            {- 👉 TODO:
+                Since you don't want to put food at a fixed location, or even rotating fixed locations:
+                    - Understand your command that requests a random position value
+                        - to be sent back via a Msg
+                    - Handle that new Msg in `update`, alongside Tick, NewGame, etc.
+                        - In that `case` branch, put the food into the game at the new random position
+                    - Keep the current food position for now, until you get your random value
+               💡 HINT: See Cmd.batch to combine commands, such as sound + random
+            -}
             if newSnake.state == Eating then
                 nextFoodLocation model.food
 

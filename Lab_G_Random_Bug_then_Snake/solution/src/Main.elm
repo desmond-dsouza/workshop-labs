@@ -4,6 +4,7 @@ import Food
 import GraphicSVG exposing (..)
 import Grid
 import Lib.WkApp as App exposing (KeyState(..), Keys(..), playSound)
+import Random
 import Snake
 import Types exposing (..)
 
@@ -16,7 +17,7 @@ main =
     App.cmdGameApp
         (App.Every 200)
         Tick
-        { init = ( initialModel, Cmd.none )
+        { init = ( initialModel, playStartCmd )
         , view = view
         , update = update
         , title = "Snake"
@@ -88,6 +89,18 @@ viewGameOver =
 -- UPDATE ----------------
 
 
+randomFoodCmd : Cmd Types.Msg
+randomFoodCmd =
+    let
+        walls =
+            Grid.walls
+
+        positionGenerator =
+            Random.pair (Random.int walls.left walls.right) (Random.int walls.bottom walls.top)
+    in
+    positionGenerator |> Random.generate NewFood
+
+
 decodeKeys : (Keys -> KeyState) -> Maybe Keys
 decodeKeys keyF =
     if keyF Space == JustDown || keyF Space == App.Down then
@@ -148,10 +161,10 @@ update msg model =
         Tick time ( keyFunc, _, _ ) ->
             case ( model.snake.state, decodeKeys keyFunc ) of
                 ( HitSelf, Just Space ) ->
-                    ( initialModel, Cmd.batch [ Food.randomFoodCmd, playStartCmd ] )
+                    ( initialModel, Cmd.batch [ randomFoodCmd, playStartCmd ] )
 
                 ( HitWall, Just Space ) ->
-                    ( initialModel, Cmd.batch [ Food.randomFoodCmd, playStartCmd ] )
+                    ( initialModel, Cmd.batch [ randomFoodCmd, playStartCmd ] )
 
                 ( HitSelf, _ ) ->
                     ( model, Cmd.none )
@@ -187,7 +200,7 @@ step walls model =
     , case newSnake.state of
         Eating ->
             Cmd.batch
-                [ Food.randomFoodCmd
+                [ randomFoodCmd
                 , playSuccessCmd
                 ]
 

@@ -59,6 +59,6 @@ type alias Walls =
     { left : Int, right : Int, top : Int, bottom : Int }
 
 
-type Msg
+type Msg {- 👉 TODO: Add the Msg variant that will carry back the random value -}
     = Tick Float App.GetKeyState
     | NewGame
