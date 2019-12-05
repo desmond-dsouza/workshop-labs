@@ -112,49 +112,6 @@ type
 -- | ResetBtnTap
 -- | JumpBtnTap
 -- | BoardTapAt ( Float, Float )
-
-
-type
-    UserRequest
-    -- 👉 TODO: Union type for user requests
-    = FillMeIn_2
-
-
-
--- = Jump
--- | Go Direction
--- | Reset
--- | None
-------- DECODE KEYS, MOUSE -> UserRequest ------
-
-
-decodeKeys : (Keys -> KeyState) -> UserRequest
-decodeKeys keyF =
-    -- 👉 TODO: Jump if Space key was pressed
-    None
-
-
-
--- if keyF Space == JustDown || keyF Space == Down then
---     Jump
--- else
---     None
-
-
-decodeTap : ( Float, Float ) -> Model -> UserRequest
-decodeTap ( tapX, tapY ) model =
-    -- 👉 TODO: Flip direction based on tap vs. bug position
-    None
-
-
-
--- case ( model.direction, tapX <= model.x ) of
---     ( Right, True ) ->
---         Go Left
---     ( Left, False ) ->
---         Go Right
---     _ ->
---         None
 ------- ACTIONS ON MODEL -------
 
 
@@ -183,21 +140,31 @@ reset model =
 ------- UPDATE -------
 
 
+decodeKeys : (Keys -> KeyState) -> Maybe Keys
+decodeKeys keyF =
+    {- 👉 TODO: Also handle LeftArrow, RightArrow -}
+    if keyF Space == JustDown || keyF Space == Down then
+        Just Space
+
+    else
+        Nothing
+
+
 update msg model =
-    -- 👉 TODO: Handle the Msg variants one at a time
+    -- 👉 TODO: Handle the Msg variants one at a time, use decodeKeys helper
     model
 
 
 
--- let
---     { x, y, direction } =
---         model
--- in
 -- case msg of
 --     Tick seconds ( keyFunction, _, _ ) ->
 --         case ( decodeKeys keyFunction, direction ) of
---             ( Jump, _ ) ->
+--             ( Just Space, _ ) ->
 --                 jump model |> step
+--             ( Just LeftArrow, Right ) ->
+--                 { model | direction = Left } |> step
+--             ( Just RightArrow, Left ) ->
+--                 { model | direction = Right } |> step
 --             ( _, _ ) ->
 --                 model |> step
 --     ResetBtnTap ->
