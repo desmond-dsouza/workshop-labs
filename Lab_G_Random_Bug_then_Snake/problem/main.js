@@ -8775,9 +8775,6 @@ var $author$project$Bug$jump = function (model) {
 };
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $author$project$Lib$WkApp$playSound = _Platform_outgoingPort('playSound', $elm$json$Json$Encode$string);
-var $author$project$Bug$playBumpCmd = $author$project$Lib$WkApp$playSound('Sounds/bump.mp3');
-var $author$project$Bug$playJumpCmd = $author$project$Lib$WkApp$playSound('Sounds/jump.wav');
-var $author$project$Bug$playSuccessCmd = $author$project$Lib$WkApp$playSound('Sounds/success.wav');
 var $author$project$Bug$reset = function (model) {
 	return $author$project$Bug$initialModel;
 };
@@ -8816,7 +8813,7 @@ var $author$project$Bug$update = F2(
 								return _Utils_Tuple2(
 									$author$project$Bug$step(
 										$author$project$Bug$jump(model)),
-									$author$project$Bug$playJumpCmd);
+									$author$project$Lib$WkApp$playSound('Sounds/jump.wav'));
 							case 'LeftArrow':
 								if (_v3.b.$ === 'Right') {
 									var _v5 = _v3.a.a;
@@ -8826,7 +8823,7 @@ var $author$project$Bug$update = F2(
 											_Utils_update(
 												model,
 												{direction: $author$project$Bug$Left})),
-										$author$project$Bug$playBumpCmd);
+										$author$project$Lib$WkApp$playSound('Sounds/bump.mp3'));
 								} else {
 									break _v3$3;
 								}
@@ -8839,7 +8836,7 @@ var $author$project$Bug$update = F2(
 											_Utils_update(
 												model,
 												{direction: $author$project$Bug$Right})),
-										$author$project$Bug$playBumpCmd);
+										$author$project$Lib$WkApp$playSound('Sounds/bump.mp3'));
 								} else {
 									break _v3$3;
 								}
@@ -8856,12 +8853,12 @@ var $author$project$Bug$update = F2(
 			case 'ResetBtnTap':
 				return _Utils_Tuple2(
 					$author$project$Bug$reset(model),
-					$author$project$Bug$playSuccessCmd);
+					$author$project$Lib$WkApp$playSound('Sounds/success.wav'));
 			case 'JumpBtnTap':
 				return _Utils_Tuple2(
 					$author$project$Bug$step(
 						$author$project$Bug$jump(model)),
-					$author$project$Bug$playJumpCmd);
+					$author$project$Lib$WkApp$playSound('Sounds/jump.wav'));
 			default:
 				var _v9 = msg.a;
 				var tapX = _v9.a;
@@ -8878,7 +8875,7 @@ var $author$project$Bug$update = F2(
 								_Utils_update(
 									model,
 									{direction: $author$project$Bug$Left}),
-								$author$project$Bug$playBumpCmd);
+								$author$project$Lib$WkApp$playSound('Sounds/bump.mp3'));
 						} else {
 							break _v10$2;
 						}
@@ -8889,7 +8886,7 @@ var $author$project$Bug$update = F2(
 								_Utils_update(
 									model,
 									{direction: $author$project$Bug$Right}),
-								$author$project$Bug$playBumpCmd);
+								$author$project$Lib$WkApp$playSound('Sounds/bump.mp3'));
 						} else {
 							break _v10$2;
 						}

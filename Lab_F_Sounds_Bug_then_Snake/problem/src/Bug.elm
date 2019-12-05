@@ -151,6 +151,13 @@ decodeKeys keyF =
     else
         Nothing
 
+{- 👉 TODO: Define playXYZCmd variables with types & sounds from Sounds directory
+   (Or you can directly use playSound "file" where needed)
+        - jump.wav for jumps (keyboard or button)
+        - success.wav for Reset
+        - bump.mp3 for changing direction
+-}
+
 
 update msg model =
     {- 👉 TODO: This type changes:
@@ -163,10 +170,8 @@ update msg model =
             model
     in
     case msg of
-        {- 👉 TODO: Add Cmds: playSound "..." or Cmd.none
-           - jump.wav for jumps (keyboard or button)
-           - success.wav for Reset
-           - bump.mp3 for changing direction
+        {- 👉 TODO: Add Cmds: your predefined playXYZCmd, playSound "..." or Cmd.none
+
         -}
         Tick seconds ( keyFunction, _, _ ) ->
             case ( decodeKeys keyFunction, direction ) of

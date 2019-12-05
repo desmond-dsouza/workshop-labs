@@ -1,4 +1,4 @@
-module BugSoln exposing (..)
+module Bug exposing (..)
 
 import GraphicSVG exposing (..)
 import Lib.WkApp as App exposing (KeyState(..), Keys(..), playSound)
@@ -138,6 +138,8 @@ decodeKeys keyF =
     else
         Nothing
 
+
+
 {- 👉 TODO: Define playXYZCmd variables with types & sounds from Sounds directory
    (Or you can directly use playSound "file" where needed)
         - jump.wav for jumps (keyboard or button)
@@ -145,9 +147,18 @@ decodeKeys keyF =
         - bump.mp3 for changing direction
 -}
 
-playJumpCmd = playSound "Sounds/jump.wav"
-playBumpCmd = playSound "Sounds/bump.mp3"
-playSuccessCmd = playSound "Sounds/success.wav"
+
+playJumpCmd =
+    playSound "Sounds/jump.wav"
+
+
+playBumpCmd =
+    playSound "Sounds/bump.mp3"
+
+
+playSuccessCmd =
+    playSound "Sounds/success.wav"
+
 
 update msg model =
     let

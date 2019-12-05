@@ -1,3 +1,17 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>BugSoln</title>
+  <style>body { padding: 0; margin: 0; }</style>
+</head>
+
+<body>
+
+<pre id="elm"></pre>
+
+<script>
+try {
 (function(scope){
 'use strict';
 
@@ -4439,7 +4453,7 @@ var $elm$core$Basics$GT = {$: 'GT'};
 var $author$project$Lib$WkApp$Every = function (a) {
 	return {$: 'Every', a: a};
 };
-var $author$project$Bug$Tick = F2(
+var $author$project$BugSoln$Tick = F2(
 	function (a, b) {
 		return {$: 'Tick', a: a, b: b};
 	});
@@ -8749,11 +8763,11 @@ var $author$project$Lib$WkApp$cmdGameApp = F3(
 				}
 			});
 	});
-var $author$project$Bug$Right = {$: 'Right'};
-var $author$project$Bug$initialModel = {direction: $author$project$Bug$Right, x: 0, y: -4};
-var $author$project$Bug$Left = {$: 'Left'};
+var $author$project$BugSoln$Right = {$: 'Right'};
+var $author$project$BugSoln$initialModel = {direction: $author$project$BugSoln$Right, x: 0, y: -4};
+var $author$project$BugSoln$Left = {$: 'Left'};
 var $author$project$Lib$WkApp$Space = {$: 'Space'};
-var $author$project$Bug$decodeKeys = function (keyF) {
+var $author$project$BugSoln$decodeKeys = function (keyF) {
 	return (_Utils_eq(
 		keyF($author$project$Lib$WkApp$Space),
 		$author$project$Lib$WkApp$JustDown) || _Utils_eq(
@@ -8768,20 +8782,20 @@ var $author$project$Bug$decodeKeys = function (keyF) {
 		keyF($author$project$Lib$WkApp$DownArrow),
 		$author$project$Lib$WkApp$JustDown) ? $elm$core$Maybe$Just($author$project$Lib$WkApp$DownArrow) : $elm$core$Maybe$Nothing))));
 };
-var $author$project$Bug$jump = function (model) {
+var $author$project$BugSoln$jump = function (model) {
 	return _Utils_update(
 		model,
 		{y: model.y + 0.2});
 };
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $author$project$Lib$WkApp$playSound = _Platform_outgoingPort('playSound', $elm$json$Json$Encode$string);
-var $author$project$Bug$playBumpCmd = $author$project$Lib$WkApp$playSound('Sounds/bump.mp3');
-var $author$project$Bug$playJumpCmd = $author$project$Lib$WkApp$playSound('Sounds/jump.wav');
-var $author$project$Bug$playSuccessCmd = $author$project$Lib$WkApp$playSound('Sounds/success.wav');
-var $author$project$Bug$reset = function (model) {
-	return $author$project$Bug$initialModel;
+var $author$project$BugSoln$playBumpCmd = $author$project$Lib$WkApp$playSound('Sounds/bump.mp3');
+var $author$project$BugSoln$playJumpCmd = $author$project$Lib$WkApp$playSound('Sounds/jump.wav');
+var $author$project$BugSoln$playSuccessCmd = $author$project$Lib$WkApp$playSound('Sounds/success.wav');
+var $author$project$BugSoln$reset = function (model) {
+	return $author$project$BugSoln$initialModel;
 };
-var $author$project$Bug$step = function (model) {
+var $author$project$BugSoln$step = function (model) {
 	var _v0 = model.direction;
 	if (_v0.$ === 'Left') {
 		return _Utils_update(
@@ -8793,7 +8807,7 @@ var $author$project$Bug$step = function (model) {
 			{x: model.x + 0.2});
 	}
 };
-var $author$project$Bug$update = F2(
+var $author$project$BugSoln$update = F2(
 	function (msg, model) {
 		var _v0 = model;
 		var x = _v0.x;
@@ -8805,7 +8819,7 @@ var $author$project$Bug$update = F2(
 				var _v2 = msg.b;
 				var keyFunction = _v2.a;
 				var _v3 = _Utils_Tuple2(
-					$author$project$Bug$decodeKeys(keyFunction),
+					$author$project$BugSoln$decodeKeys(keyFunction),
 					direction);
 				_v3$3:
 				while (true) {
@@ -8814,19 +8828,19 @@ var $author$project$Bug$update = F2(
 							case 'Space':
 								var _v4 = _v3.a.a;
 								return _Utils_Tuple2(
-									$author$project$Bug$step(
-										$author$project$Bug$jump(model)),
-									$author$project$Bug$playJumpCmd);
+									$author$project$BugSoln$step(
+										$author$project$BugSoln$jump(model)),
+									$author$project$BugSoln$playJumpCmd);
 							case 'LeftArrow':
 								if (_v3.b.$ === 'Right') {
 									var _v5 = _v3.a.a;
 									var _v6 = _v3.b;
 									return _Utils_Tuple2(
-										$author$project$Bug$step(
+										$author$project$BugSoln$step(
 											_Utils_update(
 												model,
-												{direction: $author$project$Bug$Left})),
-										$author$project$Bug$playBumpCmd);
+												{direction: $author$project$BugSoln$Left})),
+										$author$project$BugSoln$playBumpCmd);
 								} else {
 									break _v3$3;
 								}
@@ -8835,11 +8849,11 @@ var $author$project$Bug$update = F2(
 									var _v7 = _v3.a.a;
 									var _v8 = _v3.b;
 									return _Utils_Tuple2(
-										$author$project$Bug$step(
+										$author$project$BugSoln$step(
 											_Utils_update(
 												model,
-												{direction: $author$project$Bug$Right})),
-										$author$project$Bug$playBumpCmd);
+												{direction: $author$project$BugSoln$Right})),
+										$author$project$BugSoln$playBumpCmd);
 								} else {
 									break _v3$3;
 								}
@@ -8851,17 +8865,17 @@ var $author$project$Bug$update = F2(
 					}
 				}
 				return _Utils_Tuple2(
-					$author$project$Bug$step(model),
+					$author$project$BugSoln$step(model),
 					$elm$core$Platform$Cmd$none);
 			case 'ResetBtnTap':
 				return _Utils_Tuple2(
-					$author$project$Bug$reset(model),
-					$author$project$Bug$playSuccessCmd);
+					$author$project$BugSoln$reset(model),
+					$author$project$BugSoln$playSuccessCmd);
 			case 'JumpBtnTap':
 				return _Utils_Tuple2(
-					$author$project$Bug$step(
-						$author$project$Bug$jump(model)),
-					$author$project$Bug$playJumpCmd);
+					$author$project$BugSoln$step(
+						$author$project$BugSoln$jump(model)),
+					$author$project$BugSoln$playJumpCmd);
 			default:
 				var _v9 = msg.a;
 				var tapX = _v9.a;
@@ -8877,8 +8891,8 @@ var $author$project$Bug$update = F2(
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
-									{direction: $author$project$Bug$Left}),
-								$author$project$Bug$playBumpCmd);
+									{direction: $author$project$BugSoln$Left}),
+								$author$project$BugSoln$playBumpCmd);
 						} else {
 							break _v10$2;
 						}
@@ -8888,8 +8902,8 @@ var $author$project$Bug$update = F2(
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
-									{direction: $author$project$Bug$Right}),
-								$author$project$Bug$playBumpCmd);
+									{direction: $author$project$BugSoln$Right}),
+								$author$project$BugSoln$playBumpCmd);
 						} else {
 							break _v10$2;
 						}
@@ -8898,11 +8912,11 @@ var $author$project$Bug$update = F2(
 				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 		}
 	});
-var $author$project$Bug$BoardTapAt = function (a) {
+var $author$project$BugSoln$BoardTapAt = function (a) {
 	return {$: 'BoardTapAt', a: a};
 };
-var $author$project$Bug$JumpBtnTap = {$: 'JumpBtnTap'};
-var $author$project$Bug$ResetBtnTap = {$: 'ResetBtnTap'};
+var $author$project$BugSoln$JumpBtnTap = {$: 'JumpBtnTap'};
+var $author$project$BugSoln$ResetBtnTap = {$: 'ResetBtnTap'};
 var $MacCASOutreach$graphicsvg$GraphicSVG$NoLine = {$: 'NoLine'};
 var $MacCASOutreach$graphicsvg$GraphicSVG$blank = A4($MacCASOutreach$graphicsvg$GraphicSVG$RGBA, 0, 0, 0, 0);
 var $MacCASOutreach$graphicsvg$GraphicSVG$subtract = F2(
@@ -9271,7 +9285,7 @@ var $MacCASOutreach$graphicsvg$GraphicSVG$roundedRect = F3(
 	function (w, h, r) {
 		return A3($MacCASOutreach$graphicsvg$GraphicSVG$RoundRect, w, h, r);
 	});
-var $author$project$Bug$viewBug = F2(
+var $author$project$BugSoln$viewBug = F2(
 	function (_v0, direction) {
 		var x = _v0.a;
 		var y = _v0.b;
@@ -9301,10 +9315,10 @@ var $author$project$Bug$viewBug = F2(
 			_List_fromArray(
 				[body, eye]));
 	});
-var $author$project$Bug$view = function (model) {
+var $author$project$BugSoln$view = function (model) {
 	var tapSurface = A2(
 		$MacCASOutreach$graphicsvg$GraphicSVG$notifyTapAt,
-		$author$project$Bug$BoardTapAt,
+		$author$project$BugSoln$BoardTapAt,
 		A2(
 			$MacCASOutreach$graphicsvg$GraphicSVG$move,
 			_Utils_Tuple2(0, -1),
@@ -9321,7 +9335,7 @@ var $author$project$Bug$view = function (model) {
 		_Utils_Tuple2(0, 4),
 		A2(
 			$MacCASOutreach$graphicsvg$GraphicSVG$notifyTap,
-			$author$project$Bug$ResetBtnTap,
+			$author$project$BugSoln$ResetBtnTap,
 			A2(
 				$MacCASOutreach$graphicsvg$GraphicSVG$filled,
 				$MacCASOutreach$graphicsvg$GraphicSVG$purple,
@@ -9331,13 +9345,13 @@ var $author$project$Bug$view = function (model) {
 		_Utils_Tuple2(2, 4),
 		A2(
 			$MacCASOutreach$graphicsvg$GraphicSVG$notifyTap,
-			$author$project$Bug$JumpBtnTap,
+			$author$project$BugSoln$JumpBtnTap,
 			A2(
 				$MacCASOutreach$graphicsvg$GraphicSVG$filled,
 				$MacCASOutreach$graphicsvg$GraphicSVG$orange,
 				$MacCASOutreach$graphicsvg$GraphicSVG$circle(0.5))));
 	var bug = A2(
-		$author$project$Bug$viewBug,
+		$author$project$BugSoln$viewBug,
 		_Utils_Tuple2(model.x, model.y),
 		model.direction);
 	return A3(
@@ -9353,15 +9367,33 @@ var $author$project$Bug$view = function (model) {
 				tapSurface
 			]));
 };
-var $author$project$Bug$main = A3(
+var $author$project$BugSoln$main = A3(
 	$author$project$Lib$WkApp$cmdGameApp,
 	$author$project$Lib$WkApp$Every(300),
-	$author$project$Bug$Tick,
+	$author$project$BugSoln$Tick,
 	{
-		init: _Utils_Tuple2($author$project$Bug$initialModel, $elm$core$Platform$Cmd$none),
+		init: _Utils_Tuple2($author$project$BugSoln$initialModel, $elm$core$Platform$Cmd$none),
 		title: 'Game!',
-		update: $author$project$Bug$update,
-		view: $author$project$Bug$view
+		update: $author$project$BugSoln$update,
+		view: $author$project$BugSoln$view
 	});
-_Platform_export({'Bug':{'init':$author$project$Bug$main(
+_Platform_export({'BugSoln':{'init':$author$project$BugSoln$main(
 	$elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));
+
+  var app = Elm.BugSoln.init({ node: document.getElementById("elm") });
+}
+catch (e)
+{
+  // display initialization errors (e.g. bad flags, infinite recursion)
+  var header = document.createElement("h1");
+  header.style.fontFamily = "monospace";
+  header.innerText = "Initialization Error";
+  var pre = document.getElementById("elm");
+  document.body.insertBefore(header, pre);
+  pre.innerText = e;
+  throw e;
+}
+</script>
+
+</body>
+</html>
