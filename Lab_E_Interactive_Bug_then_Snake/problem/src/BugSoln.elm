@@ -133,11 +133,12 @@ decodeKeys keyF =
     -- 👉 TODO: Jump if Space key was pressed
     None
 
-    -- if keyF Space == JustDown || keyF Space == Down then
-    --     Jump
 
-    -- else
-    --     None
+
+-- if keyF Space == JustDown || keyF Space == Down then
+--     Jump
+-- else
+--     None
 
 
 decodeTap : ( Float, Float ) -> Model -> UserRequest
@@ -145,18 +146,15 @@ decodeTap ( tapX, tapY ) model =
     -- 👉 TODO: Flip direction based on tap vs. bug position
     None
 
-    -- case ( model.direction, tapX <= model.x ) of
-    --     ( Right, True ) ->
-    --         Go Left
-
-    --     ( Left, False ) ->
-    --         Go Right
-
-    --     _ ->
-    --         None
 
 
-
+-- case ( model.direction, tapX <= model.x ) of
+--     ( Right, True ) ->
+--         Go Left
+--     ( Left, False ) ->
+--         Go Right
+--     _ ->
+--         None
 ------- ACTIONS ON MODEL -------
 
 
@@ -189,35 +187,31 @@ update msg model =
     -- 👉 TODO: Handle the Msg variants one at a time
     model
 
-    -- let
-    --     { x, y, direction } =
-    --         model
-    -- in
-    -- case msg of
-    --     Tick seconds ( keyFunction, _, _ ) ->
-    --         case ( decodeKeys keyFunction, direction ) of
-    --             ( Jump, _ ) ->
-    --                 jump model |> step
 
-    --             ( _, _ ) ->
-    --                 model |> step
 
-    --     ResetBtnTap ->
-    --         reset model
-
-    --     JumpBtnTap ->
-    --         jump model |> step
-
-    --     BoardTapAt ( tapX, tapY ) ->
-    --         case ( model.direction, tapX <= model.x ) of
-    --             ( Right, True ) ->
-    --                 { model | direction = Left }
-
-    --             ( Left, False ) ->
-    --                 { model | direction = Right }
-
-    --             _ ->
-    --                 model
+-- let
+--     { x, y, direction } =
+--         model
+-- in
+-- case msg of
+--     Tick seconds ( keyFunction, _, _ ) ->
+--         case ( decodeKeys keyFunction, direction ) of
+--             ( Jump, _ ) ->
+--                 jump model |> step
+--             ( _, _ ) ->
+--                 model |> step
+--     ResetBtnTap ->
+--         reset model
+--     JumpBtnTap ->
+--         jump model |> step
+--     BoardTapAt ( tapX, tapY ) ->
+--         case ( model.direction, tapX <= model.x ) of
+--             ( Right, True ) ->
+--                 { model | direction = Left }
+--             ( Left, False ) ->
+--                 { model | direction = Right }
+--             _ ->
+--                 model
 
 
 main =
