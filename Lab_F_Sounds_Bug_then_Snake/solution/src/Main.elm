@@ -148,7 +148,7 @@ decodeKeys keyF =
 
 playStartCmd : Cmd msg
 playStartCmd =
-    playSound "Sounds/coin.mp3"
+    playSound "Sounds/fanfare.wav"
 
 
 playSuccessCmd : Cmd msg

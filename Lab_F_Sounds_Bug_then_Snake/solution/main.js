@@ -8774,7 +8774,7 @@ var $author$project$Main$initialModel = {
 };
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $author$project$Lib$WkApp$playSound = _Platform_outgoingPort('playSound', $elm$json$Json$Encode$string);
-var $author$project$Main$playStartCmd = $author$project$Lib$WkApp$playSound('Sounds/coin.mp3');
+var $author$project$Main$playStartCmd = $author$project$Lib$WkApp$playSound('Sounds/fanfare.wav');
 var $author$project$Types$Down = {$: 'Down'};
 var $author$project$Types$Left = {$: 'Left'};
 var $author$project$Types$Up = {$: 'Up'};
