@@ -93,7 +93,7 @@ maybeNewGameButton model =
             |> sansserif
             |> centered
             |> filled black
-            |> notifyTap Types.NewGameMsg
+            |> notifyTap Types.NewGame
             |> move ( 0, 180 )
         ]
 
@@ -170,7 +170,7 @@ update msg model =
                 ( _, _ ) ->
                     model |> step Grid.walls
 
-        NewGameMsg ->
+        Types.NewGame ->
             initialModel
 
 

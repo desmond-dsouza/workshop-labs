@@ -62,4 +62,4 @@ type alias Walls =
 
 type Msg
     = Tick Float App.GetKeyState
-    | NewGameMsg
+    | NewGame

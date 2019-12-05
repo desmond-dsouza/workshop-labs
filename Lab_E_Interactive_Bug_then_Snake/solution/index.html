@@ -9107,7 +9107,7 @@ var $author$project$Main$update = F2(
 var $author$project$Main$isGameOver = function (g) {
 	return _Utils_eq(g.snake.state, $author$project$Types$HitSelf) || _Utils_eq(g.snake.state, $author$project$Types$HitWall);
 };
-var $author$project$Types$NewGameMsg = {$: 'NewGameMsg'};
+var $author$project$Types$NewGame = {$: 'NewGame'};
 var $MacCASOutreach$graphicsvg$GraphicSVG$AlignCentred = {$: 'AlignCentred'};
 var $MacCASOutreach$graphicsvg$GraphicSVG$Face = F8(
 	function (a, b, c, d, e, f, g, h) {
@@ -9180,7 +9180,7 @@ var $author$project$Main$maybeNewGameButton = function (model) {
 			_Utils_Tuple2(0, 180),
 			A2(
 				$MacCASOutreach$graphicsvg$GraphicSVG$notifyTap,
-				$author$project$Types$NewGameMsg,
+				$author$project$Types$NewGame,
 				A2(
 					$MacCASOutreach$graphicsvg$GraphicSVG$filled,
 					$MacCASOutreach$graphicsvg$GraphicSVG$black,
