@@ -157,7 +157,7 @@ update msg model =
                     oldDir
     in
     case msg of
-        Tick time ( keyFunc, sumOfArrows1, sumOfArrows2 ) ->
+        Tick time ( keyFunc, _, _ ) ->
             case ( model.snake.state, decodeKeys keyFunc ) of
                 ( HitSelf, Just Space ) ->
                     initialModel
@@ -171,12 +171,12 @@ update msg model =
                 ( HitWall, _ ) ->
                     model
 
-                ( _, Just arrow ) ->
+                ( _, Just key ) ->
                     let
                         snake =
                             model.snake
                     in
-                    { model | snake = Snake.turn (keyToDir snake.direction arrow) snake }
+                    { model | snake = Snake.turn (keyToDir snake.direction key) snake }
                         |> step Grid.walls
 
                 ( _, _ ) ->

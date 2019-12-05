@@ -106,49 +106,62 @@ viewGameOver =
 -- UPDATE ----------------
 
 
-type UserRequest
-    = NewGame
-    | Turn Direction
-    | None
-
-
-decodeKeys : (Keys -> KeyState) -> UserRequest
+decodeKeys : (Keys -> KeyState) -> Maybe Keys
 decodeKeys keyF =
     if keyF Space == JustDown then
-        NewGame
+        Just Space
 
     else if keyF LeftArrow == JustDown then
-        Turn Types.Left
+        Just LeftArrow
         {- 👉 TODO: Should handle all arrow keys
            - Should also handle case of no valid keys being pressed
         -}
 
     else
-        None
+        Nothing
 
 
 update : Types.Msg -> Model -> Model
 update msg model =
+    let
+        keyToDir oldDir key =
+            case key of
+                LeftArrow ->
+                    Left
+
+                RightArrow ->
+                    Right
+
+                UpArrow ->
+                    Types.Up
+
+                DownArrow ->
+                    Types.Down
+
+                _ ->
+                    oldDir
+    in
     case msg of
         -- 👉 TODO: need to cover other msgs too, not just Tick
         Tick time ( keyFunc, _, _ ) ->
             case ( model.snake.state, decodeKeys keyFunc ) of
-                ( HitSelf, NewGame ) ->
+                ( HitSelf, Just Space ) ->
                     initialModel
 
-                ( HitWall, NewGame ) ->
+                ( HitWall, Just Space ) ->
                     initialModel
 
-                {- 👉 TODO: carefully carefully other valid combinations -}
-                ( _, Turn direction ) ->
+                {- 👉 TODO: consider other valid combinations -}
+                ( _, Just key ) ->
                     let
                         oldSnake =
                             model.snake
                     in
-                    -- 👉 TODO: need to turn snake & step it too
+                    -- 👉 TODO: need to turn snake based on "key", & step it too
                     { model | snake = oldSnake }
 
                 ( _, _ ) ->
+                    -- 👉 TODO: is juse "model" correct?
                     model
 
 
