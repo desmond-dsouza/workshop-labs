@@ -4356,6 +4356,43 @@ function _Time_getZoneName()
 		callback(_Scheduler_succeed(name));
 	});
 }
+
+
+
+var _Bitwise_and = F2(function(a, b)
+{
+	return a & b;
+});
+
+var _Bitwise_or = F2(function(a, b)
+{
+	return a | b;
+});
+
+var _Bitwise_xor = F2(function(a, b)
+{
+	return a ^ b;
+});
+
+function _Bitwise_complement(a)
+{
+	return ~a;
+};
+
+var _Bitwise_shiftLeftBy = F2(function(offset, a)
+{
+	return a << offset;
+});
+
+var _Bitwise_shiftRightBy = F2(function(offset, a)
+{
+	return a >> offset;
+});
+
+var _Bitwise_shiftRightZfBy = F2(function(offset, a)
+{
+	return a >>> offset;
+});
 var $elm$core$Basics$EQ = {$: 'EQ'};
 var $elm$core$Basics$LT = {$: 'LT'};
 var $elm$core$List$cons = _List_cons;
@@ -8752,6 +8789,127 @@ var $author$project$Lib$WkApp$cmdGameApp = F3(
 var $author$project$Bug$Right = {$: 'Right'};
 var $author$project$Bug$initialModel = {direction: $author$project$Bug$Right, x: 0, y: -4};
 var $author$project$Bug$Left = {$: 'Left'};
+var $author$project$Bug$NewX = function (a) {
+	return {$: 'NewX', a: a};
+};
+var $elm$random$Random$Generator = function (a) {
+	return {$: 'Generator', a: a};
+};
+var $elm$core$Basics$abs = function (n) {
+	return (n < 0) ? (-n) : n;
+};
+var $elm$core$Bitwise$and = _Bitwise_and;
+var $elm$random$Random$Seed = F2(
+	function (a, b) {
+		return {$: 'Seed', a: a, b: b};
+	});
+var $elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
+var $elm$random$Random$next = function (_v0) {
+	var state0 = _v0.a;
+	var incr = _v0.b;
+	return A2($elm$random$Random$Seed, ((state0 * 1664525) + incr) >>> 0, incr);
+};
+var $elm$core$Bitwise$xor = _Bitwise_xor;
+var $elm$random$Random$peel = function (_v0) {
+	var state = _v0.a;
+	var word = (state ^ (state >>> ((state >>> 28) + 4))) * 277803737;
+	return ((word >>> 22) ^ word) >>> 0;
+};
+var $elm$random$Random$float = F2(
+	function (a, b) {
+		return $elm$random$Random$Generator(
+			function (seed0) {
+				var seed1 = $elm$random$Random$next(seed0);
+				var range = $elm$core$Basics$abs(b - a);
+				var n1 = $elm$random$Random$peel(seed1);
+				var n0 = $elm$random$Random$peel(seed0);
+				var lo = (134217727 & n1) * 1.0;
+				var hi = (67108863 & n0) * 1.0;
+				var val = ((hi * 134217728.0) + lo) / 9007199254740992.0;
+				var scaled = (val * range) + a;
+				return _Utils_Tuple2(
+					scaled,
+					$elm$random$Random$next(seed1));
+			});
+	});
+var $elm$random$Random$Generate = function (a) {
+	return {$: 'Generate', a: a};
+};
+var $elm$random$Random$initialSeed = function (x) {
+	var _v0 = $elm$random$Random$next(
+		A2($elm$random$Random$Seed, 0, 1013904223));
+	var state1 = _v0.a;
+	var incr = _v0.b;
+	var state2 = (state1 + x) >>> 0;
+	return $elm$random$Random$next(
+		A2($elm$random$Random$Seed, state2, incr));
+};
+var $elm$random$Random$init = A2(
+	$elm$core$Task$andThen,
+	function (time) {
+		return $elm$core$Task$succeed(
+			$elm$random$Random$initialSeed(
+				$elm$time$Time$posixToMillis(time)));
+	},
+	$elm$time$Time$now);
+var $elm$random$Random$step = F2(
+	function (_v0, seed) {
+		var generator = _v0.a;
+		return generator(seed);
+	});
+var $elm$random$Random$onEffects = F3(
+	function (router, commands, seed) {
+		if (!commands.b) {
+			return $elm$core$Task$succeed(seed);
+		} else {
+			var generator = commands.a.a;
+			var rest = commands.b;
+			var _v1 = A2($elm$random$Random$step, generator, seed);
+			var value = _v1.a;
+			var newSeed = _v1.b;
+			return A2(
+				$elm$core$Task$andThen,
+				function (_v2) {
+					return A3($elm$random$Random$onEffects, router, rest, newSeed);
+				},
+				A2($elm$core$Platform$sendToApp, router, value));
+		}
+	});
+var $elm$random$Random$onSelfMsg = F3(
+	function (_v0, _v1, seed) {
+		return $elm$core$Task$succeed(seed);
+	});
+var $elm$random$Random$map = F2(
+	function (func, _v0) {
+		var genA = _v0.a;
+		return $elm$random$Random$Generator(
+			function (seed0) {
+				var _v1 = genA(seed0);
+				var a = _v1.a;
+				var seed1 = _v1.b;
+				return _Utils_Tuple2(
+					func(a),
+					seed1);
+			});
+	});
+var $elm$random$Random$cmdMap = F2(
+	function (func, _v0) {
+		var generator = _v0.a;
+		return $elm$random$Random$Generate(
+			A2($elm$random$Random$map, func, generator));
+	});
+_Platform_effectManagers['Random'] = _Platform_createManager($elm$random$Random$init, $elm$random$Random$onEffects, $elm$random$Random$onSelfMsg, $elm$random$Random$cmdMap);
+var $elm$random$Random$command = _Platform_leaf('Random');
+var $elm$random$Random$generate = F2(
+	function (tagger, generator) {
+		return $elm$random$Random$command(
+			$elm$random$Random$Generate(
+				A2($elm$random$Random$map, tagger, generator)));
+	});
+var $author$project$Bug$cmdForRandomX = A2(
+	$elm$random$Random$generate,
+	$author$project$Bug$NewX,
+	A2($elm$random$Random$float, -5, 5));
 var $author$project$Lib$WkApp$Space = {$: 'Space'};
 var $author$project$Bug$decodeKeys = function (keyF) {
 	return (_Utils_eq(
@@ -8775,9 +8933,9 @@ var $author$project$Bug$jump = function (model) {
 };
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $author$project$Lib$WkApp$playSound = _Platform_outgoingPort('playSound', $elm$json$Json$Encode$string);
-var $author$project$Bug$reset = function (model) {
-	return $author$project$Bug$initialModel;
-};
+var $author$project$Bug$playBumpCmd = $author$project$Lib$WkApp$playSound('Sounds/bump.mp3');
+var $author$project$Bug$playJumpCmd = $author$project$Lib$WkApp$playSound('Sounds/jump.wav');
+var $author$project$Bug$playSuccessCmd = $author$project$Lib$WkApp$playSound('Sounds/success.wav');
 var $author$project$Bug$step = function (model) {
 	var _v0 = model.direction;
 	if (_v0.$ === 'Left') {
@@ -8813,7 +8971,7 @@ var $author$project$Bug$update = F2(
 								return _Utils_Tuple2(
 									$author$project$Bug$step(
 										$author$project$Bug$jump(model)),
-									$author$project$Lib$WkApp$playSound('Sounds/jump.wav'));
+									$author$project$Bug$playJumpCmd);
 							case 'LeftArrow':
 								if (_v3.b.$ === 'Right') {
 									var _v5 = _v3.a.a;
@@ -8823,7 +8981,7 @@ var $author$project$Bug$update = F2(
 											_Utils_update(
 												model,
 												{direction: $author$project$Bug$Left})),
-										$author$project$Lib$WkApp$playSound('Sounds/bump.mp3'));
+										$author$project$Bug$playBumpCmd);
 								} else {
 									break _v3$3;
 								}
@@ -8836,7 +8994,7 @@ var $author$project$Bug$update = F2(
 											_Utils_update(
 												model,
 												{direction: $author$project$Bug$Right})),
-										$author$project$Lib$WkApp$playSound('Sounds/bump.mp3'));
+										$author$project$Bug$playBumpCmd);
 								} else {
 									break _v3$3;
 								}
@@ -8852,14 +9010,16 @@ var $author$project$Bug$update = F2(
 					$elm$core$Platform$Cmd$none);
 			case 'ResetBtnTap':
 				return _Utils_Tuple2(
-					$author$project$Bug$reset(model),
-					$author$project$Lib$WkApp$playSound('Sounds/success.wav'));
+					model,
+					$elm$core$Platform$Cmd$batch(
+						_List_fromArray(
+							[$author$project$Bug$playSuccessCmd, $author$project$Bug$cmdForRandomX])));
 			case 'JumpBtnTap':
 				return _Utils_Tuple2(
 					$author$project$Bug$step(
 						$author$project$Bug$jump(model)),
-					$author$project$Lib$WkApp$playSound('Sounds/jump.wav'));
-			default:
+					$author$project$Bug$playJumpCmd);
+			case 'BoardTapAt':
 				var _v9 = msg.a;
 				var tapX = _v9.a;
 				var tapY = _v9.b;
@@ -8875,7 +9035,7 @@ var $author$project$Bug$update = F2(
 								_Utils_update(
 									model,
 									{direction: $author$project$Bug$Left}),
-								$author$project$Lib$WkApp$playSound('Sounds/bump.mp3'));
+								$author$project$Bug$playBumpCmd);
 						} else {
 							break _v10$2;
 						}
@@ -8886,13 +9046,20 @@ var $author$project$Bug$update = F2(
 								_Utils_update(
 									model,
 									{direction: $author$project$Bug$Right}),
-								$author$project$Lib$WkApp$playSound('Sounds/bump.mp3'));
+								$author$project$Bug$playBumpCmd);
 						} else {
 							break _v10$2;
 						}
 					}
 				}
 				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+			default:
+				var xPos = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{x: xPos}),
+					$elm$core$Platform$Cmd$none);
 		}
 	});
 var $author$project$Bug$BoardTapAt = function (a) {
