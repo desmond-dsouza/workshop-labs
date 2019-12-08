@@ -1,9 +1,9 @@
 module Lab_B_Preview_Snake_Graphics exposing (..)
 
+-- 👉 NOTE: Also imported previous lab so all its functions are available here
 
 import GraphicSVG exposing (..)
 import GraphicSVG.App as App
--- 👉 NOTE: Also imported previous lab so all its functions are available here
 import Lab_A_Soln_REPL_Play exposing (..)
 
 
@@ -49,18 +49,6 @@ viewGrid =
     [ graphPaperCustom cellSize 0.5 lightGrey
     , circle (0.05 * cellSize) |> filled black
     ]
-
-
-initialHead =
-    ( 5, 0 )
-
-
-initialBody =
-    [ ( 4, 0 ), ( 3, 0 ), ( 2, 0 ), ( 2, 1 ) ]
-
-
-initialSnake =
-    ( initialHead, initialBody )
 
 
 
