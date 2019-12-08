@@ -7,13 +7,6 @@ import GraphicSVG.App as App
 import Lab_A_Soln_REPL_Play exposing (..)
 
 
-type alias Snake =
-    -- A Snake has 2 properties: head and body, represented as a tuple
-    ( ( Int, Int ) -- head, a pair of integers for i, j coordinates
-    , List ( Int, Int ) -- body, a list of integer pairs
-    )
-
-
 cellSize =
     20.0
 
@@ -55,7 +48,7 @@ viewGrid =
 {- 👉 TODO:
    * Change the snake head color, Save, view result
    * Change the snake body rounded rectangles to circles, Save, view result
-   * Add an extra bend to `initialSnake` tail with 2 new segments, Save, view result
+   * Add an extra bend to `initialBody` in Lab_A... with 2 new segments, Save, view result
    * Change main to view the snake after stepping `initialHead` and `initialBody`
         (try Direction = down, Grow = True or False), view result.
 -}

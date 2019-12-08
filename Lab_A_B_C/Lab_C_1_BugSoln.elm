@@ -26,6 +26,7 @@ type
 -- 👉 TODO: Add explicit types as needed everywhere below
 
 
+initialModel : Model
 initialModel =
     { x = 0, y = 0, direction = Left }
 

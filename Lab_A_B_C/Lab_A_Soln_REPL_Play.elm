@@ -1,7 +1,11 @@
 module Lab_A_Soln_REPL_Play exposing (..)
 
 
-type alias HeadPos =
+type alias Head =
+    ( Int, Int )
+
+
+type alias Food =
     ( Int, Int )
 
 
@@ -17,7 +21,14 @@ type alias Body =
     List ( Int, Int )
 
 
-stepHead : HeadPos -> Direction -> HeadPos
+type alias Snake =
+    -- A Snake has 2 properties: head and body, in a tuple
+    ( Head -- head, a pair of integers for i, j coordinates
+    , Body -- body, a list of integer pairs
+    )
+
+
+stepHead : Head -> Direction -> Head
 stepHead ( i, j ) dir =
     case dir of
         "Right" ->
@@ -37,19 +48,24 @@ stepHead ( i, j ) dir =
             ( i, j )
 
 
-stepBody : Grow -> HeadPos -> Body -> Body
-stepBody grow head body =
-    [ head ]
-        ++ [{- 👉 TODO: New body always includes old head position.
+stepBody : Grow -> Head -> Body -> Body
+stepBody grow currHead currBody =
+    [ currHead ]
+        ++ {- 👉 TODO: New body currently includes currHead position and entire currBody.
 
-                But depending on grow (True vs. False) it also should include either
-                    - the entire old body, or
-                    - the old body except its last element
+               But depending on grow (True vs. False) it also should include either
+                   - the entire currBody, or
+                   - the currBody except its last element
 
-               💡 HINT: use `if-then-else`
-                    - using `grow` and `body` variable, and `removeLast` function
-            -}
-           ]
+              💡 HINT: use `if-then-else`
+                   - using `grow` and `body` variable, and `removeLast` function
+           -}
+           (if grow then
+                currBody
+
+            else
+                removeLast currBody
+           )
 
 
 removeLast : List a -> List a
@@ -57,10 +73,19 @@ removeLast list =
     List.take (List.length list - 1) list
 
 
+stepSnake : Snake -> Direction -> Food -> Snake
+stepSnake ( head, body ) dir food =
+    ( stepHead head dir
+    , stepBody (stepHead head dir == food) head body
+    )
+
+
+initialHead : Head
 initialHead =
     ( 5, 0 )
 
 
+initialBody : Body
 initialBody =
     [ ( 4, 0 ), ( 3, 0 ), ( 2, 0 ), ( 2, 1 ) ]
 

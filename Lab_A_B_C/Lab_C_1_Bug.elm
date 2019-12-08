@@ -21,7 +21,7 @@ type alias Direction =
 
 
 
--- 👉 TODO: Add explicit types as needed everywhere below
+-- 👉 TODO: Add explicit type for initialModel
 
 
 initialModel =
